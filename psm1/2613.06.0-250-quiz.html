@@ -1,0 +1,4724 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Scrum Step-by-Step – Ngân hàng 250 câu & Luyện tập</title>
+<style>
+:root{
+  --bg:#f4f6fb; --card:#ffffff; --text:#1f2937; --muted:#6b7280; --border:#e5e7eb;
+  --primary:#1a9bb8; --primary-dark:#137a92; --primary-soft:#e3f4f8;
+  --good:#12a150; --good-soft:#e6f6ec; --bad:#d6245a; --bad-soft:#fdeaf1;
+  --warn:#f5b400; --exp-bg:#f3f5f9; --shadow:0 2px 10px rgba(15,23,42,.06);
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --bg:#0f141b; --card:#171e28; --text:#e5e9f0; --muted:#97a1b0; --border:#2a3442;
+    --primary:#3bb6d3; --primary-dark:#5cc7e0; --primary-soft:#14303a;
+    --good:#34c779; --good-soft:#12301f; --bad:#ff5c8a; --bad-soft:#3a1624;
+    --exp-bg:#1d2632; --shadow:0 2px 10px rgba(0,0,0,.35);
+  }
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--text);font:16px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+header.top{background:linear-gradient(135deg,#1a9bb8,#3f5a73);color:#fff;padding:28px 16px 64px}
+header.top .wrap{max-width:900px;margin:0 auto}
+header.top h1{margin:0 0 6px;font-size:26px;letter-spacing:.2px}
+header.top p{margin:0;opacity:.9;font-size:14.5px}
+.wrap{max-width:900px;margin:0 auto;padding:0 16px}
+.tabs{display:flex;gap:6px;background:var(--card);border-radius:14px;padding:6px;margin-top:-36px;box-shadow:var(--shadow);position:sticky;top:8px;z-index:20;border:1px solid var(--border)}
+.tab-btn{flex:1;border:0;background:transparent;color:var(--muted);font:600 15px inherit;font-family:inherit;padding:12px 10px;border-radius:10px;cursor:pointer;transition:.15s}
+.tab-btn:hover{color:var(--text);background:var(--exp-bg)}
+.tab-btn.active{background:var(--primary);color:#fff}
+section.tab{padding:20px 0 60px}
+.panel{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:18px;box-shadow:var(--shadow);margin-bottom:16px}
+.toolbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.chip{border:1px solid var(--border);background:var(--card);color:var(--text);padding:7px 14px;border-radius:999px;cursor:pointer;font:500 14px inherit;font-family:inherit}
+.chip:hover{border-color:var(--primary)}
+.chip.active{background:var(--primary);border-color:var(--primary);color:#fff}
+input[type=search],select{font:inherit;padding:8px 12px;border-radius:10px;border:1px solid var(--border);background:var(--card);color:var(--text)}
+input[type=search]{flex:1;min-width:180px}
+.count{color:var(--muted);font-size:14px;margin-left:auto}
+.btn{border:0;border-radius:10px;padding:11px 22px;font:600 15px inherit;font-family:inherit;cursor:pointer;background:var(--primary);color:#fff;transition:.15s}
+.btn:hover{background:var(--primary-dark)}
+.btn.secondary{background:var(--exp-bg);color:var(--text);border:1px solid var(--border)}
+.btn.secondary:hover{border-color:var(--primary)}
+.btn.big{padding:14px 30px;font-size:16px}
+
+/* Question cards */
+.qcard{background:var(--card);border:1px solid var(--border);border-radius:14px;box-shadow:var(--shadow);margin-bottom:16px;overflow:hidden}
+.qhead{display:flex;align-items:center;gap:10px;padding:12px 18px;background:var(--exp-bg);border-bottom:1px solid var(--border)}
+.qnum{font-weight:700;color:var(--text)}
+.badge{margin-left:auto;font-size:12.5px;font-weight:700;padding:3px 10px;border-radius:999px}
+.badge.ok{background:var(--good-soft);color:var(--good)}
+.badge.no{background:var(--bad-soft);color:var(--bad)}
+.qbody{padding:18px}
+.qtext{font-size:17px;margin:0 0 4px;font-weight:500}
+.qhint{font-size:13.5px;font-weight:700;color:var(--muted);margin:0 0 14px}
+ul.opts{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+.opt{display:flex;gap:10px;align-items:flex-start;padding:10px 12px;border-radius:10px;border:1px solid var(--border);background:var(--card)}
+.opt .letter{font-weight:700;min-width:22px;color:var(--muted)}
+.opt .txt{flex:1}
+.opt.correct{background:var(--good-soft);border-color:var(--good)}
+.opt.correct .letter{color:var(--good)}
+.opt.wrong{background:var(--bad-soft);border-color:var(--bad)}
+.opt.wrong .letter{color:var(--bad)}
+.tag{font-size:12px;font-weight:700;padding:2px 9px;border-radius:999px;white-space:nowrap;align-self:center}
+.tag.good{background:var(--good);color:#fff}
+.tag.good-outline{border:1px solid var(--good);color:var(--good)}
+.tag.miss{background:var(--warn);color:#222}
+.tag.bad{background:var(--bad);color:#fff}
+.exp{margin-top:16px;padding:12px 16px;background:var(--exp-bg);border-left:4px solid var(--primary);border-radius:8px}
+.exp.good{border-left-color:var(--good)} .exp.bad{border-left-color:var(--bad)}
+.exp b{display:block;margin-bottom:4px;font-size:14px}
+.exp p{margin:0 0 6px;font-size:15px}
+.exp p:last-child{margin-bottom:0}
+.empty{text-align:center;color:var(--muted);padding:40px 0}
+
+.tip{margin-top:12px;display:flex;gap:8px;align-items:flex-start;font-size:13.5px;line-height:1.5;color:var(--muted);padding:8px 12px;border:1px dashed var(--border);border-radius:8px}
+.tip .ic{flex:none}
+.own{font-weight:400;color:var(--muted);font-size:12.5px}
+.tip b{color:var(--text);font-weight:600}
+
+/* Practice */
+.setup h2{margin:0 0 6px;font-size:20px}
+.setup p{margin:0 0 16px;color:var(--muted)}
+.setup .row{display:flex;flex-wrap:wrap;gap:16px;align-items:center;margin-bottom:18px}
+.setup label{display:flex;gap:8px;align-items:center;font-size:15px}
+label.opt.pick{cursor:pointer}
+label.opt.pick:hover{border-color:var(--primary)}
+label.opt.pick.selected{background:var(--primary-soft);border-color:var(--primary)}
+label.opt.pick input{margin-top:4px;accent-color:var(--primary);width:17px;height:17px;flex:none}
+.bar{position:sticky;bottom:10px;z-index:15;background:var(--card);border:1px solid var(--border);box-shadow:0 6px 24px rgba(15,23,42,.18);border-radius:14px;padding:12px 16px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.progress{flex:1;min-width:160px}
+.progress .lbl{font-size:13.5px;color:var(--muted);margin-bottom:4px}
+.progress .track{height:8px;border-radius:99px;background:var(--exp-bg);overflow:hidden}
+.progress .fill{height:100%;background:var(--primary);width:0;transition:width .2s}
+.summary{display:flex;gap:22px;align-items:center;flex-wrap:wrap}
+.ring{--p:0;width:130px;height:130px;border-radius:50%;background:conic-gradient(var(--c,var(--primary)) calc(var(--p)*1%),var(--exp-bg) 0);display:grid;place-items:center;flex:none}
+.ring span{width:98px;height:98px;border-radius:50%;background:var(--card);display:grid;place-items:center;font-size:24px;font-weight:800}
+.stats{flex:1;min-width:220px}
+.stats h2{margin:0 0 8px;font-size:22px}
+.stats .line{display:flex;gap:18px;flex-wrap:wrap;color:var(--muted);font-size:15px}
+.stats .line b{color:var(--text)}
+.hide-ok .qcard.is-ok{display:none}
+.note{font-size:13px;color:var(--muted);margin-top:6px}
+footer{text-align:center;color:var(--muted);font-size:13px;padding:10px 16px 40px}
+@media (max-width:560px){
+  header.top h1{font-size:21px}
+  .qbody{padding:14px}
+  .tag{font-size:11px;padding:2px 7px}
+  .opt{flex-wrap:wrap}
+}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <h1>Scrum – Ngân hàng 250 câu</h1>
+    <p>Ngân hàng 250 câu từ file README (đáp án theo dấu x) và chế độ luyện tập ngẫu nhiên.</p>
+  </div>
+</header>
+
+<div class="wrap">
+  <nav class="tabs" role="tablist">
+    <button class="tab-btn active" data-tab="bank" role="tab">📚 Ngân hàng câu hỏi</button>
+    <button class="tab-btn" data-tab="practice" role="tab">🎲 Làm bài ngẫu nhiên</button>
+  </nav>
+
+  <!-- TAB 1: BANK -->
+  <section class="tab" id="tab-bank">
+    <div class="panel toolbar">
+      <button class="chip active" data-filter="all">Tất cả</button>
+      <button class="chip" data-filter="multi">Câu chọn nhiều đáp án</button>
+      <input type="search" id="bankSearch" placeholder="Tìm câu hỏi…">
+      <span class="count" id="bankCount"></span>
+    </div>
+    <div class="note" style="margin:-4px 0 14px">Đáp án lấy theo dấu [x] trong file của bạn. Giải thích và dòng "cách tư duy" do Claude viết; một số câu có ghi chú "Lưu ý" khi đáp án đánh dấu lệch nhẹ so với Scrum Guide 2020.</div>
+    <div id="bankList"></div>
+  </section>
+
+  <!-- TAB 2: PRACTICE -->
+  <section class="tab" id="tab-practice" hidden>
+    <div class="panel setup" id="setup">
+      <h2>Làm lại bài ngẫu nhiên</h2>
+      <p>Câu hỏi và các đáp án sẽ được xáo trộn mỗi lần. Bấm “Nộp bài” để chấm điểm. Kết quả lần làm này không được lưu lại.</p>
+      <div class="row">
+        <label>Số câu:
+          <select id="numQ">
+            <option value="10">10 câu</option>
+            <option value="20" selected>20 câu</option>
+            <option value="50">50 câu</option>
+            <option value="100">100 câu</option>
+            <option value="all">Tất cả (250)</option>
+          </select>
+        </label>
+      </div>
+      <button class="btn big" id="startBtn">Bắt đầu làm bài</button>
+    </div>
+
+    <div id="quizArea" hidden>
+      <div id="resultBox"></div>
+      <div id="quizList"></div>
+      <div class="bar" id="quizBar">
+        <div class="progress">
+          <div class="lbl" id="progLbl"></div>
+          <div class="track"><div class="fill" id="progFill"></div></div>
+        </div>
+        <button class="btn secondary" id="restartBtn">Làm lại từ đầu</button>
+        <button class="btn" id="submitBtn">Nộp bài</button>
+      </div>
+    </div>
+  </section>
+</div>
+<footer>Nội dung câu hỏi © Scrum.org – dùng cho mục đích tự ôn tập cá nhân.</footer>
+
+<script>
+/* ===== DỮ LIỆU: opts = các đáp án theo thứ tự gốc; ans = chỉ số đáp án đúng; prev = chỉ số bạn đã chọn ở lần làm trước ===== */
+const QUESTIONS = [
+{
+"id": 1,
+"type": "multi",
+"q": "You have just been hired by a company new to Scrum. Your management has assigned you to be the Scrum Master of six new Scrum Teams. These teams will build one product. Select two conditions you should strive for in this scenario. (choose two)",
+"opts": [
+"There should be six Product Owners, one for each Scrum Team.",
+"There should be six Product Owners, reporting to a chief Product Owner.",
+"The product has one Product Backlog.",
+"Each Scrum Team should have a separate Product Backlog.",
+"There should be only one Product Owner."
+],
+"ans": [
+2,
+4
+],
+"prev": [],
+"exp": "Một sản phẩm chỉ có một Product Owner và một Product Backlog, dù có nhiều Scrum Team cùng làm. Nhiều Product Owner hoặc nhiều Product Backlog làm mất tính tập trung và minh bạch về giá trị sản phẩm.",
+"tip": "Câu hỏi nhiều team: nhớ quy tắc một sản phẩm = một Product Owner = một Product Backlog."
+},
+{
+"id": 2,
+"type": "multi",
+"q": "A Scrum Team has been working on a product for nine Sprints. A new Product Owner comes in, understanding he is accountable for the Product Backlog. However, he is unsure about his responsibilities. Which two activities are part of the Product Owner role according to Scrum? (choose two)",
+"opts": [
+"Ensuring that the most valuable functionality is produced first, at all times.",
+"Interacting with stakeholders.",
+"Providing the Scrum Team with detailed specifications.",
+"Describing features as Use Cases.",
+"Creating detailed functional test cases."
+],
+"ans": [
+0,
+1
+],
+"prev": [],
+"exp": "Product Owner chịu trách nhiệm tối đa hóa giá trị (sắp xếp Product Backlog để việc giá trị nhất làm trước) và làm việc với stakeholders. Đặc tả chi tiết, Use Case hay test case chi tiết không phải trách nhiệm bắt buộc của Product Owner và Scrum không quy định các kỹ thuật đó.",
+"tip": "Chọn đáp án về giá trị và stakeholders; loại đáp án nêu kỹ thuật/tài liệu cụ thể mà Scrum không quy định."
+},
+{
+"id": 3,
+"type": "single",
+"q": "User documentation is part of your Definition of Done. However, there aren't enough technical writers for all teams. Your Developers don't have a technical writer. What should you do?",
+"opts": [
+"Form a separate team of technical writers that will work on an on-demand basis for the various Product Owners. Work order will be first in, first out.",
+"Let the user documentation remain undone and accumulate until after the last development Sprint. It will then be done by any available technical writers.",
+"Wait until you have a technical writer on your Scrum Team to take care of this.",
+"Your Scrum Team is still responsible for creating user documentation. In this case, the Scrum Team members will write it."
+],
+"ans": [
+3
+],
+"prev": [],
+"exp": "Scrum Team chịu trách nhiệm tạo ra Increment đạt Definition of Done, gồm cả tài liệu người dùng. Không được để việc undone tích lũy hay chờ nhóm ngoài; các thành viên tự viết tài liệu.",
+"tip": "Khi thiếu kỹ năng, đáp án đúng là team tự xử lý để vẫn Done trong Sprint, không hoãn hay giao ra ngoài."
+},
+{
+"id": 4,
+"type": "multi",
+"q": "You are the Scrum Master for four Scrum Teams working from the same Product Backlog. Several of the Developers come to you complaining that work identified for the upcoming two Sprints will require full-time commitment from a technical specialist who is external to the teams. What are two key concerns for the Scrum Master to take into account in this situation? (choose two)",
+"opts": [
+"The desire to maintain a stable velocity.",
+"The benefit of Developers figuring out a solution for themselves.",
+"The need to have enough work to keep all Developers busy.",
+"The ability of the Developers to produce integrated Increments."
+],
+"ans": [
+1,
+3
+],
+"prev": [],
+"exp": "Developers nên tự tìm giải pháp (self-managing) và quan trọng nhất là vẫn tạo được Increment tích hợp, Done. Velocity ổn định hay việc luôn bận rộn không phải mối quan tâm chính của Scrum.",
+"tip": "Ưu tiên self-management và Increment Done; bỏ qua velocity hay kín lịch làm việc."
+},
+{
+"id": 5,
+"type": "single",
+"q": "The Product Backlog is ordered by:",
+"opts": [
+"The Product Owner with the most valuable items placed at the top.",
+"Risk, where safer items are at the top, and riskier items are at the bottom.",
+"Items are randomly arranged.",
+"Size, where small items are at the top and large items are at the bottom."
+],
+"ans": [
+0
+],
+"prev": [],
+"exp": "Product Owner chịu trách nhiệm sắp xếp thứ tự Product Backlog, thường đặt item giá trị nhất lên đầu. Không có quy tắc cố định theo rủi ro, kích thước hay ngẫu nhiên.",
+"tip": "Câu về thứ tự Product Backlog: đáp án nhắc Product Owner và giá trị."
+},
+{
+"id": 6,
+"type": "single",
+"q": "What happens if the Scrum Team cannot complete its work by the end of the Sprint?",
+"opts": [
+"The Sprint is extended and future Sprints use this new duration.",
+"The Sprint length holds and the Scrum Team continuously learns what is actually possible to do within a Sprint of this length.",
+"The Sprint is extended temporarily. Lessons are taken to ensure it doesn't happen again."
+],
+"ans": [
+1
+],
+"prev": [],
+"exp": "Sprint có timebox cố định, không kéo dài. Khi chưa xong, team học xem thực sự làm được bao nhiêu trong độ dài đó và cải tiến qua Retrospective.",
+"tip": "Timebox không bao giờ được kéo dài; hãy chọn đáp án giữ nguyên Sprint và học hỏi."
+},
+{
+"id": 7,
+"type": "single",
+"q": "Which topics should be discussed in the Sprint Review?",
+"opts": [
+"The Scrum process, and how it was used during the Sprint.",
+"Coding and engineering practices.",
+"Sprint results.",
+"All of the above."
+],
+"ans": [
+2
+],
+"prev": [],
+"exp": "Sprint Review tập trung kiểm tra kết quả Sprint (Increment) và điều chỉnh Product Backlog. Quy trình Scrum và thực hành kỹ thuật thuộc về Sprint Retrospective, nên không chọn All of the above.",
+"tip": "Phân biệt Review (sản phẩm) và Retrospective (cách làm việc)."
+},
+{
+"id": 8,
+"type": "single",
+"q": "A member of the Scrum Team takes the Scrum Master aside to express his concerns about data security issues. What should the Scrum Master do?",
+"opts": [
+"Add security to the Definition of Done.",
+"Tell the Product Owner to stop further development of features until the issues are fixed.",
+"Create a Product Backlog item for security.",
+"Go check with the testers.",
+"Ask the person to share the issue with the team as soon as possible."
+],
+"ans": [
+4
+],
+"prev": [],
+"exp": "Scrum Master không tự áp đặt giải pháp; vấn đề cần được minh bạch hóa bằng cách chia sẻ với cả team sớm. Thêm vào Definition of Done hay ra lệnh Product Owner là hành động vội, chưa đủ thông tin.",
+"tip": "Khi có mối lo, tăng tính minh bạch và đưa ra team trước, đừng nhảy vào hành động đơn phương."
+},
+{
+"id": 9,
+"type": "single",
+"q": "What does it mean for a Scrum Team to be cross-functional?",
+"opts": [
+"The Scrum Team includes not only Developers but also business analysts, architects, and testers.",
+"The Scrum Team includes cross-skilled individuals who are able to contribute to do what is necessary to deliver an Increment of software.",
+"Developers on the Scrum Team work closely with business analysts, architects, Developers and testers who are not on the team.",
+"The Scrum Team is a virtual team drawing from separate teams of business analysts, architects, Developers and testers."
+],
+"ans": [
+1
+],
+"prev": [],
+"exp": "Cross-functional nghĩa là các thành viên trong team cùng có đủ kỹ năng để tạo Increment. Không phải thêm vai trò chuyên biệt hay dựa vào người ngoài team.",
+"tip": "Cross-functional = đủ kỹ năng ngay trong team, không phụ thuộc bên ngoài."
+},
+{
+"id": 10,
+"type": "single",
+"q": "Sprint burndown charts are an efficient tracking tool, because they show:",
+"opts": [
+"An estimate of the total work remaining for the Sprint.",
+"How much effort has gone into a Sprint.",
+"How many hours have been worked by each Scrum Team member.",
+"How many Product Backlog items remain."
+],
+"ans": [
+0
+],
+"prev": [],
+"exp": "Sprint burndown thể hiện ước lượng tổng công việc còn lại của Sprint. Nó không đo nỗ lực đã bỏ ra, giờ của từng người, hay số Product Backlog item còn lại.",
+"tip": "Burndown = công việc còn lại; đọc kỹ xem đáp án nói còn lại hay đã làm."
+},
+{
+"id": 11,
+"type": "single",
+"q": "How much work must a Scrum Team do to a Product Backlog item it selects for a Sprint?",
+"opts": [
+"A proportional amount of time on analysis, design, programming, testing, and documentation.",
+"As much as it can fit into the Sprint. Any remaining work will be transferred to a subsequent Sprint.",
+"All development work and at least some testing.",
+"As much as it has told the Product Owner will be done for every Product Backlog item it selects in conformance with the Definition of Done."
+],
+"ans": [
+3
+],
+"prev": [],
+"exp": "Mọi item được chọn phải được làm đến mức tuân thủ Definition of Done, đúng như team đã cam kết với Product Owner. Không có tỷ lệ cố định hay chuyển phần dở sang Sprint sau như Done.",
+"tip": "Câu hỏi bao nhiêu việc: luôn quy về Definition of Done."
+},
+{
+"id": 12,
+"type": "single",
+"q": "Which statement best describes the Sprint Backlog as outcome of the Sprint Planning?",
+"opts": [
+"It is a complete list of all work to be done in a Sprint.",
+"Every item has a designated owner.",
+"Each task is estimated in hours.",
+"It is the Scrum Team's plan for the Sprint.",
+"It is ordered by the Product Owner."
+],
+"ans": [
+3
+],
+"prev": [],
+"exp": "Sprint Backlog là kế hoạch của Developers/Scrum Team cho Sprint (Sprint Goal, item đã chọn và kế hoạch giao). Không nhất thiết đầy đủ, gán người hay ước lượng giờ, và do Developers sở hữu chứ không phải Product Owner.",
+"tip": "Sprint Backlog thuộc về Developers: chọn đáp án mô tả bản chất là kế hoạch, tránh các ràng buộc cứng."
+},
+{
+"id": 13,
+"type": "single",
+"q": "If burndown charts are used to visualize progress, what does a trend line through a release burndown chart indicate? (choose the best answer)",
+"opts": [
+"The evolution of the cost spent on the project.",
+"When all work will be completed to the Scrum Team can be released for other work.",
+"When the work remaining will likely be completed if nothing changes on the Product Backlog or the Developers.",
+"When the project will be over if the Product Owner removes work that is equal in effort to any new work that is added."
+],
+"ans": [
+2
+],
+"prev": [],
+"exp": "Đường xu hướng trên release burndown dự báo khi nào công việc còn lại có thể xong nếu Product Backlog và năng lực Developers không đổi. Nó không phải chi phí hay cam kết ngày kết thúc.",
+"tip": "Đồ thị chỉ là dự báo có điều kiện, không phải cam kết."
+},
+{
+"id": 14,
+"type": "single",
+"q": "Who is responsible for engaging the stakeholders? (choose the best answer)",
+"opts": [
+"The Business Analyst.",
+"The Developers.",
+"The Team Manager.",
+"The Project Manager.",
+"The Product Owner."
+],
+"ans": [
+4
+],
+"prev": [],
+"exp": "Product Owner chịu trách nhiệm làm việc và tương tác với stakeholders. Các vai trò như project manager hay business analyst không tồn tại trong Scrum.",
+"tip": "Câu liên quan stakeholders hay giá trị: chọn Product Owner."
+},
+{
+"id": 15,
+"type": "multi",
+"q": "At the end of a Sprint, a Product Backlog item worked on during the Sprint does not meet the Definition of Done. What two things should happen with the undone Product Backlog item? (choose the best two answers)",
+"opts": [
+"If the stakeholders agree, the Product Owner can accept it and release it to the users.",
+"Put it on the Product Backlog for the Product Owner to decide what to do with it.",
+"Review the item, add the Done part of the estimate to the velocity and create a Story for the remaining work.",
+"Do not include the item in the Increment this Sprint."
+],
+"ans": [
+1,
+3
+],
+"prev": [],
+"exp": "Item không đạt Definition of Done không được đưa vào Increment và không được release; nó quay lại Product Backlog để Product Owner quyết định tiếp. Không được tính một phần vào velocity.",
+"tip": "Chưa Done = không vào Increment, về Product Backlog, không có Done một phần."
+},
+{
+"id": 16,
+"type": "multi",
+"q": "Which two of the following are true about the Scrum Master role? (choose the best two answers)",
+"opts": [
+"At the Sprint Review, the Scrum Master identifies what has been \"done\" and what has not been \"done\".",
+"The Scrum Master teaches the Developers to keep the Scrum meetings to their time-box.",
+"The Scrum Master helps those outside the team interact with the Scrum Team.",
+"The Scrum Master assigns tasks to Developers when they need work.",
+"The Scrum Master is responsible for updating the Sprint Burndown."
+],
+"ans": [
+1,
+2
+],
+"prev": [],
+"exp": "Scrum Master dạy team giữ timebox và giúp người ngoài tương tác với Scrum Team theo hướng có ích. Việc xác định Done, giao việc hay cập nhật burndown là của Developers/Scrum Team.",
+"tip": "Scrum Master là coach/servant-leader, không phải người giao việc hay kiểm soát."
+},
+{
+"id": 17,
+"type": "multi",
+"q": "What are three benefits of self-management? (choose the best three answers)",
+"opts": [
+"Increased creativity.",
+"Increased rule compliance.",
+"Increased accuracy of estimates.",
+"Increased self-accountability",
+"Increased commitment."
+],
+"ans": [
+0,
+3,
+4
+],
+"prev": [],
+"exp": "Self-management tăng sự sáng tạo, trách nhiệm cá nhân và cam kết vì team tự quyết định cách làm. Nó không đảm bảo tuân thủ quy tắc hay ước lượng chính xác hơn.",
+"tip": "Lợi ích self-management là yếu tố con người (động lực, trách nhiệm), không phải kiểm soát hay độ chính xác."
+},
+{
+"id": 18,
+"type": "multi",
+"q": "Which three of the following are time-boxed events in Scrum? (choose the best three answers)",
+"opts": [
+"Release Testing.",
+"Release Retrospective.",
+"Sprint Retrospective.",
+"Sprint Planning.",
+"Sprint Testing.",
+"Sprint 0.",
+"Daily Scrum."
+],
+"ans": [
+2,
+3,
+6
+],
+"prev": [],
+"exp": "Các sự kiện Scrum có timebox gồm Sprint Planning, Daily Scrum, Sprint Review, Sprint Retrospective (và Sprint). Release Testing, Sprint 0 hay Release Retrospective không phải sự kiện Scrum.",
+"tip": "Chỉ chọn những tên sự kiện có trong Scrum Guide."
+},
+{
+"id": 19,
+"type": "single",
+"q": "Who is responsible for clearly expressing Product Backlog items? (choose the best answer)",
+"opts": [
+"The Scrum Master, or the Scrum Master may have the Developers do it.",
+"The Scrum Master.",
+"The Product Owner.",
+"The business analyst who represents the Product Owner in the Scrum Team."
+],
+"ans": [
+2
+],
+"prev": [],
+"exp": "Product Owner chịu trách nhiệm diễn đạt rõ ràng Product Backlog item, có thể nhờ người khác làm nhưng vẫn chịu trách nhiệm.",
+"tip": "Mọi việc về Product Backlog: trách nhiệm cuối cùng thuộc Product Owner."
+},
+{
+"id": 20,
+"type": "single",
+"q": "What is the best suited structure for Scrum Teams in order to produce integrated Increments? (choose the best answer)",
+"opts": [
+"Each Scrum Team works only one technical layer of the system (e.g. GUI, database, middle tier, interfaces).",
+"Each Scrum Team develops functionality from beginning to end throughout all technical layers."
+],
+"ans": [
+1
+],
+"prev": [],
+"exp": "Team nên cross-functional, làm trọn chức năng xuyên mọi tầng kỹ thuật để tạo Increment tích hợp. Chia team theo tầng gây phụ thuộc và không tạo được Increment Done.",
+"tip": "Chọn cắt dọc (end-to-end) thay vì chia theo tầng kỹ thuật."
+},
+{
+"id": 21,
+"type": "single",
+"q": "Why should the Product Owner be present at the Daily Scrum? (choose the best answer)",
+"opts": [
+"He/She doesn't need to be there.",
+"To hear about impediments in functionality.",
+"To represent the stakeholder's point of view.",
+"To participate as a Scrum Team member."
+],
+"ans": [
+0
+],
+"prev": [],
+"exp": "Daily Scrum là sự kiện dành cho Developers; Product Owner không bắt buộc tham dự (chỉ tham gia nếu cũng đang làm item Sprint Backlog như Developer).",
+"tip": "Daily Scrum là của Developers, không ai khác cần có mặt."
+},
+{
+"id": 22,
+"type": "multi",
+"q": "What two techniques could the Scrum Master use when the Scrum Team gets caught in an internal disagreement about which development techniques to apply? (choose the best two answers)",
+"opts": [
+"Involve the complete Scrum Team.",
+"Use coaching techniques; such as open questions and active listening.",
+"Ask an external technical specialist to make the decision.",
+"Send every team member to the company's Human Resources department to express their concerns."
+],
+"ans": [
+0,
+1
+],
+"prev": [],
+"exp": "Scrum Master giúp team tự giải quyết bằng cách để cả team tham gia và dùng kỹ thuật coaching như câu hỏi mở, lắng nghe chủ động. Giao quyết định cho người ngoài hay HR làm giảm tính self-managing.",
+"tip": "Xung đột trong team: coach để team tự giải quyết, không đẩy ra ngoài."
+},
+{
+"id": 23,
+"type": "single",
+"q": "What enhances the transparency of an Increment? (choose the best answer)",
+"opts": [
+"Doing all work needed to meet the Definition of Done",
+"Reporting Sprint progress to the stakeholders daily",
+"Keeping track of and estimating all undone work to be completed in a separate Sprint.",
+"Updating Sprint tasks properly in the electronic tracking tool."
+],
+"ans": [
+0
+],
+"prev": [],
+"exp": "Minh bạch Increment đến từ việc mọi công việc cần thiết đều đạt Definition of Done. Báo cáo hàng ngày, theo dõi công việc undone riêng hay cập nhật công cụ không tăng minh bạch thực chất.",
+"tip": "Minh bạch về sản phẩm = Definition of Done."
+},
+{
+"id": 24,
+"type": "single",
+"q": "Who determines how work is performed during the Sprint? (choose the best answer)",
+"opts": [
+"Architects.",
+"The Scrum Team.",
+"The Scrum Master.",
+"Subject matter experts.",
+"The Developers managers."
+],
+"ans": [
+1
+],
+"prev": [],
+"exp": "Scrum Team tự quản lý, tự quyết định cách thực hiện công việc trong Sprint. Không ai bên ngoài hay Scrum Master chỉ đạo.",
+"tip": "Câu hỏi 'ai quyết định cách làm': luôn là team."
+},
+{
+"id": 25,
+"type": "single",
+"q": "When does the second Sprint start? (choose the best answer)",
+"opts": [
+"Once the architectural changes for the second Sprint have been approved by the senior architect.",
+"After the Product Backlog for the second Sprint has been selected.",
+"Immediately after the first Sprint.",
+"After the customer completes acceptance testing of the first Sprint."
+],
+"ans": [
+2
+],
+"prev": [],
+"exp": "Sprint mới bắt đầu ngay sau khi Sprint trước kết thúc, không có khoảng nghỉ hay chờ phê duyệt.",
+"tip": "Sprint nối tiếp nhau liên tục, không có khoảng trống."
+},
+{
+"id": 26,
+"type": "single",
+"q": "What is included in the Sprint Backlog? (choose the best answer)",
+"opts": [
+"User Stories.",
+"Tasks.",
+"Use Cases.",
+"Tests.",
+"Any of the above (or others) which are a decomposition of the selected Product Backlog items."
+],
+"ans": [
+4
+],
+"prev": [],
+"exp": "Sprint Backlog gồm các item Product Backlog đã chọn cùng kế hoạch chi tiết hóa chúng, ở dạng bất kỳ team thấy hữu ích (task, story, test...). Scrum không quy định định dạng.",
+"tip": "Khi các lựa chọn đều hợp lý, đáp án 'bất kỳ định dạng nào' thường đúng vì Scrum không quy định."
+},
+{
+"id": 27,
+"type": "multi",
+"q": "Which of the following are true about the Product Owner role? (choose the best two answers)",
+"opts": [
+"The Product Owner is one person.",
+"The Product Owner is accountable for ordering the Product Backlog.",
+"Multiple people can share the Product Owner role on a Scrum Team.",
+"The Product Owner role can be played by a committee or a team of people."
+],
+"ans": [
+0,
+1
+],
+"prev": [],
+"exp": "Product Owner là một người, không phải ủy ban, và chịu trách nhiệm sắp xếp Product Backlog. Có thể có người hỗ trợ nhưng trách nhiệm không chia sẻ.",
+"tip": "Product Owner = một người."
+},
+{
+"id": 28,
+"type": "single",
+"q": "True or False: When multiple teams work together on the same product, each team should maintain a separate Product Backlog.",
+"opts": [
+"True.",
+"False."
+],
+"ans": [
+1
+],
+"prev": [],
+"exp": "Nhiều team trên một sản phẩm dùng chung một Product Backlog duy nhất, với một Product Owner.",
+"tip": "Một sản phẩm, một Product Backlog."
+},
+{
+"id": 29,
+"type": "single",
+"q": "If two Scrum Teams are added to the development of a product that previously had only one Scrum Team, what will be the immediate impact on the productivity of the original Scrum Team? (choose the best answer)",
+"opts": [
+"Its productivity is likely to decrease.",
+"Its productivity is likely to stay the same.",
+"Its productivity is likely to increase."
+],
+"ans": [
+0
+],
+"prev": [],
+"exp": "Thêm team mới thường làm năng suất của team cũ giảm trong ngắn hạn do chi phí phối hợp, học hỏi và hỗ trợ team mới.",
+"tip": "Mở rộng quy mô thường gây giảm năng suất tạm thời trước khi cải thiện."
+},
+{
+"id": 30,
+"type": "single",
+"q": "A Scrum Master is introducing Scrum to a new Scrum Team. The Scrum Team has decided that a Sprint Retrospective is unnecessary. What action should the Scrum Master take? (choose the best answer)",
+"opts": [
+"Call a meeting between the Scrum Team and senior management.",
+"Comply with the decision of the self-managing team.",
+"Consult with the Product Owner to see how he/she feels about the situation.",
+"Begin facilitating productive and useful Sprint Retrospectives."
+],
+"ans": [
+3
+],
+"prev": [],
+"exp": "Sprint Retrospective là sự kiện bắt buộc của Scrum, không phải tùy chọn. Scrum Master chịu trách nhiệm đảm bảo sự kiện diễn ra và có ích, nên cần tổ chức chúng.",
+"tip": "Sự kiện Scrum không được bỏ; Scrum Master đảm bảo Scrum được hiểu và áp dụng."
+},
+{
+"id": 31,
+"type": "multi",
+"q": "Which two things are appropriate for a Scrum Master to do if the Developers don't have the engineering tools and infrastructure to completely finish each selected Product Backlog item? (choose the best two answers)",
+"opts": [
+"Coach the Scrum Team to improve its skills, tools, and infrastructure over time and adjust the Definition of Done accordingly.",
+"Encourage the Product Owner to accept partially \"Done\" Increments until the situation improves.",
+"Refocus the current Sprint on establishing the Scrum Team's infrastructure instead of delivering an Increment.",
+"Declare the Scrum Team not ready for Scrum.",
+"Have the Scrum Team establish a Definition of Done that is actually possible to achieve given current circumstances."
+],
+"ans": [
+0,
+4
+],
+"prev": [],
+"exp": "Scrum Master coach team cải thiện kỹ năng, công cụ dần theo thời gian và cùng team đặt Definition of Done thực tế với hiện trạng, rồi nâng dần. Không chấp nhận Increment dở dang hay bỏ Sprint.",
+"tip": "Chọn hướng cải tiến dần nhưng vẫn giữ Done thực sự; tránh Done một phần."
+},
+{
+"id": 32,
+"type": "single",
+"q": "When is implementation of a Product Backlog item considered complete? (choose the best answer)",
+"opts": [
+"At the end of the Sprint.",
+"When the item has no work remaining in order to be potentially released.",
+"When QA reports that the item passes all acceptance criteria.",
+"When all work in the Sprint Backlog related to the item is finished."
+],
+"ans": [
+1
+],
+"prev": [],
+"exp": "Item hoàn thành khi không còn việc nào để có thể phát hành, tức đạt Definition of Done. Hết Sprint, QA qua hay xong task không đồng nghĩa là Done.",
+"tip": "Done = đạt Definition of Done, không phải thời điểm hay một vai trò xác nhận."
+},
+{
+"id": 33,
+"type": "multi",
+"q": "Choose two responsibilities of a self-managing Scrum Team. (choose the best two answers)",
+"opts": [
+"Reorder the Product Backlog.",
+"Pull Product Backlog items for the Sprint.",
+"Do the work planned in the Sprint Backlog.",
+"Increase velocity.",
+"Report daily progress to stakeholders."
+],
+"ans": [
+1,
+2
+],
+"prev": [],
+"exp": "Developers tự quản lý: chọn (pull) Product Backlog item cho Sprint và thực hiện công việc của Sprint Backlog. Sắp xếp Product Backlog là của Product Owner; velocity hay báo cáo không phải trách nhiệm cốt lõi.",
+"tip": "Phân biệt rõ trách nhiệm từng vai trò, đặc biệt ordering là Product Owner."
+},
+{
+"id": 34,
+"type": "single",
+"q": "Every Scrum Team should have: (choose the best answer)",
+"opts": [
+"At least one representative from each major software engineering discipline (like QA, Dev, UX).",
+"The competencies and skills needed to deliver a Done Increment in a Sprint.",
+"One Lead Developer and no more than 8 other members."
+],
+"ans": [
+1
+],
+"prev": [],
+"exp": "Scrum Team phải có đủ năng lực và kỹ năng để tạo Increment Done trong Sprint. Không bắt buộc đại diện từng chuyên ngành hay có Lead Developer.",
+"tip": "Scrum chỉ yêu cầu đủ kỹ năng, không yêu cầu vai trò phụ hay chức danh."
+},
+{
+"id": 35,
+"type": "single",
+"q": "Why does the Product Owner want the Scrum Team to adhere to its Definition of Done? (choose the best answer)",
+"opts": [
+"To have complete transparency into what has been done at the end of each Sprint.",
+"To be able to reprimand the team when they don't meet their velocity goal for the Sprint.",
+"To know what the team will deliver over the next three Sprints.",
+"To predict the team's productivity over time."
+],
+"ans": [
+0
+],
+"prev": [],
+"exp": "Definition of Done giúp minh bạch hoàn toàn về những gì thực sự đã xong cuối Sprint. Không dùng để khiển trách hay dự đoán.",
+"tip": "Definition of Done phục vụ minh bạch, không phải đo lường hay trừng phạt."
+},
+{
+"id": 36,
+"type": "single",
+"q": "During a Sprint Retrospective, for what is the Scrum Master responsible? (choose the best answer)",
+"opts": [
+"Prioritizing the resulting action items.",
+"Participating as a Scrum team member and facilitating as requested or needed.",
+"Acting as a scribe to capture the Developers answers.",
+"Summarizing and reporting the discussions to management."
+],
+"ans": [
+1
+],
+"prev": [],
+"exp": "Scrum Master tham gia như thành viên Scrum Team trong Retrospective và hỗ trợ điều phối khi cần. Không ghi chép, xếp ưu tiên hay báo cáo cho quản lý.",
+"tip": "Trong các sự kiện, Scrum Master hỗ trợ chứ không áp đặt hay báo cáo."
+},
+{
+"id": 37,
+"type": "single",
+"q": "The Scrum Team should have all the skills needed to: (choose the best answer)",
+"opts": [
+"Turn Product Backlog items into an Increment of potentially releasable product functionality.",
+"Do all of the development work, except for specialized testing that requires additional tools and environments.",
+"Complete the project within the date and cost as calculated by the Product Owner."
+],
+"ans": [
+0
+],
+"prev": [],
+"exp": "Scrum Team cần mọi kỹ năng để biến Product Backlog item thành Increment có thể phát hành. Không loại trừ việc kiểm thử chuyên biệt và không liên quan cam kết ngày/chi phí.",
+"tip": "Kỹ năng phục vụ tạo Increment, không phải đáp ứng kế hoạch cố định."
+},
+{
+"id": 38,
+"type": "multi",
+"q": "During the Sprint, the Scrum Master's role is to do which two of the following: (choose the best two answers)",
+"opts": [
+"Facilitate inspection and adaptation opportunities as requested or needed.",
+"Coaching the team members in the self-management.",
+"Ensure the Product Owner attends all Scrum events.",
+"Escalate team conflicts to functional line managers.",
+"Monitor the progress of the Developers.",
+"Assign tasks with the Scrum Team."
+],
+"ans": [
+0,
+1
+],
+"prev": [],
+"exp": "Scrum Master điều phối các cơ hội kiểm tra và thích nghi khi cần và coach team về self-management. Không giao việc, giám sát tiến độ hay đẩy xung đột lên quản lý.",
+"tip": "Hành động của Scrum Master là coach và hỗ trợ, không chỉ huy hay kiểm soát."
+},
+{
+"id": 39,
+"type": "single",
+"q": "The Scrum Master observes the Product Owner struggling with ordering the Product Backlog. What is an appropriate action for the Scrum Master to take? (choose the best answer)",
+"opts": [
+"Suggest the Product Owner extend the Sprint, so he can have more time to order the Product Backlog.",
+"Suggest that the Developers do the ordering to be sure that it is a feasible ordering of work.",
+"Offer the Product Owner help in understanding that the goal of ordering the Product Backlog is to maximize value.",
+"Present the Product Owner with an ordered Product Backlog to use.",
+"Encourage the Product Owner to work with the Developers to see which items technically are fastest to implement."
+],
+"ans": [
+2
+],
+"prev": [],
+"exp": "Scrum Master giúp Product Owner hiểu mục tiêu của việc sắp xếp là tối đa hóa giá trị, nhưng không làm thay hay chuyển trách nhiệm cho người khác.",
+"tip": "Khi một vai trò gặp khó, Scrum Master coach, không làm thay."
+},
+{
+"id": 40,
+"type": "single",
+"q": "True or False: The Product Owner makes sure the team selects enough from the Product Backlog for a Sprint to satisfy the stakeholders.",
+"opts": [
+"True.",
+"False."
+],
+"ans": [
+1
+],
+"prev": [],
+"exp": "Developers tự chọn khối lượng cho Sprint (cam kết với Sprint Goal); Product Owner không bắt team nhận thêm để làm hài lòng stakeholders.",
+"tip": "Quyết định khối lượng Sprint thuộc Developers."
+},
+{
+"id": 41,
+"type": "single",
+"q": "Which statement best describes the Sprint Review? (choose the best answer)",
+"opts": [
+"It is used to congratulate the Developers if it did what it forecast, or to punish the Developers if it failed to meet its forecast.",
+"It is a demo at the end of the Sprint for everyone in the organization to check on the work done.",
+"It is a mechanism to control the Developers activities during a Sprint.",
+"It is when the Scrum Team and stakeholders inspect the outcome of a Sprint and figure out what to do next."
+],
+"ans": [
+3
+],
+"prev": [],
+"exp": "Sprint Review là cơ hội để Scrum Team và stakeholders kiểm tra kết quả Sprint và quyết định bước tiếp theo. Nó không phải buổi demo thuần, đánh giá hay kiểm soát.",
+"tip": "Sprint Review mang tính cộng tác, thích nghi, không phải trình diễn hay đánh giá."
+},
+{
+"id": 42,
+"type": "single",
+"q": "Who owns the Sprint Backlog? (choose the best answer)",
+"opts": [
+"The Chief Backlog Officer.",
+"The Product Owner.",
+"The Scrum Master.",
+"The Scrum Team."
+],
+"ans": [
+3
+],
+"prev": [],
+"exp": "Sprint Backlog thuộc sở hữu của Developers (Scrum Team), vì đây là kế hoạch của họ cho Sprint.",
+"tip": "Sprint Backlog = Developers; Product Backlog = Product Owner."
+},
+{
+"id": 43,
+"type": "single",
+"q": "When might a Sprint be abnormally cancelled? (choose the best answer)",
+"opts": [
+"When the Scrum Team feels that the work is too hard.",
+"When the Sprint Goal becomes obsolete.",
+"When the sales department has an important new opportunity.",
+"When it becomes clear that not everything will be finished by the end of the Sprint."
+],
+"ans": [
+1
+],
+"prev": [],
+"exp": "Sprint chỉ bị hủy khi Sprint Goal trở nên lỗi thời. Khó khăn, cơ hội bán hàng hay không kịp hoàn thành đều không phải lý do.",
+"tip": "Hủy Sprint chỉ khi Sprint Goal không còn giá trị."
+},
+{
+"id": 44,
+"type": "single",
+"q": "A Sprint Retrospective should be held: (choose the best answer)",
+"opts": [
+"At the end of each Sprint.",
+"At the beginning of each Sprint.",
+"Only when the Scrum Team determines it needs one.",
+"At the end of the last Sprint in a project or a release."
+],
+"ans": [
+0
+],
+"prev": [],
+"exp": "Sprint Retrospective diễn ra cuối mỗi Sprint, sau Sprint Review và trước Sprint Planning tiếp theo, để cải thiện chất lượng và hiệu quả.",
+"tip": "Retrospective luôn lặp lại mỗi Sprint, không tùy chọn."
+},
+{
+"id": 45,
+"type": "single",
+"q": "A new Developer is having continuing conflicts with existing Developers and creating the hostile environment. If necessary, who is responsible for removing the team member? (choose the best answer)",
+"opts": [
+"The hiring manager is responsible, because he/she hired the Developer.",
+"The Scrum Manager is responsible, because he/she removes Impediments.",
+"The Developers are responsible, and may need help from the Scrum Master.",
+"The Product Owner is responsible, because he/she controls the return on investment (ROI)."
+],
+"ans": [
+2
+],
+"prev": [],
+"exp": "Scrum Team (Developers) tự quản lý nên tự giải quyết vấn đề thành viên, có thể cần Scrum Master hỗ trợ; không có quản lý bên ngoài quyết định.",
+"tip": "Vấn đề nội bộ team: team tự giải quyết với sự giúp đỡ của Scrum Master."
+},
+{
+"id": 46,
+"type": "multi",
+"q": "Which three purposes does the Definition of Done serve? (choose the best three answers)",
+"opts": [
+"Guide the Developers on how many Product Backlog items to select for the Sprint.",
+"Create a shared understanding of when work is complete.",
+"Describe the purpose, objective, and time-box of each Scrum event.",
+"Describe the work that must be done before the Sprint is allowed to end.",
+"Increase transparency."
+],
+"ans": [
+0,
+1,
+4
+],
+"prev": [],
+"exp": "Definition of Done tạo hiểu biết chung về khi nào hoàn thành, tăng minh bạch và giúp Developers biết mức độ cần đạt khi chọn bao nhiêu item cho Sprint. (Lưu ý: ý đầu hơi gượng so với Scrum Guide; nên chọn theo đáp án đã đánh dấu.)",
+"tip": "Definition of Done phục vụ minh bạch, hiểu biết chung và chất lượng, không mô tả sự kiện."
+},
+{
+"id": 47,
+"type": "multi",
+"q": "During a Sprint Retrospective, the Developers proposes moving the Daily Scrum to only occur on Tuesdays and Thursdays. Which two are the most appropriate responses for the Scrum Master? (choose the best two answers)",
+"opts": [
+"Consider the request and decide on which days the Daily Scrum should occur.",
+"Coach the team on why the Daily Scrum is important as an opportunity to update the plan.",
+"Have the Developers vote.",
+"Learn why the Developers wants this and work with them to improve the outcome of the Daily Scrum.",
+"Acknowledge and support the self-managing team's decision."
+],
+"ans": [
+1,
+3
+],
+"prev": [],
+"exp": "Scrum Master coach team về mục đích của Daily Scrum như cơ hội điều chỉnh kế hoạch và tìm hiểu lý do để cải thiện kết quả. Daily Scrum hằng ngày là cốt lõi; chỉ đồng ý bỏ ngày hoặc bỏ phiếu là chưa đúng.",
+"tip": "Khi team muốn bớt sự kiện Scrum, Scrum Master tìm hiểu nguyên nhân và coach, không chấp nhận ngay."
+},
+{
+"id": 48,
+"type": "single",
+"q": "When should a Sprint Goal be created? (choose the best answer)",
+"opts": [
+"It should have been created in the previous Sprint during Product Backlog refinement.",
+"It must be established before Sprint Planning in order to begin planning.",
+"A Sprint Goal is not mandatory in Scrum.",
+"At any time during the Sprint.",
+"During Sprint Planning."
+],
+"ans": [
+4
+],
+"prev": [],
+"exp": "Sprint Goal được tạo trong Sprint Planning, khi team cùng Product Owner thảo luận giá trị của Sprint. Không tạo trước hay bất kỳ lúc nào.",
+"tip": "Sprint Goal ra đời trong Sprint Planning."
+},
+{
+"id": 49,
+"type": "single",
+"q": "True or False: Every Scrum team must have a Product Owner and Scrum Master.",
+"opts": [
+"True. Outcomes affected by their participation and availability.",
+"False. A Product Owner can be replaced by a business analyst in the Scrum Team.",
+"False. A Scrum Master is only required when asked for by the Scrum Team.",
+"True. Each must be 100% dedicated to the Scrum Team."
+],
+"ans": [
+0
+],
+"prev": [],
+"exp": "Scrum Team cần cả Product Owner và Scrum Master vì thiếu họ sẽ ảnh hưởng kết quả; không bắt buộc 100% dành riêng và Product Owner không thể thay bằng business analyst.",
+"tip": "Vai trò Scrum là bắt buộc, nhưng không có quy định cứng về thời gian dành riêng."
+},
+{
+"id": 50,
+"type": "single",
+"q": "Who can abnormally terminate a Sprint? (choose the best answer)",
+"opts": [
+"The Scrum Master.",
+"The Scrum Team or its members.",
+"The Product Owner.",
+"The Stakeholders."
+],
+"ans": [
+2
+],
+"prev": [],
+"exp": "Chỉ Product Owner có quyền hủy Sprint (sau khi cân nhắc ý kiến các bên). Scrum Master, team hay stakeholders có thể đề xuất nhưng không có quyền quyết định.",
+"tip": "Quyền hủy Sprint chỉ thuộc Product Owner."
+},
+{
+"id": 51,
+"type": "single",
+"q": "True or False: The Sprint Goal is a result of Sprint Planning, as is the Sprint Backlog.",
+"opts": [
+"True.",
+"False."
+],
+"ans": [
+0
+],
+"prev": [],
+"exp": "Đúng. Theo Scrum Guide 2020, Sprint Planning tạo ra Sprint Goal, chọn Product Backlog items và lên kế hoạch thực hiện; ba thứ này (Sprint Goal, các PBI được chọn, kế hoạch) cấu thành Sprint Backlog.",
+"tip": "Nhớ rõ đầu ra của từng event: Sprint Planning cho ra Sprint Goal + Sprint Backlog."
+},
+{
+"id": 52,
+"type": "multi",
+"q": "Which two of the following are appropriate topics for discussion during a Sprint Retrospective? (choose the best two answers)",
+"opts": [
+"Identifying high priority process improvements for the next Sprint.",
+"The order of items in the Product Backlog.",
+"How the team collaborates.",
+"Documenting acceptance criteria for items in the next Sprint."
+],
+"ans": [
+0,
+2
+],
+"prev": [],
+"exp": "Sprint Retrospective dùng để lập kế hoạch cải tiến chất lượng và hiệu quả, nên bàn về cải tiến quy trình và cách Scrum Team cộng tác. Thứ tự Product Backlog và acceptance criteria của item sau thuộc về Product Backlog refinement/Sprint Planning, không phải Retrospective.",
+"tip": "Retrospective nói về CÁCH làm việc (people, process, tools, DoD), không bàn về WHAT sản phẩm."
+},
+{
+"id": 53,
+"type": "single",
+"q": "A Scrum Master is working with a Scrum Team that has members in different physical locations. The Scrum Team meets in a variety of meeting rooms and has much to do logistically (for example, set up conference calls) before the Daily Scrum. What action should the Scrum Master take? (choose the best answer)",
+"opts": [
+"Allow the Scrum Team to self-manage and determine for itself what to do.",
+"Set up the meeting and tell the Scrum Team that is how it will be done.",
+"Ask the Scrum Team members to alternate who is responsible for meeting setup.",
+"Inform management and ask them to solve it."
+],
+"ans": [
+0
+],
+"prev": [],
+"exp": "Scrum Team tự quản (self-managing) quyết định ai làm gì, khi nào, thế nào. Scrum Master không áp đặt, không đẩy cho quản lý, và cũng không tự quy định luân phiên thay team.",
+"tip": "Khi tình huống là vấn đề nội bộ team, chọn đáp án để team tự quyết định, loại đáp án Scrum Master ra lệnh hoặc leo thang lên management."
+},
+{
+"id": 54,
+"type": "single",
+"q": "True or False: Cross-functional teams are optimized to work on one technical layer of a system only (e.g. GUI, database, middle tier, interfaces).",
+"opts": [
+"True.",
+"False."
+],
+"ans": [
+1
+],
+"prev": [],
+"exp": "Sai. Scrum Team là cross-functional: các Developers cùng nhau có đủ kỹ năng để tạo Increment giá trị mỗi Sprint, không bị giới hạn ở một lớp kỹ thuật như GUI hay database.",
+"tip": "Gặp mệnh đề team theo component/layer, hãy nhớ team phải tạo Increment hoàn chỉnh nên đáp án là False."
+},
+{
+"id": 55,
+"type": "single",
+"q": "Which of the following might the Scrum Team discuss during a Sprint Retrospective? (choose the best answer)",
+"opts": [
+"Methods of communication.",
+"The way the Scrum Team does Sprint Planning.",
+"Skills needed to improve the Developers ability to deliver.",
+"Its Definition of Done.",
+"All of the above."
+],
+"ans": [
+4
+],
+"prev": [],
+"exp": "Retrospective có thể bàn về mọi khía cạnh của Sprint vừa qua: cá nhân, tương tác, quy trình, công cụ và Definition of Done. Giao tiếp, cách Sprint Planning, kỹ năng cần thiết và DoD đều là chủ đề hợp lệ.",
+"tip": "Với câu hỏi Retrospective có thể bàn gì, 'All of the above' thường đúng nếu mọi lựa chọn đều là về cách làm việc của team."
+},
+{
+"id": 56,
+"type": "multi",
+"q": "What are the two primary ways a Scrum Master keeps a Developers working at its highest level of productivity? (choose the best two answers)",
+"opts": [
+"By ensuring the meetings start and end at the proper time.",
+"By removing impediments that hinder the Developers.",
+"By facilitating Developers decisions.",
+"By keeping high value features high in the Product Backlog."
+],
+"ans": [
+1,
+2
+],
+"prev": [],
+"exp": "Scrum Master giúp Developers hiệu quả bằng cách gỡ bỏ impediments và hỗ trợ/facilitate quyết định của họ (khi cần), coaching self-management. Việc giữ item giá trị cao ở đầu Product Backlog là của Product Owner; đúng giờ chỉ là phần nhỏ. (Lưu ý: Guide 2020 nhấn mạnh Scrum Master coach, nhưng đáp án vẫn theo tinh thần servant-leader.)",
+"tip": "Scrum Master là servant-leader: chọn hành động gỡ trở ngại và hỗ trợ team, không phải quản lý nội dung hay Product Backlog."
+},
+{
+"id": 57,
+"type": "single",
+"q": "What is the recommended size for the Developers? (choose the best answer)",
+"opts": [
+"7 plus or minus 3.",
+"At least 7.",
+"9.",
+"3 to 9."
+],
+"ans": [
+3
+],
+"prev": [],
+"exp": "Scrum Guide 2020 nói Scrum Team thường là 10 người hoặc ít hơn; đáp án gần nhất trong các lựa chọn là 3 đến 9 Developers. 7±3 và 'ít nhất 7' hay '9' cố định đều không phải khuyến nghị.",
+"tip": "Với câu về kích thước, chọn khoảng nhỏ gọn (3 đến 9), tránh con số cố định hoặc 'ít nhất'."
+},
+{
+"id": 58,
+"type": "single",
+"q": "You are the Scrum Master of a new, to be developed product. Development is going to require 45 people. What is a good first question-for you to suggest the group thinks about when forming into teams? (choose the best answer)",
+"opts": [
+"How will we make sure all teams have the right amount or expertise?",
+"What is the right mixture of senior and junior people on each team?",
+"Who are going to be the team leads?",
+"Who are the subject matter experts on each team?"
+],
+"ans": [
+0
+],
+"prev": [],
+"exp": "Khi cần nhiều team, câu hỏi đầu tiên là làm sao mọi team đều có đủ chuyên môn (cross-functional) để tạo Increment. Team lead, thâm niên hay SME không phải mối quan tâm đầu tiên trong self-managing teams.",
+"tip": "Với câu hình thành team, ưu tiên đáp án về cross-functional skills, tránh đáp án về hệ thống thứ bậc hoặc vai trò mới."
+},
+{
+"id": 59,
+"type": "multi",
+"q": "Which three of the following are feedback loops in Scrum? (choose the best three answers)",
+"opts": [
+"Sprint Review.",
+"Release Planning.",
+"Sprint Retrospective.",
+"Refinement Meeting.",
+"Daily Scrum."
+],
+"ans": [
+0,
+2,
+4
+],
+"prev": [],
+"exp": "Sprint Review, Sprint Retrospective và Daily Scrum là các event inspect-and-adapt (feedback loops) của Scrum. Release Planning không thuộc Scrum Guide 2020, và Refinement là hoạt động chứ không phải event chính thức.",
+"tip": "Chỉ chọn các event có trong Scrum Guide; loại những thuật ngữ ngoài Guide."
+},
+{
+"id": 60,
+"type": "single",
+"q": "When the Developers are having trouble delivering a working Increment because they don't understand a functional requirement, what should they do? (choose the best answer)",
+"opts": [
+"Add a specialist to the Developers.",
+"Partially complete the functionality, and discuss the remaining work at the Sprint Review.",
+"Collaborate with the Product Owner to determine what is possible and acceptable.",
+"Defer the work to a more appropriate Sprint."
+],
+"ans": [
+2
+],
+"prev": [],
+"exp": "Developers không hiểu requirement nên cộng tác với Product Owner để làm rõ cái gì khả thi và chấp nhận được. Thêm chuyên gia, giao một phần hoặc hoãn việc đều bỏ qua cơ hội làm rõ và vi phạm tinh thần Definition of Done.",
+"tip": "Khi gặp vấn đề không rõ về requirement, chọn đáp án cộng tác trực tiếp với Product Owner."
+},
+{
+"id": 61,
+"type": "single",
+"q": "When is the Sprint Backlog created? (choose the best answer)",
+"opts": [
+"At the beginning of the project.",
+"During the Sprint Planning meeting.",
+"Prior to the Sprint Planning meeting.",
+"During the Sprint."
+],
+"ans": [
+1
+],
+"prev": [],
+"exp": "Sprint Backlog được tạo trong Sprint Planning (Sprint Goal, PBI được chọn và kế hoạch), sau đó Developers cập nhật nó trong suốt Sprint.",
+"tip": "Nhớ output theo event: Sprint Planning tạo Sprint Backlog; nó không có trước Planning."
+},
+{
+"id": 62,
+"type": "single",
+"q": "Which of the following services are appropriate for a Scrum Master in regard to the Daily Scrum? (choose the best answer)",
+"opts": [
+"Lead the discussions of the Developers.",
+"Make sure that all 3 questions have been answered by each member of the team.",
+"Keep track of whether each team member has a chance to speak.",
+"Teach the Developers to keep the Daily Scrum within the 15 minute time-box.",
+"All of the above."
+],
+"ans": [
+3
+],
+"prev": [],
+"exp": "Scrum Guide 2020 nói Scrum Master đảm bảo Daily Scrum diễn ra và dạy Developers giữ trong time-box 15 phút. Developers mới chạy Daily Scrum (không phải Scrum Master dẫn dắt), và ba câu hỏi chuẩn không còn bắt buộc.",
+"tip": "Scrum Master teach/coach về time-box, không trực tiếp điều hành nội dung của Developers."
+},
+{
+"id": 63,
+"type": "single",
+"q": "Which of the following best describes an Increment of working software? (choose the best answer)",
+"opts": [
+"A decomposition of all Product Backlog items into tasks for future Sprint Backlog lists.",
+"Additional features in a usable state that complement those delivered in previous iterations.",
+"A new user interface design for functionality delivered in previous iterations.",
+"An automated test suite to verify functionality delivered in previous iterations.",
+"UML diagrams that describe how to deliver functionality in future iterations."
+],
+"ans": [
+1
+],
+"prev": [],
+"exp": "Increment là bước tiến cụ thể, ở trạng thái dùng được, bổ sung cho các Increment trước và đạt Definition of Done. Task breakdown, thiết kế UI, test suite hay UML riêng lẻ không phải là Increment làm việc được.",
+"tip": "Increment luôn là giá trị dùng được, đạt Done; loại tài liệu, kế hoạch, hoặc artifact hỗ trợ."
+},
+{
+"id": 64,
+"type": "multi",
+"q": "In order to achieve the benefits of Scrum, it is important to enact the value of commitment. What two actions demonstrate the commitment of Scrum Team members? (choose the best two answers)",
+"opts": [
+"Always deliver the items in the Sprint forecast.",
+"Help the other Scrum Team members.",
+"Do your best",
+"Send out a daily status report.",
+"Work late."
+],
+"ans": [
+1,
+2
+],
+"prev": [],
+"exp": "Commitment thể hiện bằng việc giúp đỡ các thành viên khác và cố gắng hết sức để đạt Sprint Goal. Không có cam kết giao hết forecast bằng mọi giá, báo cáo hàng ngày hay làm thêm giờ.",
+"tip": "Với giá trị Scrum, chọn hành vi hợp tác và nỗ lực thật sự, tránh các hành vi kiểu kiểm soát hoặc làm quá giờ."
+},
+{
+"id": 65,
+"type": "single",
+"q": "True or False: The Product Owner determines how many Product Backlog items the Developers selects for a Sprint. (choose the best answer)",
+"opts": [
+"False.",
+"True, accordingly to what was committed to the stakeholders.",
+"True, but only after confirmation by the resource manager that the Team has enough capacity.",
+"True.",
+"False, the Scrum Master does that.",
+"False, capacity and commitment are the Project manager's responsibility."
+],
+"ans": [
+0
+],
+"prev": [],
+"exp": "Sai: chính Developers quyết định chọn bao nhiêu PBI cho Sprint (Product Owner chỉ thảo luận mục tiêu). Scrum Master, manager hay Project manager không quyết định việc này.",
+"tip": "Quyết định 'bao nhiêu' trong Sprint thuộc về Developers; Product Owner quyết định 'cái gì' có giá trị."
+},
+{
+"id": 66,
+"type": "multi",
+"q": "What are two ways that regulatory compliance requirements are dealt with in Scrum? (choose the best two answers)",
+"opts": [
+"They are addressed by a separate team who is responsible for compliance issues.",
+"They are discussed, analyzed, and documented before the first Sprint can begin.",
+"They are added to the Product Backlog and addressed during each Sprint, alongside the creation of new Product capabilities.",
+"They are addressed as part of meeting the Definition of Done during each Sprint."
+],
+"ans": [
+2,
+3
+],
+"prev": [],
+"exp": "Yêu cầu tuân thủ quy định được đưa vào Product Backlog và thực hiện trong mỗi Sprint, đồng thời được phản ánh trong Definition of Done. Không có team riêng hay giai đoạn phân tích trước Sprint đầu tiên.",
+"tip": "Mọi loại yêu cầu (kể cả phi chức năng) đều đi qua Product Backlog và DoD, không tách riêng."
+},
+{
+"id": 67,
+"type": "single",
+"q": "The Sprint Review is mainly an inspect and adapt opportunity for which group?",
+"opts": [
+"The Developers and stakeholders.",
+"The Product Owner and Developers.",
+"The Scrum Team and stakeholders.",
+"The Product Owner and management.",
+"The Developers and management.",
+"The Product Owner and stakeholders."
+],
+"ans": [
+2
+],
+"prev": [],
+"exp": "Sprint Review là buổi inspect-and-adapt của Scrum Team cùng stakeholders về kết quả Sprint và định hướng Product Backlog. Nó không chỉ giữa Developers hoặc Product Owner với một nhóm hẹp.",
+"tip": "Sprint Review là buổi cộng tác rộng, gồm cả Scrum Team và stakeholders."
+},
+{
+"id": 68,
+"type": "single",
+"q": "True or False: To get started in terms of what to build, Scrum requires no more than a Product Owner with enough ideas for a first Sprint, Developers to implement those ideas and a Scrum Master to help guide the process.",
+"opts": [
+"True.",
+"False."
+],
+"ans": [
+0
+],
+"prev": [],
+"exp": "Đúng: để bắt đầu, Scrum chỉ cần Product Owner có ý tưởng đủ cho Sprint đầu, Developers triển khai và Scrum Master hướng dẫn quy trình. Không cần tài liệu requirement đầy đủ ngay từ đầu.",
+"tip": "Scrum bắt đầu nhẹ và empirical, không đòi hỏi kế hoạch chi tiết trước."
+},
+{
+"id": 69,
+"type": "single",
+"q": "What is the time-box for the Sprint Review?",
+"opts": [
+"As long as needed.",
+"2 hours for a monthly Sprint.",
+"4 hours for a monthly Sprint.",
+"4 hours and longer as needed.",
+"1 day"
+],
+"ans": [
+2
+],
+"prev": [],
+"exp": "Sprint Review có time-box tối đa 4 giờ cho Sprint một tháng và ngắn hơn với Sprint ngắn hơn. Đáp án 'as long as needed' hay 'longer' đều trái time-box.",
+"tip": "Thuộc lòng time-box cho Sprint 1 tháng: Planning 8h, Review 4h, Retrospective 3h, Daily 15 phút."
+},
+{
+"id": 70,
+"type": "single",
+"q": "Who is responsible for tracking the remaining work of the Sprint?",
+"opts": [
+"The Developers.",
+"The Scrum Master.",
+"The Project Manager.",
+"The Developers is consultation with the Product Owner.",
+"The Product Owner."
+],
+"ans": [
+0
+],
+"prev": [],
+"exp": "Developers chịu trách nhiệm theo dõi công việc còn lại của Sprint và quản lý Sprint Backlog. Scrum Master, Product Owner hay Project Manager không chịu trách nhiệm này.",
+"tip": "Mọi thứ liên quan đến việc làm trong Sprint hàng ngày thuộc về Developers."
+},
+{
+"id": 71,
+"type": "single",
+"q": "What is the tactic a Scrum Master should use to divide a group of 100 people into multiple Scrum Teams?",
+"opts": [
+"Create teams based on their skills across multiple layers (such as database, UI, etc.)",
+"Ask the Product Owner to assign the people to teams.",
+"Ask the Developers to divide themselves into teams."
+],
+"ans": [
+2
+],
+"prev": [],
+"exp": "Chia nhóm lớn thành nhiều Scrum Team nên để chính các Developers tự tổ chức (self-organize). Product Owner hay phân chia theo layer kỹ thuật đều đi ngược với self-management và cross-functional.",
+"tip": "Khi chia hoặc tổ chức team, chọn đáp án để chính team tự tổ chức."
+},
+{
+"id": 72,
+"type": "single",
+"q": "True or False: A product Increment must be released to production at the end of each Sprint.",
+"opts": [
+"True.",
+"False."
+],
+"ans": [
+1
+],
+"prev": [],
+"exp": "Sai: mỗi Sprint phải có Increment dùng được và đạt Definition of Done, nhưng Product Owner mới quyết định có release hay không. Scrum không bắt buộc release lên production mỗi Sprint.",
+"tip": "Increment phải releasable, nhưng việc release là quyết định của Product Owner, không bắt buộc."
+},
+{
+"id": 73,
+"type": "single",
+"q": "If burndown charts are used to visualize progress, what do they track?",
+"opts": [
+"Accumulated cost.",
+"Individual worker productivity.",
+"Work remaining across time.",
+"Accumulated business value delivered to the customer."
+],
+"ans": [
+2
+],
+"prev": [],
+"exp": "Burndown chart theo dõi lượng công việc còn lại theo thời gian. Nó không đo chi phí, năng suất cá nhân hay giá trị kinh doanh tích lũy.",
+"tip": "Burndown = work remaining over time; loại đáp án về cost hay productivity cá nhân."
+},
+{
+"id": 74,
+"type": "single",
+"q": "How is management external to the Scrum Team involved in the Daily Scrum?",
+"opts": [
+"The Scrum Master speaks on their behalf.",
+"The Scrum Team self-manages and is the only management required at the Daily Scrum.",
+"Management gives an update at the start of each Daily Scrum.",
+"The Product Owner represents their opinions."
+],
+"ans": [
+1
+],
+"prev": [],
+"exp": "Management bên ngoài không tham gia Daily Scrum; Scrum Team tự quản và Developers là người cần có mặt. Không có cập nhật của management hay đại diện thay mặt họ.",
+"tip": "Daily Scrum là của Developers; những người ngoài team không điều hành hay đóng góp vào nó."
+},
+{
+"id": 75,
+"type": "multi",
+"q": "A Scrum Master is keeping a list of open impediments, but it is growing and he/she has been able to resolve only a small portion of the impediments. Which three techniques would be most helpful in this situation? (choose three)",
+"opts": [
+"Consulting with the Scrum Team.",
+"Prioritizing the list and working on them in order.",
+"Arranging a triage meeting with all project managers.",
+"Alerting management to the impediments and their impact."
+],
+"ans": [
+0,
+1,
+3
+],
+"prev": [],
+"exp": "Khi impediments tăng, hãy tham vấn Scrum Team, ưu tiên danh sách và xử lý theo thứ tự, đồng thời báo management về tác động của những impediment ngoài tầm Scrum Master. Họp triage với các project manager không phù hợp vì Scrum không có vai trò đó.",
+"tip": "Với impediments, chọn các kỹ thuật minh bạch, ưu tiên hóa và leo thang khi cần; loại vai trò không có trong Scrum."
+},
+{
+"id": 76,
+"type": "single",
+"q": "Which Scrum Value is affected by a lack of trust in the Scrum Team?",
+"opts": [
+"Focus.",
+"Respect.",
+"Openness.",
+"Courage.",
+"Commitment.",
+"All of the above."
+],
+"ans": [
+5
+],
+"prev": [],
+"exp": "Thiếu tin tưởng ảnh hưởng đến mọi giá trị Scrum: Focus, Respect, Openness, Courage và Commitment đều cần sự tin cậy lẫn nhau để thực hiện được.",
+"tip": "Với câu 'giá trị nào bị ảnh hưởng', các giá trị Scrum liên kết với nhau nên 'All of the above' thường đúng."
+},
+{
+"id": 77,
+"type": "single",
+"q": "What is the time-box for the Sprint Planning meeting?",
+"opts": [
+"4 Hours for a monthly Sprint.",
+"8 Hours for a monthly Sprint.",
+"Monthly.",
+"Whenever it is done."
+],
+"ans": [
+1
+],
+"prev": [],
+"exp": "Sprint Planning có time-box tối đa 8 giờ cho Sprint một tháng, ngắn hơn với Sprint ngắn hơn. 4 giờ là của Sprint Review.",
+"tip": "Nhớ bộ time-box: 8h Planning, 4h Review, 3h Retrospective cho Sprint 1 tháng."
+},
+{
+"id": 78,
+"type": "single",
+"q": "A Product Owner wants advice from the Scrum Master about estimating work in Scrum. Which of these is the guideline that a Scrum Master should give?",
+"opts": [
+"Product Backlog items must be estimated in story points.",
+"Estimates are made by the Scrum Team.",
+"Estimates must be in relative units.",
+"Scrum forbids estimating.",
+"Estimates are made by the Product Owner, but are best checked with the Scrum Team."
+],
+"ans": [
+1
+],
+"prev": [],
+"exp": "Ước lượng do Scrum Team thực hiện; Scrum không bắt buộc đơn vị cụ thể (story points hay đơn vị tương đối), cũng không cấm ước lượng. (Lưu ý: Guide 2020 nói Developers chịu trách nhiệm sizing, Product Owner có thể tác động.)",
+"tip": "Scrum không quy định kỹ thuật ước lượng cụ thể; loại đáp án dùng từ 'must' hoặc 'forbids'."
+},
+{
+"id": 79,
+"type": "multi",
+"q": "What is a Scrum Team responsible for? (choose two)",
+"opts": [
+"Resolving internal team conflicts.",
+"Reporting productivity.",
+"Selecting the Product Owner.",
+"Organizing the work required to meet the Sprint Goal."
+],
+"ans": [
+0,
+3
+],
+"prev": [],
+"exp": "Scrum Team tự giải quyết xung đột nội bộ và tổ chức công việc để đạt Sprint Goal (self-managing). Báo cáo productivity hay chọn Product Owner không phải trách nhiệm của team.",
+"tip": "Chọn trách nhiệm liên quan đến tự quản của team, loại các việc kiểu quản lý chính thức."
+},
+{
+"id": 80,
+"type": "multi",
+"q": "Which two ways of creating Scrum Teams are consistent with Scrum's values? (choose two)",
+"opts": [
+"Existing teams propose how they would like to go about organizing into the new structure.",
+"Managers personally re-assign current subordinates to new teams.",
+"Managers collaborate to assign individuals to specific teams.",
+"Bring all the Developers together and let them self-manage into Scrum Teams.",
+"The Chief Product Owner determines the new team structures and assignments."
+],
+"ans": [
+0,
+3
+],
+"prev": [],
+"exp": "Cách nhất quán với Scrum values là để các team hiện có đề xuất cách tổ chức hoặc để các Developers cùng tự tổ chức. Việc manager hay Chief Product Owner áp đặt phân công trái self-management.",
+"tip": "Khi tạo team, chọn cách tự tổ chức; tránh cách do manager chỉ định."
+},
+{
+"id": 81,
+"type": "single",
+"q": "True or False: A Scrum Master is essentially the same thing as a traditional PM (Project Manager).",
+"opts": [
+"True.",
+"False."
+],
+"ans": [
+1
+],
+"prev": [],
+"exp": "Sai: Scrum Master là servant-leader giúp team hiểu và áp dụng Scrum, không phải quản lý dự án chỉ huy, giao việc hay kiểm soát.",
+"tip": "Scrum Master khác Project Manager: phục vụ và coach, không ra lệnh."
+},
+{
+"id": 82,
+"type": "multi",
+"q": "The Product Owner is not collaborating with the Developers during the Sprint. What are two valuable actions for a Scrum Master to take? (choose two)",
+"opts": [
+"Inform the Product Owner's functional manager.",
+"Stop the Sprint, send the Product Owner to a course and restart.",
+"Bring up the problem in the Sprint Retrospective.",
+"Coach the Product Owner in the values of Scrum and incremental delivery.",
+"Nominate a proxy Product Owner."
+],
+"ans": [
+2,
+3
+],
+"prev": [],
+"exp": "Scrum Master nên coach Product Owner về giá trị Scrum và giao hàng tăng dần, và đưa vấn đề ra Retrospective để cả team giải quyết. Báo manager, dừng Sprint hay đặt proxy là phản ứng quá mức hoặc ngoài Scrum.",
+"tip": "Với vấn đề về người trong team, chọn coaching và Retrospective trước khi leo thang."
+},
+{
+"id": 83,
+"type": "single",
+"q": "True or False: Multiple Scrum Teams working on the same product or system all select work from the same Product Backlog.",
+"opts": [
+"True.",
+"False."
+],
+"ans": [
+0
+],
+"prev": [],
+"exp": "Đúng: một sản phẩm chỉ có một Product Backlog và một Product Owner, nên nhiều Scrum Team cùng sản phẩm đều lấy việc từ cùng Product Backlog.",
+"tip": "Một sản phẩm = một Product Backlog, một Product Owner, bất kể số team."
+},
+{
+"id": 84,
+"type": "single",
+"q": "For the purpose of transparency, when does Scrum say a new Increment of working software must be available?",
+"opts": [
+"After the acceptance testing phase.",
+"Before the release Sprint.",
+"Every 3 Sprints.",
+"At the end of every Sprint.",
+"When the Product Owner asks to create one."
+],
+"ans": [
+3
+],
+"prev": [],
+"exp": "Để đảm bảo transparency, một Increment mới phải có vào cuối mỗi Sprint. Scrum không có release Sprint hay giai đoạn acceptance testing riêng.",
+"tip": "Increment đạt Done có mặt mỗi Sprint, không có 'giai đoạn' sau."
+},
+{
+"id": 85,
+"type": "single",
+"q": "True or False: Multiple Scrum Teams working on the same project must have the same Sprint start date.",
+"opts": [
+"True.",
+"False."
+],
+"ans": [
+1
+],
+"prev": [],
+"exp": "Sai: Scrum không yêu cầu nhiều team cùng ngày bắt đầu Sprint; mỗi team có thể bắt đầu Sprint khác nhau, miễn là tích hợp Increment.",
+"tip": "Mệnh đề dùng 'must' thường sai nếu Scrum Guide không quy định."
+},
+{
+"id": 86,
+"type": "single",
+"q": "During a Sprint Retrospective, for what is the Product Owner responsible?",
+"opts": [
+"Participating as a Scrum Team member.",
+"Summarizing and reporting the discussions to the stakeholders that he/she represents in the Scrum Team.",
+"Capturing requirements for the Product Backlog.",
+"The Product Owner should not take part in Sprint Retrospectives."
+],
+"ans": [
+0
+],
+"prev": [],
+"exp": "Product Owner tham gia Retrospective như một thành viên bình đẳng của Scrum Team, không phải để báo cáo hay vắng mặt.",
+"tip": "Mọi thành viên Scrum Team, gồm Product Owner, tham gia mọi event của team."
+},
+{
+"id": 87,
+"type": "single",
+"q": "Marian is the Product Owner envisioning a project for a new release of her product. She made a projection of a release date based upon a sustained velocity of 17 completed units of work per Sprint. Over the first 3 Sprints, the average velocity was 13 for work that the Developers estimated as 90% done. The Developers, feeling the need to meet the plan, figured that a velocity of 17 was within their reach. A good way to continue is:",
+"opts": [
+"The Developers makes sure that all of the selected scope per Sprint is as \"Done\" as possible. The undone work is estimated and added to the Sprint Backlog of the next Sprint, so it doesn't mess up the Product Backlog.",
+"Add enough people to the Developers for the deadline to be made.",
+"The opportunity to inspect and adapt is lost. Opaqueness has replaced transparency. Predictability has dropped below zero. The produced software is not usable. As the rules of Scrum have not been respected, it is the Scrum Master's duty to assess whether repair is possible, or a restart with a more reliable team. If not, the Scrum Master should cancel the project.",
+"The Developers should remind Marian to find funding for enough Release Sprints in which the remaining work can be done."
+],
+"ans": [
+0
+],
+"prev": [],
+"exp": "Công việc chưa Done cần được làm cho Done tối đa và ước lượng lại để minh bạch; không thêm người để chạy đua, không có Release Sprint, và cũng không cần hủy dự án. (Lưu ý: theo Guide 2020, PBI chưa Done thường quay lại Product Backlog để Product Owner xếp lại, không tự động sang Sprint Backlog kế tiếp.)",
+"tip": "Với câu về việc chưa Done, chọn đáp án giữ transparency và inspect-adapt, tránh đáp án cực đoan."
+},
+{
+"id": 88,
+"type": "single",
+"q": "The time-box for a Daily Scrum?",
+"opts": [
+"Two minutes per person.",
+"15 minutes.",
+"15 minutes for a 4 week sprint. For shorter Sprints it is usually shorter.",
+"4 hours.",
+"The same time of day every day."
+],
+"ans": [
+1
+],
+"prev": [],
+"exp": "Daily Scrum có time-box cố định 15 phút cho mọi độ dài Sprint. Không có giới hạn theo từng người, và nó không đổi theo độ dài Sprint.",
+"tip": "Daily Scrum luôn là 15 phút, đừng bị đánh lừa bởi biến thể."
+},
+{
+"id": 89,
+"type": "single",
+"q": "Which phrase best describes a Product Owner?",
+"opts": [
+"Go-between Developers and customers.",
+"Value optimizer.",
+"Requirements engineer.",
+"Team manager."
+],
+"ans": [
+1
+],
+"prev": [],
+"exp": "Product Owner chịu trách nhiệm tối đa hóa giá trị sản phẩm (value optimizer). Không phải người trung gian, requirements engineer hay manager của team.",
+"tip": "Chọn mô tả về giá trị, tránh mô tả theo chức danh truyền thống."
+},
+{
+"id": 90,
+"type": "single",
+"q": "The length of a Sprint should be:",
+"opts": [
+"Short enough to keep the business risk acceptable to the Product Owner.",
+"Short enough to be able to synchronize the development work with other business events.",
+"No more than one calendar month.",
+"All of these answers are correct."
+],
+"ans": [
+3
+],
+"prev": [],
+"exp": "Sprint nên đủ ngắn để rủi ro kinh doanh chấp nhận được, đồng bộ với các sự kiện kinh doanh và không quá một tháng. Cả ba mệnh đề đều đúng theo Guide.",
+"tip": "Khi các mệnh đề đều phản ánh nguyên tắc của Guide, 'All of these' thường đúng."
+},
+{
+"id": 91,
+"type": "multi",
+"q": "What are two responsibilities of testers in a Scrum Team? (choose two)",
+"opts": [
+"Verifying the work of programmers.",
+"Everyone in the Developers is responsible for quality.",
+"Tracking quality metrics.",
+"Finding bugs.",
+"Scrum has no \"tester\" role."
+],
+"ans": [
+1,
+4
+],
+"prev": [],
+"exp": "Scrum không có vai trò tester; Developers là cả team và cùng chịu trách nhiệm chất lượng. Verify, theo dõi metric hay tìm bug là phân công theo vai trò, không phải theo Scrum.",
+"tip": "Scrum không có vai trò con trong Developers; trách nhiệm là chung."
+},
+{
+"id": 92,
+"type": "single",
+"q": "The CEO asks the Developers to add a \"very important\" item to a Sprint that is in progress. What should the Developers do?",
+"opts": [
+"Add the item to the current Sprint and drop an item of equal size.",
+"Add the item to the current Sprint without any adjustments.",
+"Inform the Product Owner so he/she can work with the CEO.",
+"Add the item to the next Sprint."
+],
+"ans": [
+2
+],
+"prev": [],
+"exp": "Developers không thêm việc theo yêu cầu bên ngoài; họ báo Product Owner để làm việc với CEO, vì chỉ Product Owner quản lý Product Backlog. Thêm việc vào Sprint đang chạy làm hại Sprint Goal.",
+"tip": "Mọi yêu cầu thay đổi nội dung công việc đi qua Product Owner."
+},
+{
+"id": 93,
+"type": "single",
+"q": "What is the role of management in Scrum?",
+"opts": [
+"To facilitate the Scrum Teams with insights and resources that help them improve.",
+"To monitor the Scrum Team's productivity.",
+"To identify and remove people that aren't working hard enough.",
+"To continually monitor staffing levels of the Developers."
+],
+"ans": [
+0
+],
+"prev": [],
+"exp": "Management hỗ trợ Scrum Team bằng insight và nguồn lực giúp cải thiện, không giám sát năng suất hay loại bỏ nhân sự.",
+"tip": "Vai trò của management trong Scrum là enable, không phải control."
+},
+{
+"id": 94,
+"type": "single",
+"q": "Which technique is the best way the Scrum Master can ensure that the Developers communicates effectively with the Product Owner?",
+"opts": [
+"Monitor communications between them and facilitate direct collaboration.",
+"Teach the Developers to talk in terms of business needs and objectives.",
+"Teach the Product Owner about the technologies employed during the Sprints.",
+"Act as a go-between for them."
+],
+"ans": [
+0
+],
+"prev": [],
+"exp": "Scrum Master nên theo dõi và facilitate cộng tác trực tiếp giữa Developers và Product Owner. Làm người trung gian sẽ cản trở giao tiếp.",
+"tip": "Scrum Master facilitate giao tiếp trực tiếp, không bao giờ làm go-between."
+},
+{
+"id": 95,
+"type": "single",
+"q": "How much of the Sprint Backlog must be defined during the Sprint Planning event?",
+"opts": [
+"Just enough tasks for the Scrum Master to be confident in the Developers understanding of the Sprint.",
+"The entire Sprint Backlog must be identified and estimated by the end of the Sprint Planning meeting.",
+"Enough so the Developers can create its best forecast of what is can do, and to start the first several days of the Sprint.",
+"Just enough to understand design and architectural implications."
+],
+"ans": [
+2
+],
+"prev": [],
+"exp": "Sprint Planning chỉ cần đủ chi tiết để Developers có forecast tốt nhất và bắt đầu vài ngày đầu; Sprint Backlog được cập nhật liên tục trong Sprint. Không cần định nghĩa toàn bộ trước.",
+"tip": "Scrum chỉ lập kế hoạch vừa đủ và để nó phát triển cùng thông tin mới."
+},
+{
+"id": 96,
+"type": "single",
+"q": "Who is responsible for managing the progress of work during a Sprint?",
+"opts": [
+"The Scrum Master.",
+"The Developers.",
+"The Product Owner.",
+"The most junior member of the Team."
+],
+"ans": [
+1
+],
+"prev": [],
+"exp": "Developers quản lý tiến độ công việc trong Sprint (Sprint Backlog, theo dõi). Scrum Master hay Product Owner không quản lý chi tiết này.",
+"tip": "Quản lý công việc hàng ngày thuộc Developers vì họ tự quản."
+},
+{
+"id": 97,
+"type": "single",
+"q": "Who is responsible for collaborating with stakeholders?",
+"opts": [
+"The Developers.",
+"The Team Manager.",
+"The Project Manager.",
+"The Scrum Team.",
+"The Business Analyst."
+],
+"ans": [
+3
+],
+"prev": [],
+"exp": "Cả Scrum Team chịu trách nhiệm cộng tác với stakeholders, không chỉ một vai trò hay một người riêng như BA hay manager.",
+"tip": "Trách nhiệm cộng tác với stakeholders thuộc cả Scrum Team, không giao cho một vai trò."
+},
+{
+"id": 98,
+"type": "multi",
+"q": "What two factors are best considered when establishing the Sprint length? (choose two)",
+"opts": [
+"The organization has mandated similar length sprints.",
+"The level of uncertainty over the technology to be used.",
+"The frequency at which team formation can be changed.",
+"The risk of being disconnected from the stakeholders."
+],
+"ans": [
+1,
+3
+],
+"prev": [],
+"exp": "Độ dài Sprint nên cân nhắc mức độ không chắc chắn về công nghệ/sản phẩm và rủi ro mất kết nối với stakeholders. Quy định của tổ chức hoặc tần suất đổi team không phải yếu tố chính.",
+"tip": "Chọn các yếu tố về rủi ro và feedback, không chọn yếu tố hành chính."
+},
+{
+"id": 99,
+"type": "single",
+"q": "Which of these may a Developers deliver at the end of a Sprint?",
+"opts": [
+"Failing unit tests, to identify acceptance tests for the next Sprint.",
+"An Increment of software with minor known bugs in it.",
+"An Increment of working software that is \"done\".",
+"A single document, if that is what the Scrum Master asked for."
+],
+"ans": [
+2
+],
+"prev": [],
+"exp": "Scrum Team chỉ giao Increment làm việc được và đạt Definition of Done. Test fail, bug đã biết hay chỉ tài liệu đều không đạt Done.",
+"tip": "Mọi thứ chưa Done thì không phải Increment; chọn đáp án 'working and done'."
+},
+{
+"id": 100,
+"type": "single",
+"q": "Who creates a Product Backlog item's estimate?",
+"opts": [
+"The Developers after clarifying requirements with the Product Owner.",
+"The Product Owner with input from the Developers.",
+"The most senior people in the organization, including architects and subject matter experts.",
+"The Scrum Master.",
+"The Developers, alone."
+],
+"ans": [
+0
+],
+"prev": [],
+"exp": "Developers chịu trách nhiệm ước lượng sau khi làm rõ yêu cầu với Product Owner. Product Owner có thể giúp hiểu nhưng không phải người ước lượng; chỉ Developers alone loại bỏ cộng tác cần thiết.",
+"tip": "Ước lượng thuộc Developers, nhưng luôn kèm làm rõ yêu cầu với Product Owner."
+},
+{
+"id": 101,
+"type": "single",
+"q": "Who starts the Daily Scrum?",
+"opts": [
+"The person coming in last. This encourages people to be on time and helps to stay within the time-box.",
+"Whoever the Developers decides should start.",
+"The person who has the token.",
+"The Scrum Master. This ensures that the Developers have the meeting and stays within the time-box.",
+"The person who last broke the build."
+],
+"ans": [
+1
+],
+"prev": [],
+"exp": "Daily Scrum là sự kiện của Developers, do chính Developers tự quản lý nên họ tự quyết ai bắt đầu và cách tiến hành. Các phương án như người đến muộn, token, Scrum Master hay người làm hỏng build đều áp đặt quy tắc từ bên ngoài.",
+"tip": "Khi câu hỏi về cách vận hành Daily Scrum, hãy chọn đáp án giao quyền tự quyết cho Developers."
+},
+{
+"id": 102,
+"type": "multi",
+"q": "You are the Scrum Master on a newly formed Scrum Team. Which three of the following activities would probably help the team in starting up? (choose three)",
+"opts": [
+"Introduce a bonus system for the top performers in the team.",
+"Have the Scrum Team members introduce themselves to each other and give a brief background of their skills and work history.",
+"Have the development managers for each Developer introduce their direct reports and go over their responsibilities on the Scrum Team.",
+"Ensure the Scrum Team members have compatible personalities.",
+"Ensure the team understands they need a Definition of Done.",
+"Ask the Product Owner to discuss the product or project, its history, goals, and context, as well as answer questions."
+],
+"ans": [
+1,
+4,
+5
+],
+"prev": [],
+"exp": "Việc giới thiệu kỹ năng, hiểu về Definition of Done và để Product Owner chia sẻ bối cảnh sản phẩm giúp team có tầm nhìn chung và minh bạch. Thưởng cho cá nhân, để quản lý giới thiệu nhân sự hay chọn tính cách tương thích đều đi ngược tinh thần team tự quản và làm việc chung.",
+"tip": "Chọn các hành động xây dựng hiểu biết chung và minh bạch, loại bỏ các biện pháp quản lý kiểu chỉ huy hoặc khuyến khích cạnh tranh cá nhân."
+},
+{
+"id": 103,
+"type": "multi",
+"q": "The Developers selects a set of Product Backlog items for a Sprint Backlog with the intent to get the selected items \"Done\" by the end of the Sprint. Which three phrases best describe the purpose of a Definition of Done? (choose three)",
+"opts": [
+"It controls whether the Developers have performed their tasks.",
+"It provides a template for elements that need to be included in the technical documentation.",
+"It creates transparency over the work inspected at the Sprint Review.",
+"It tracks the percent completeness of a Product Backlog item.",
+"It guides the Developers is creating a forecast at the Sprint Planning.",
+"It defines what it takes for an Increment to be ready for release."
+],
+"ans": [
+2,
+4,
+5
+],
+"prev": [],
+"exp": "Definition of Done tạo minh bạch cho công việc được kiểm tra ở Sprint Review, giúp Developers dự báo ở Sprint Planning và xác định khi nào Increment sẵn sàng phát hành. Nó không dùng để kiểm soát cá nhân, làm mẫu tài liệu hay đo phần trăm hoàn thành vì item chỉ Done hoặc chưa Done.",
+"tip": "Hãy nhớ Definition of Done là công cụ minh bạch chất lượng của Increment, không phải công cụ quản lý hiệu suất hay theo dõi tiến độ từng phần."
+},
+{
+"id": 104,
+"type": "multi",
+"q": "The Daily Scrum is an event that happens every day. What would be three key concerns if the frequency were to be lowered to every two or three days? (choose three)",
+"opts": [
+"Opportunities to inspect and adapt the Sprint Backlog are lost.",
+"Impediments are raised and resolved more slowly.",
+"The Product Owner cannot accurately report progress to the stakeholders.",
+"Too much work is spent updating the Scrum board before the meeting.",
+"The Scrum Master loses the ability to update the Gantt chart properly.",
+"The Sprint Backlog may become inaccurate."
+],
+"ans": [
+0,
+1,
+5
+],
+"prev": [],
+"exp": "Daily Scrum tồn tại để kiểm tra tiến độ hướng tới Sprint Goal và điều chỉnh Sprint Backlog; giảm tần suất làm mất cơ hội inspect/adapt, chậm xử lý impediment và khiến Sprint Backlog kém chính xác. Gantt chart hay việc cập nhật Scrum board không phải mối quan tâm của Scrum.",
+"tip": "Với câu hỏi về hậu quả của việc giảm sự kiện, hãy chọn các hệ quả về inspect/adapt và minh bạch, bỏ qua các công cụ ngoài Scrum như Gantt chart."
+},
+{
+"id": 105,
+"type": "single",
+"q": "Which statement best describes Scrum?",
+"opts": [
+"A defined and predictive process that confirms to the principles of Scientific Management.",
+"A complete methodology that defines how to develop software.",
+"A cookbook that defines best practices for software development.",
+"A framework within which complex products in complex environments are developed."
+],
+"ans": [
+3
+],
+"prev": [],
+"exp": "Scrum Guide mô tả Scrum là một framework nhẹ giúp tạo giá trị qua các giải pháp thích ứng cho vấn đề phức tạp. Nó không phải phương pháp luận hoàn chỉnh, không phải cookbook best practice, và không phải quy trình defined/predictive.",
+"tip": "Gặp câu mô tả Scrum, hãy chọn cụm framework, complex, adaptive và tránh methodology, process hay best practices."
+},
+{
+"id": 106,
+"type": "multi",
+"q": "Which Scrum Values are exhibited by not building Product Backlog items that have low business value? (choose three)",
+"opts": [
+"Economic Value Added.",
+"Respect.",
+"Focus.",
+"Earned Value.",
+"Courage."
+],
+"ans": [
+1,
+2,
+4
+],
+"prev": [],
+"exp": "Không xây dựng item có giá trị thấp thể hiện Focus (tập trung vào việc quan trọng), Courage (dám nói không) và Respect (tôn trọng thời gian, tiền bạc của người khác). Economic Value Added và Earned Value là thuật ngữ tài chính, không phải Scrum Values.",
+"tip": "Với câu về Scrum Values, hãy loại ngay các thuật ngữ không nằm trong năm giá trị: Commitment, Focus, Openness, Respect, Courage."
+},
+{
+"id": 107,
+"type": "single",
+"q": "How should Product Backlog items be chosen when multiple Scrum Teams work from the same Product Backlog?",
+"opts": [
+"The Scrum Team with the highest velocity pulls Product Backlog items first.",
+"The Developers pull in work in agreement with the Product Owner.",
+"The Product Owner should provide each team with its own Product Backlog.",
+"Each Scrum Team takes an equal numbers of items.",
+"The Product Owner decides."
+],
+"ans": [
+1
+],
+"prev": [],
+"exp": "Khi nhiều Scrum Team dùng chung một Product Backlog, Developers chọn việc phù hợp cùng thỏa thuận với Product Owner (một Product Owner, một Product Backlog). Velocity, chia đều số item hay Product Owner áp đặt đều trái tinh thần tự quản.",
+"tip": "Câu về việc chọn work thường có đáp án là Developers pull việc cùng nhau thỏa thuận với Product Owner, không có bên nào áp đặt."
+},
+{
+"id": 108,
+"type": "single",
+"q": "How often should Developers change?",
+"opts": [
+"As needed, while taking into account a short term reduction in productivity.",
+"Never, because it reduces productivity.",
+"As needed, with no special allowance for changes in productivity.",
+"Every Sprint to promote shared learning."
+],
+"ans": [
+0
+],
+"prev": [],
+"exp": "Thành phần Developers có thể thay đổi khi cần, nhưng cần tính đến việc năng suất có thể giảm ngắn hạn. Không đổi hoàn toàn thì mất linh hoạt, còn đổi mỗi Sprint là không cần thiết và gây xáo trộn.",
+"tip": "Chọn phương án cân bằng: thay đổi khi cần và thừa nhận cái giá ngắn hạn, tránh các cực đoan như không bao giờ hoặc mỗi Sprint."
+},
+{
+"id": 109,
+"type": "single",
+"q": "Who should make sure everyone on the Developers does his or her tasks for the Sprint?",
+"opts": [
+"The Project Manager.",
+"The Product Owner.",
+"The Scrum Master.",
+"The Developers.",
+"All of the above."
+],
+"ans": [
+3
+],
+"prev": [],
+"exp": "Developers là team tự quản nên chính họ chịu trách nhiệm đảm bảo công việc Sprint được hoàn thành. Scrum không có Project Manager, còn Product Owner và Scrum Master không giao việc hay giám sát từng người.",
+"tip": "Việc chia và theo dõi task trong Sprint luôn thuộc về Developers, không phải một vai trò quản lý bên ngoài."
+},
+{
+"id": 110,
+"type": "single",
+"q": "When is it most appropriate for a Developers to change the Definition of Done?",
+"opts": [
+"During Spring Planning.",
+"Prior to starting a new Sprint.",
+"During the Sprint Retrospective.",
+"Prior to starting a new project."
+],
+"ans": [
+2
+],
+"prev": [],
+"exp": "Sprint Retrospective là nơi Scrum Team xem xét quy trình và Definition of Done để cải tiến, nên đây là lúc phù hợp nhất để thay đổi Definition of Done. Sprint Planning dùng để lập kế hoạch, và không cần chờ dự án mới. (Lưu ý: Scrum Guide 2020 không quy định thời điểm cụ thể, đáp án dựa trên vai trò cải tiến của Retrospective.)",
+"tip": "Câu hỏi về việc cải tiến quy trình, chất lượng hay Definition of Done thường trỏ về Sprint Retrospective."
+},
+{
+"id": 111,
+"type": "multi",
+"q": "As the Sprint Planning meeting progresses, the Developers sees that the workload is greater than they can handle. Which two are valid actions? (choose two)",
+"opts": [
+"Recruit additional Developers before the work can begin.",
+"The Developers ensures that the Product Owner is aware, starts the Sprint, and monitors progress.",
+"Cancel the Sprint.",
+"Remove or change selected Product Backlog items.",
+"The Developers works overtime during this Sprint."
+],
+"ans": [
+1,
+3
+],
+"prev": [],
+"exp": "Nếu khối lượng quá lớn, Developers cần báo Product Owner và cùng thương lượng bỏ hoặc đổi các item đã chọn (đồng thời theo dõi tiến độ). Không cần tuyển thêm người, hủy Sprint hay làm thêm giờ vì Sprint Backlog có thể điều chỉnh bằng thương lượng.",
+"tip": "Khi khối lượng vượt khả năng, hãy chọn thương lượng phạm vi với Product Owner thay vì các biện pháp cực đoan như hủy Sprint hay overtime."
+},
+{
+"id": 112,
+"type": "multi",
+"q": "Currently, your Developers are organized to address a single layer only (for example, front end, middle tier, back end, and interfaces). What are three things to consider when deciding to move away from such component teams toward feature teams? (choose three)",
+"opts": [
+"You cannot do Scrum without feature teams.",
+"Productivity may suffer when making this kind of move.",
+"Getting support from the business side first helps.",
+"Feature teams have less communication overhead.",
+"With feature teams, it is easier to calculate the productivity per team."
+],
+"ans": [
+1,
+2,
+3
+],
+"prev": [],
+"exp": "Chuyển sang feature team có thể giảm năng suất tạm thời, cần sự ủng hộ của phía business và giúp giảm chi phí giao tiếp giữa các team. Scrum không bắt buộc feature team và năng suất mỗi team không phải thứ cần tính để quyết định này.",
+"tip": "Với câu hỏi cân nhắc thay đổi cơ cấu, hãy loại các phát biểu tuyệt đối như cannot do Scrum without và chọn các cân nhắc thực tế."
+},
+{
+"id": 113,
+"type": "single",
+"q": "During a Sprint, when is new work or further decomposition of work added to the Sprint Backlog?",
+"opts": [
+"When the Product Owner identifies new work.",
+"As soon as possible after they are identified.",
+"When the Scrum Master has time to enter them.",
+"During the Daily Scrum after the Developers approves them."
+],
+"ans": [
+1
+],
+"prev": [],
+"exp": "Sprint Backlog là kế hoạch của Developers và có thể được bổ sung hoặc phân rã thêm ngay khi phát hiện việc mới, không phải chờ ai phê duyệt hay chờ một cuộc họp. Scrum Master và Product Owner không quyết định việc cập nhật.",
+"tip": "Sprint Backlog là kế hoạch sống của Developers, nên đáp án đúng là cập nhật sớm khi có thông tin mới, không cần thủ tục."
+},
+{
+"id": 114,
+"type": "single",
+"q": "What is the main reason for the Scrum Master to be at the Daily Scrum?",
+"opts": [
+"To gather status and progress information to report to management.",
+"To write down any changes to the Sprint Backlog, including adding new items, and tracking progress on the burn-down.",
+"He or she does not have to be there; he or she only has to ensure the Developers have a Daily Scrum.",
+"To make sure every team member answers the three questions."
+],
+"ans": [
+2
+],
+"prev": [],
+"exp": "Scrum Master không bắt buộc phải tham dự Daily Scrum; họ chỉ cần đảm bảo Developers có tổ chức sự kiện này. Việc báo cáo cho quản lý, ghi chép Sprint Backlog hay bắt mọi người trả lời ba câu hỏi đều không phải vai trò của Scrum Master.",
+"tip": "Những đáp án biến Scrum Master thành người giám sát hoặc thư ký thường sai, vai trò đúng là đảm bảo sự kiện diễn ra và Developers biết cách làm."
+},
+{
+"id": 115,
+"type": "single",
+"q": "You have six teams using a traditional method to deliver a product. Your management has asked you to start using Scrum. In the initial project there were separate plans and teams for the layers of a software system, i.e. one for the frontend, one for the middle tier, one for the back-end, and one for the interfaces and services. This resembles what is known as component teams. But you have read that it's a good idea to have teams organized by feature. What are the advantages of keeping component teams while starting Scrum?",
+"opts": [
+"There's less initial disruption than organizing into new teams. As they start, they will discover what works best, and how to potentially re-organize towards this.",
+"Component teams generally have the skills needed to create a working Increment of software that provides business value.",
+"Because they have worked together for some time, they are likely able to start producing shippable Increments faster that new feature teams would.",
+"There are fewer cross-team dependencies than working in feature teams."
+],
+"ans": [
+0
+],
+"prev": [],
+"exp": "Giữ component team lúc đầu giảm xáo trộn, và khi bắt đầu Scrum team sẽ tự khám phá cách tổ chức tốt hơn. Component team thường không có đủ kỹ năng tạo Increment hoàn chỉnh và có nhiều phụ thuộc hơn, nên các phương án còn lại sai. (Lưu ý: đây là lập luận thực tiễn, không từ Scrum Guide, vốn yêu cầu team liên chức năng.)",
+"tip": "Với câu hỏi về lợi thế của cấu trúc cũ, hãy chọn lợi ích mang tính chuyển đổi thực tế như ít xáo trộn, không phải lợi ích về khả năng giao giá trị."
+},
+{
+"id": 116,
+"type": "single",
+"q": "True or False: A properly functioning Scrum Team will have at least one Release Sprint and may well have several.",
+"opts": [
+"True.",
+"False."
+],
+"ans": [
+1
+],
+"prev": [],
+"exp": "Mỗi Sprint đều phải tạo ra Increment đạt Definition of Done và có thể phát hành, nên không có Release Sprint hay hardening Sprint riêng. Việc cần có Release Sprint cho thấy công việc chưa thật sự Done.",
+"tip": "Mọi khái niệm Sprint đặc biệt như release, hardening hay integration Sprint đều không tồn tại trong Scrum."
+},
+{
+"id": 117,
+"type": "single",
+"q": "True or False: Scrum is a methodology that tells in detail how to build software incrementally.",
+"opts": [
+"True.",
+"False."
+],
+"ans": [
+1
+],
+"prev": [],
+"exp": "Scrum là framework chỉ định các vai trò, sự kiện, artifact và quy tắc tối thiểu, không phải phương pháp luận mô tả chi tiết cách xây phần mềm. Cách làm cụ thể do Scrum Team tự chọn.",
+"tip": "Câu nói Scrum là methodology hoặc quy định chi tiết cách làm gần như luôn là False."
+},
+{
+"id": 118,
+"type": "single",
+"q": "For which is the Scrum Master responsible?",
+"opts": [
+"Managing the performance of the Scrum Team.",
+"The meetings and the objectives that a Scrum Team sets for itself.",
+"The Scrum framework being adopted and used properly.",
+"Keeping track of resource allocation."
+],
+"ans": [
+2
+],
+"prev": [],
+"exp": "Scrum Master chịu trách nhiệm cho việc Scrum được hiểu và áp dụng đúng, tức là hiệu quả của Scrum Team. Họ không quản lý hiệu suất, không đặt mục tiêu thay team và không phân bổ nguồn lực.",
+"tip": "Trách nhiệm của Scrum Master xoay quanh Scrum và sự hiệu quả của team, không phải quản lý con người hay nguồn lực."
+},
+{
+"id": 119,
+"type": "single",
+"q": "The Developers asks their Product Owner to re-order the Product Backlog. The team is waiting for an external supplier to deliver a specific software component. Without that component there won't be enough work in the next Sprint to occupy the full team. The Product Owner asks the Scrum Master for help. What would be good advice to give the Product Owner?",
+"opts": [
+"Remind the Product Owner that his primary concern is the flow of value reflected in the ordering of the Product Backlog.",
+"Tell the Product Owner to re-order the Product Backlog so the work involving the external component can be planned in a separate sprint.",
+"Tell the Product Owner that the Product Backlog should be ordered to maximize utilization of the Developers."
+],
+"ans": [
+0
+],
+"prev": [],
+"exp": "Product Owner nên tập trung vào dòng chảy giá trị khi sắp xếp Product Backlog thay vì tối ưu việc sử dụng Developers hay lách theo phụ thuộc bên ngoài. Hai phương án còn lại ưu tiên utilization hoặc chia Sprint theo thành phần, sai tinh thần Scrum.",
+"tip": "Khi sắp xếp ưu tiên, giá trị luôn thắng việc tối đa hóa utilization của con người."
+},
+{
+"id": 120,
+"type": "multi",
+"q": "What are three ways Scrum promotes self-management? (choose three)",
+"opts": [
+"By not allowing documentation.",
+"By the Developers deciding what work to do in a Sprint.",
+"By preventing stakeholders from entering the development room.",
+"By removing titles for Developers.",
+"By being a lightweight framework."
+],
+"ans": [
+1,
+3,
+4
+],
+"prev": [],
+"exp": "Scrum thúc đẩy tự quản khi Developers tự quyết việc làm trong Sprint, không phân biệt chức danh trong Developers và là framework nhẹ chỉ quy định tối thiểu. Scrum không cấm tài liệu và không cấm stakeholders. (Lưu ý: việc không có chức danh được nhấn mạnh trong bản 2017, bản 2020 diễn đạt khác.)",
+"tip": "Tự quản nghĩa là trao quyền quyết định và giảm quy tắc, đừng chọn các đáp án cấm đoán cực đoan."
+},
+{
+"id": 121,
+"type": "single",
+"q": "What is the key concern when multiple Scrum Teams are working from the same Product Backlog?",
+"opts": [
+"Minimizing dependencies between teams.",
+"Clear definition of requirements.",
+"Meeting original scope projections.",
+"Making sure there's enough work for everyone on every team.",
+"Maximizing velocity."
+],
+"ans": [
+0
+],
+"prev": [],
+"exp": "Khi nhiều team cùng một Product Backlog, mối quan tâm chính là giảm phụ thuộc giữa các team để có thể tích hợp Increment hoàn chỉnh. Velocity hay phạm vi ban đầu không phải trọng tâm.",
+"tip": "Với bối cảnh nhiều team, chọn các đáp án về giảm phụ thuộc và tích hợp, không phải tối đa hóa chỉ số."
+},
+{
+"id": 122,
+"type": "single",
+"q": "What does it mean to say that an event has a time-box?",
+"opts": [
+"The event must happen at a set time.",
+"The event must happen by a given time.",
+"The event must take at least a minimum amount of time.",
+"The event can take no more than a maximum amount of time."
+],
+"ans": [
+3
+],
+"prev": [],
+"exp": "Time-box là thời lượng tối đa của sự kiện; sự kiện có thể kết thúc sớm hơn nếu đạt mục đích nhưng không được vượt quá. Nó không quy định giờ bắt đầu hay thời lượng tối thiểu.",
+"tip": "Time-box luôn là giới hạn trên (tối đa), không bao giờ là giới hạn dưới."
+},
+{
+"id": 123,
+"type": "single",
+"q": "Which outcome is expected as Scrum Teams mature?",
+"opts": [
+"They will improve their Definition of Done to include more stringent criteria.",
+"The Sprint Retrospectives will grow to be longer than 4 hours.",
+"There is no need for a time-boxed Sprint, since time-boxes are only for new Scrum Teams.",
+"Sprint Reviews will no longer be needed.",
+"A Scrum Master is no longer needed since they are a mature team now."
+],
+"ans": [
+0
+],
+"prev": [],
+"exp": "Khi trưởng thành, Scrum Team thường nâng Definition of Done với tiêu chí chặt chẽ hơn để cải thiện chất lượng. Các sự kiện, time-box và Scrum Master vẫn cần thiết, và Retrospective không dài hơn tối đa quy định.",
+"tip": "Tiến bộ của team thể hiện ở chất lượng cao hơn qua Definition of Done chặt hơn, không phải bỏ bớt cấu trúc Scrum."
+},
+{
+"id": 124,
+"type": "single",
+"q": "The Product Owner must release each Increment to production.",
+"opts": [
+"When it makes sense.",
+"To make sure the Developers are done every Sprint.",
+"Whenever the product is free of defects.",
+"Without exception."
+],
+"ans": [
+0
+],
+"prev": [],
+"exp": "Product Owner quyết định phát hành khi hợp lý về mặt kinh doanh; Increment phải sẵn sàng phát hành nhưng không bắt buộc phải phát hành mỗi Sprint. Điều kiện không lỗi hay ngoại lệ không có là quá cứng nhắc.",
+"tip": "Các từ tuyệt đối như without exception thường sai, đáp án đúng giao quyền quyết định cho Product Owner theo giá trị."
+},
+{
+"id": 125,
+"type": "single",
+"q": "Who creates the Definition of Done?",
+"opts": [
+"The Scrum Master as he/she is responsible for the Developers productivity.",
+"The Scrum Team, in a collaborative effort where the result is the common denominator of all members' definition.",
+"The Product Owner as he/she is responsible for the product's success.",
+"The development organization (or Developers if none is available from the development organization)."
+],
+"ans": [
+3
+],
+"prev": [],
+"exp": "Definition of Done do tổ chức phát triển (nếu có chuẩn chung) hoặc Developers/Scrum Team tạo ra, không phải Scrum Master hay Product Owner đơn lẻ. (Lưu ý: Scrum Guide 2020 nói nếu không có chuẩn tổ chức thì Scrum Team tự tạo; đáp án đánh dấu theo cách diễn đạt cũ.)",
+"tip": "Chất lượng và Definition of Done thuộc về tổ chức hoặc những người làm ra Increment, không thuộc một vai trò riêng lẻ."
+},
+{
+"id": 126,
+"type": "single",
+"q": "Five new Scrum Teams have been created to build one product. A few of the Developers on one of the Scrum Teams ask the Scrum Master how to coordinate their work with the order teams. What should the Scrum Master do?",
+"opts": [
+"Teach the Product Owner to work with the lead Developers on ordering Product Backlog in a way to avoid too much technical and development overlap during a Sprint.",
+"Teach them that it is their responsibility to work with the other teams to create an integrated Increment.",
+"Collect the Sprint tasks from the teams at the end of their Sprint Planning and merge that into a consolidated plan for the entire Sprint.",
+"Visit the five teams each day to inspect that their Sprint Backlogs are aligned."
+],
+"ans": [
+1
+],
+"prev": [],
+"exp": "Các Developers chịu trách nhiệm phối hợp trực tiếp với các team khác để tạo Increment tích hợp. Scrum Master dạy cách làm việc này, không gom kế hoạch, không đi kiểm tra hằng ngày, và Product Owner không sắp xếp thay họ.",
+"tip": "Câu về phối hợp thường có đáp án là team tự phối hợp trực tiếp, không cần cơ quan điều phối trung gian."
+},
+{
+"id": 127,
+"type": "multi",
+"q": "Which two things should the Developers do during the first Sprint? (choose two)",
+"opts": [
+"Make up a plan for the rest of the project.",
+"Analyze, describe, and document the requirements for the subsequent Sprints.",
+"Develop at least one piece of functionality.",
+"Analyze, design, and describe the complete architecture and infrastructure.",
+"Create an Increment of potentially releasable software."
+],
+"ans": [
+2,
+4
+],
+"prev": [],
+"exp": "Ngay Sprint đầu tiên Developers phải tạo Increment đã Done và có thể phát hành, dù nhỏ, chứa ít nhất một phần chức năng. Việc lập kế hoạch toàn dự án hay thiết kế kiến trúc đầy đủ là phương pháp waterfall.",
+"tip": "Sprint đầu cũng như mọi Sprint khác: phải tạo Increment hoàn chỉnh, không có giai đoạn Sprint 0 chuẩn bị riêng."
+},
+{
+"id": 128,
+"type": "single",
+"q": "Who determines when it is appropriate to update the Sprint Backlog during a Sprint?",
+"opts": [
+"The Project Manager.",
+"The Developers.",
+"The Scrum Team.",
+"The Product Owner."
+],
+"ans": [
+1
+],
+"prev": [],
+"exp": "Sprint Backlog là kế hoạch của Developers nên chỉ họ quyết định khi nào cập nhật. Product Owner hay Project Manager không tự cập nhật, và vai trò Project Manager không tồn tại trong Scrum.",
+"tip": "Artifact nào là của Developers (Sprint Backlog) thì chỉ Developers quyết định thay đổi."
+},
+{
+"id": 129,
+"type": "single",
+"q": "Who must attend the Daily Scrum?",
+"opts": [
+"The Scrum Master and Product Owner.",
+"The Developers.",
+"The Developers and Product Owner.",
+"The Scrum Team.",
+"The Developers and Scrum Master."
+],
+"ans": [
+1
+],
+"prev": [],
+"exp": "Daily Scrum là sự kiện dành cho Developers, chỉ họ bắt buộc tham dự. Scrum Master và Product Owner có thể tham gia khi họ cũng đang làm các item trong Sprint Backlog nhưng không bắt buộc.",
+"tip": "Chỉ chọn Developers cho Daily Scrum, dù đáp án khác có thể nghe hợp lý."
+},
+{
+"id": 130,
+"type": "single",
+"q": "When do Developers take ownership of a Sprint Backlog item?",
+"opts": [
+"At the Sprint planning meeting.",
+"During the Daily Scrum.",
+"Never. All Sprint Backlog Items are \"owned\" by the entire Scrum Team, even though each one may be done by an individual Developers.",
+"Whenever a team member can accommodate more work."
+],
+"ans": [
+2
+],
+"prev": [],
+"exp": "Sprint Backlog thuộc về Developers như một tập thể; cá nhân có thể thực hiện từng phần nhưng không sở hữu riêng item nào. Theo Scrum, không có việc gán quyền sở hữu cá nhân cho item. (Lưu ý: đáp án nói entire Scrum Team, trong khi Guide 2020 nói Sprint Backlog thuộc về Developers.)",
+"tip": "Scrum nhấn mạnh trách nhiệm tập thể, tránh đáp án gán việc hay quyền sở hữu cho cá nhân."
+},
+{
+"id": 131,
+"type": "single",
+"q": "True or False: The purpose of a Sprint is to produce a done Increment of product.",
+"opts": [
+"True.",
+"False."
+],
+"ans": [
+0
+],
+"prev": [],
+"exp": "Mục đích của mỗi Sprint là tạo ra Increment đạt Definition of Done và có giá trị, thể hiện qua việc đạt Sprint Goal. Các sự kiện và quy trình chỉ là phương tiện để đạt điều đó.",
+"tip": "Câu hỏi về mục đích Sprint thường hướng đến việc tạo ra Increment Done."
+},
+{
+"id": 132,
+"type": "multi",
+"q": "In the Sprint Planning meeting, the Product Owner and the Developers were unable to reach a clear understanding about the highest order Product Backlog items. Because of this, the Developers couldn't figure out how many Product Backlog items it could forecast for the upcoming Sprint. They were able to agree on a Sprint Goal, however. Which of the following two actions should the Scrum Master support? (choose two)",
+"opts": [
+"Cancel the Sprint. Send the entire team to an advanced Scrum training and then start a new Sprint.",
+"Forecast the most likely Product Backlog items to meet the goal and create a Sprint Backlog based on a likely initial design and plan. Once the time-box for the Sprint Planning meeting is over, start the Sprint and continue to analyze, decompose, and create additional functionality during the Sprint.",
+"Continue the Sprint Planning meeting past its time-box until an adequate number of Product Backlog items are well enough understood for the Developers to make a complete forecast. Then start the Sprint.",
+"Discuss in the upcoming Sprint Retrospective why this happened and what changes will make it less likely to recur.",
+"Ask everyone to take as much time as needed to analyze the Product Backlog first, and then reconvene another Sprint Planning meeting."
+],
+"ans": [
+1,
+3
+],
+"prev": [],
+"exp": "Developers dự báo các item khả dĩ nhất để đạt Sprint Goal rồi bắt đầu Sprint, tiếp tục làm rõ trong Sprint, và thảo luận nguyên nhân ở Retrospective. Không kéo dài Sprint Planning quá time-box, không hủy Sprint hay họp lại vì đều vi phạm tính time-box.",
+"tip": "Khi gặp tình huống thiếu thông tin, hãy giữ nguyên time-box, bắt đầu với những gì có và cải tiến ở Retrospective."
+},
+{
+"id": 133,
+"type": "single",
+"q": "Which answer best describes the topics covered in Sprint Planning?",
+"opts": [
+"What to do and who will do it.",
+"How conditions have changed and how the Product Backlog should evolve.",
+"What can be done and how to do it.",
+"What went wrong in the last Sprint and what to do differently this Sprint.",
+"Who is on the team and what team member roles will be."
+],
+"ans": [
+2
+],
+"prev": [],
+"exp": "Sprint Planning trả lời: why (Sprint Goal), what (item nào có thể hoàn thành) và how (cách làm). Đáp án what can be done và how to do it là khớp nhất; ai làm là do Developers tự quản.",
+"tip": "Sprint Planning gắn với Why, What, How, tức việc gì có thể làm và làm thế nào, không phải ai làm hay nhìn lại quá khứ."
+},
+{
+"id": 134,
+"type": "single",
+"q": "Which of the following is required by Scrum? (choose all that apply)",
+"opts": [
+"Sprint Retrospective.",
+"Members must be stand up at the Daily Scrum.",
+"Sprint Burndown Chart.",
+"Release planning.",
+"All of the above."
+],
+"ans": [
+0
+],
+"prev": [],
+"exp": "Trong các lựa chọn, chỉ Sprint Retrospective là sự kiện bắt buộc của Scrum. Đứng khi họp Daily Scrum, burndown chart và release planning không được Scrum yêu cầu.",
+"tip": "Scrum bắt buộc vai trò, sự kiện, artifact và cam kết; các công cụ, tư thế hay kế hoạch phát hành chi tiết thì không."
+},
+{
+"id": 135,
+"type": "single",
+"q": "What is the purpose of a Sprint Review?",
+"opts": [
+"To take time to judge the validity of the project.",
+"To inspect the product Increment with the stakeholders and collect feedback on next steps.",
+"To review the Scrum Team's activities and processes during the Sprint.",
+"To build team sprint."
+],
+"ans": [
+1
+],
+"prev": [],
+"exp": "Sprint Review là để Scrum Team và stakeholders kiểm tra Increment và thu thập phản hồi cho bước tiếp theo (thích nghi Product Backlog). Việc xem xét quy trình của team thuộc về Retrospective, không phải Review.",
+"tip": "Phân biệt Review (sản phẩm, với stakeholders) và Retrospective (quy trình, nội bộ team)."
+},
+{
+"id": 136,
+"type": "single",
+"q": "How should the Developers deal with non-functional requirements?",
+"opts": [
+"Ensure every Increment meets them.",
+"Make sure the release department understands these requirements, but it is not the Developers responsibility.",
+"Handle them during the Integration Sprint preceding the Release Sprint.",
+"Assign them to the lead Developers on the team."
+],
+"ans": [
+0
+],
+"prev": [],
+"exp": "Yêu cầu phi chức năng thuộc trách nhiệm của Developers và phải được thỏa mãn trong mọi Increment, thường thể hiện qua Definition of Done. Không có Integration Sprint hay Release Sprint để xử lý sau.",
+"tip": "Chất lượng và yêu cầu phi chức năng phải được đảm bảo ngay trong từng Increment, không để dồn lại sau."
+},
+{
+"id": 137,
+"type": "single",
+"q": "When is a Sprint over?",
+"opts": [
+"When the Product Owner says it is done.",
+"When all Product Backlog items meet their Definition of Done.",
+"When all the tasks are completed.",
+"When the time-box expires."
+],
+"ans": [
+3
+],
+"prev": [],
+"exp": "Sprint có độ dài cố định và kết thúc khi time-box hết, bất kể công việc đã xong hay chưa. Product Owner không quyết định kết thúc, và hoàn thành item hay task không làm Sprint kết thúc sớm.",
+"tip": "Sprint luôn kết thúc theo time-box, không theo việc đã xong."
+},
+{
+"id": 138,
+"type": "single",
+"q": "True or False: Scrum has a role called \"Project Manager\".",
+"opts": [
+"True.",
+"False."
+],
+"ans": [
+1
+],
+"prev": [],
+"exp": "Scrum chỉ có ba accountability là Scrum Master, Product Owner và Developers; không có vai trò Project Manager.",
+"tip": "Mọi đáp án nhắc tới Project Manager trong Scrum đều sai."
+},
+{
+"id": 139,
+"type": "multi",
+"q": "Which Scrum Values are violated by building Product Backlog items that have low business value?",
+"opts": [
+"Courage.",
+"Focus.",
+"Respect.",
+"Economic Value Added.",
+"Earned Value."
+],
+"ans": [
+0,
+1,
+2
+],
+"prev": [],
+"exp": "Xây item giá trị thấp là thiếu Focus (không tập trung vào điều quan trọng), thiếu Courage (không dám nói không) và thiếu Respect (lãng phí tiền của người khác). Economic Value Added và Earned Value không phải Scrum Values.",
+"tip": "Kết nối hành vi với các Scrum Values, loại các thuật ngữ tài chính không thuộc Scrum Values."
+},
+{
+"id": 140,
+"type": "single",
+"q": "How much time is required after a Sprint to prepare for the next Sprint?",
+"opts": [
+"The break between Sprints is time-boxed to 1 week for 30 day Sprints, and usually less for shorter sprints.",
+"Enough time for the requirements for the next Sprint to be determined and documented.",
+"Enough time for the Developers to finish the testing from the last Sprint.",
+"None. A new Sprint starts immediately following the end of the previous Sprint.",
+"All of the above are allowed depending on the situation."
+],
+"ans": [
+3
+],
+"prev": [],
+"exp": "Sprint mới bắt đầu ngay khi Sprint trước kết thúc, không có khoảng nghỉ hay giai đoạn chuẩn bị giữa các Sprint. Việc chuẩn bị diễn ra trong Sprint Planning và bằng việc refine Product Backlog.",
+"tip": "Không có khoảng trống giữa các Sprint, hãy loại mọi đáp án đề cập thời gian nghỉ hoặc chuẩn bị riêng."
+},
+{
+"id": 141,
+"type": "single",
+"q": "When many Scrum Teams are working on the same product, should all of their Increments be integrated every Sprint?",
+"opts": [
+"Yes, but only for Scrum Teams whose work has dependencies.",
+"Yes, otherwise the Product Owners (and stakeholders) may not be able to accurately inspect what is done.",
+"No, each Scrum Team stands alone.",
+"No, that is far too hard and must be done in a hardening Sprint."
+],
+"ans": [
+1
+],
+"prev": [],
+"exp": "Mọi Increment của các team trên cùng một sản phẩm phải được tích hợp mỗi Sprint để có Increment chung có thể kiểm tra tại Sprint Review. Không có hardening Sprint và team không đứng riêng lẻ.",
+"tip": "Một sản phẩm thì một Increment tích hợp mỗi Sprint, không hoãn việc tích hợp."
+},
+{
+"id": 142,
+"type": "single",
+"q": "When can the Developers cancel a Sprint?",
+"opts": [
+"It can't. Only Product Owners can cancel Sprints.",
+"When functional expectations are not well understood.",
+"When the Product Owner is absent too often.",
+"When the selected Product Backlog items for the Sprint become unachievable.",
+"When a technical dependency cannot be resolved."
+],
+"ans": [
+0
+],
+"prev": [],
+"exp": "Chỉ Product Owner có quyền hủy Sprint (khi Sprint Goal trở nên lỗi thời). Developers hay Scrum Master không thể hủy, dù có lý do như phụ thuộc hay vắng mặt.",
+"tip": "Quyền hủy Sprint thuộc Product Owner; mọi lý do khác không trao quyền cho Developers."
+},
+{
+"id": 143,
+"type": "single",
+"q": "Which output from Sprint Planning provides the Developers with a target and overarching direction for the Sprint?",
+"opts": [
+"The Sprint Backlog.",
+"The Sprint Goal",
+"The release plan.",
+"Sprint Review minutes."
+],
+"ans": [
+1
+],
+"prev": [],
+"exp": "Sprint Goal là mục tiêu tổng thể của Sprint, đưa ra định hướng và sự linh hoạt cho Developers. Sprint Backlog là kế hoạch, còn release plan và Sprint Review minutes không phải đầu ra của Sprint Planning.",
+"tip": "Chữ target và overarching direction của Sprint luôn nghĩa là Sprint Goal."
+},
+{
+"id": 144,
+"type": "single",
+"q": "During the Sprint Retrospective a Scrum Team has identified several high priority process improvements. Which of the following statements is most accurate? (choose the best answer)",
+"opts": [
+"The Scrum Team may add items to the Sprint Backlog for the next Sprint.",
+"The Scrum Team should choose at least one high priority process improvement to place in the Product Backlog.",
+"The Scrum Team should decline to add a process improvement to the Sprint Backlog when things are running smoothly.",
+"The Scrum Master selects the most important process improvement and places it in the Sprint Backlog."
+],
+"ans": [
+0
+],
+"prev": [],
+"exp": "Các cải tiến quan trọng nên được đưa vào Sprint Backlog của Sprint tiếp theo để thực sự được thực hiện. Scrum Master không áp đặt chọn lựa, và không có yêu cầu bỏ qua cải tiến khi mọi thứ trơn tru.",
+"tip": "Cải tiến từ Retrospective phải được hành động trong Sprint kế tiếp, thường qua Sprint Backlog, do cả team quyết định."
+},
+{
+"id": 145,
+"type": "multi",
+"q": "What techniques could the Scrum Master use when the Scrum Team gets caught in an internal disagreement about which agile practices to apply? (choose the best two answers)",
+"opts": [
+"Involve the complete Scrum Team in making a decision.",
+"Use coaching techniques; such as open questions and active listening.",
+"Ask an external agile coach what they recommend.",
+"Ask team members to take the issue up with to the company's Human Resources department."
+],
+"ans": [
+0,
+1
+],
+"prev": [],
+"exp": "Scrum Master nên để cả Scrum Team cùng quyết định và dùng kỹ thuật coaching như câu hỏi mở, lắng nghe chủ động. Nhờ coach bên ngoài hay đẩy sang HR là né tránh trách nhiệm hỗ trợ team tự giải quyết.",
+"tip": "Scrum Master là servant-leader giúp team tự giải quyết bằng coaching và facilitation, không đẩy vấn đề ra ngoài hay ra lệnh."
+},
+{
+"id": 146,
+"type": "single",
+"q": "Who is accountable for clearly expressing Product Backlog items? (choose the best answer)",
+"opts": [
+"The business analyst who represents the Product Owner.",
+"The Product Owner.",
+"The Scrum Master, or the Scrum Master may have the Developers do it.",
+"The Scrum Master."
+],
+"ans": [
+1
+],
+"prev": [],
+"exp": "Product Owner chịu trách nhiệm trình bày rõ ràng các item Product Backlog; có thể ủy quyền việc thực hiện nhưng vẫn chịu accountability. Business analyst hay Scrum Master không gánh trách nhiệm này.",
+"tip": "Product Backlog, từ nội dung đến thứ tự, là accountability của Product Owner dù ai đó có thể giúp thực hiện."
+},
+{
+"id": 147,
+"type": "single",
+"q": "When many Scrum Teams are working on a single product, what best describes the Definition of Done? (choose the best answer)",
+"opts": [
+"Each Scrum Team defines and uses its own. The differences are discussed and reconciled during a hardening Sprint.",
+"The Scrum Masters from each Scrum Team define a common Definition of Done.",
+"Each Scrum Team uses its own, but must make their definition clear to all other teams so the differences are known.",
+"All Scrum Teams must have a Definition of Done that makes their combined work potentially releasable."
+],
+"ans": [
+3
+],
+"prev": [],
+"exp": "Tất cả Scrum Team trên cùng một sản phẩm phải theo một Definition of Done chung sao cho công việc kết hợp của họ có thể phát hành. Không dùng Definition of Done riêng rồi hòa giải ở hardening Sprint.",
+"tip": "Một sản phẩm thì một Definition of Done chung cho mọi team."
+},
+{
+"id": 148,
+"type": "single",
+"q": "When many Developers are working on a single product, what best describes the Definition of Done? (choose the best answer)",
+"opts": [
+"Each Developer defines and uses its own. The differences are discussed and reconciled during a hardening Sprint.",
+"It depends.",
+"Each Developer uses its own but must make their definition clear to all other teams so the differences are known.",
+"All Developers must have a Definition of Done that makes their combined work potentially releasable."
+],
+"ans": [
+3
+],
+"prev": [],
+"exp": "Mọi Developers làm trên cùng sản phẩm phải chia sẻ Definition of Done chung để công việc gộp lại có thể phát hành. Definition riêng hay phụ thuộc tình huống sẽ phá vỡ tính minh bạch.",
+"tip": "Minh bạch đòi hỏi một chuẩn Done chung, hãy loại các đáp án it depends hoặc mỗi người một chuẩn."
+},
+{
+"id": 149,
+"type": "multi",
+"q": "At the seventh Sprint Review, the stakeholders are disappointed and angry. They have determined that the product or system being built will not meet their needs and will cost more than they are willing to spend. What factors likely led to this? (choose two)",
+"opts": [
+"The Project Management Office (PMO) has not been engaged adequately.",
+"The Product Owner has not been keeping the stakeholders aware of the progress of the project.",
+"The stakeholders haven't been using the Sprint Reviews to inspect and evaluate progress.",
+"The stakeholders were not allowed to enter the development area."
+],
+"ans": [
+1,
+2
+],
+"prev": [],
+"exp": "Sự thất vọng cuối cùng cho thấy stakeholders không dùng Sprint Review để kiểm tra, đánh giá tiến độ, và Product Owner không cập nhật tình hình cho họ. PMO hay việc cấm vào khu phát triển không phải nguyên nhân liên quan đến Scrum.",
+"tip": "Vấn đề lộ muộn thường do thiếu inspect/adapt sớm, tức thiếu phản hồi và minh bạch ở Sprint Review."
+},
+{
+"id": 150,
+"type": "single",
+"q": "When a Scrum Team determines that it will not be able to finish the complete forecast, who has to be present when reviewing and adjusting the Sprint work selected? (choose the best answer)",
+"opts": [
+"The Developers.",
+"The Product Owner and all stakeholders.",
+"The Product Owner and the Developers.",
+"The Scrum Master, project manager and Developers."
+],
+"ans": [
+2
+],
+"prev": [],
+"exp": "Khi không kịp hoàn thành dự báo, Developers thương lượng lại phạm vi Sprint với Product Owner (có thể mời Scrum Master). Không cần toàn bộ stakeholders hay Project Manager, và Developers không tự thay đổi một mình. (Lưu ý: Guide 2020 chỉ nói Developers cộng tác với Product Owner.)",
+"tip": "Thay đổi phạm vi Sprint là việc thương lượng giữa Product Owner và Developers, không ai khác bắt buộc có mặt."
+},
+{
+"id": 151,
+"type": "single",
+"q": "As the Scrum Team starts work during the Sprint, it realizes it has selected too much work to finish in the Sprint. What should it do?",
+"opts": [
+"Inform the Product Owner at the Sprint Review, but prior to the demonstration.",
+"Find another Scrum Team to give the excess work to.",
+"As soon as possible in the Sprint, work with the Product Owner to remove some work or Product Backlog items.",
+"Reduce the Definition of Done and get all of the Product Backlog items \"Done\" by the new definition."
+],
+"ans": [
+2
+],
+"prev": [],
+"exp": "Khi nhận ra đã chọn quá nhiều việc, Developers cần làm việc với Product Owner càng sớm càng tốt để đàm phán lại phạm vi Sprint Backlog; Sprint Goal không đổi. Chờ đến Sprint Review là quá muộn, đẩy việc cho team khác không phải cách của Scrum, và giảm Definition of Done làm hỏng chất lượng và tính minh bạch.",
+"tip": "Khi phạm vi bị lệch, hãy chọn đáp án 'trao đổi sớm với Product Owner', tránh đáp án hạ chất lượng hoặc đẩy việc đi."
+},
+{
+"id": 152,
+"type": "multi",
+"q": "Which of the following are roles on a Scrum Team? (choose all that apply)",
+"opts": [
+"Users.",
+"Scrum Master.",
+"Product Owner.",
+"The Developers.",
+"Customers."
+],
+"ans": [
+1,
+2,
+3
+],
+"prev": [],
+"exp": "Scrum Team gồm đúng ba accountability: Scrum Master, Product Owner và Developers. Users và Customers là stakeholders bên ngoài, không thuộc Scrum Team.",
+"tip": "Câu hỏi về thành phần Scrum Team: chỉ chọn Scrum Master, Product Owner, Developers; loại mọi bên ngoài."
+},
+{
+"id": 153,
+"type": "multi",
+"q": "Which two activities will a Product Owner engage in during a Sprint? (choose two)",
+"opts": [
+"Run the Daily Scrum.",
+"Prioritize the Developers work on the Sprint Backlog.",
+"Update management on what is being worked on.",
+"Answer questions from the Developers about items in the current Sprint.",
+"Work with the stakeholders."
+],
+"ans": [
+3,
+4
+],
+"prev": [],
+"exp": "Trong Sprint, Product Owner trả lời câu hỏi của Developers về các Product Backlog item và làm việc với stakeholders. PO không chạy Daily Scrum (đó là việc của Developers), không ra lệnh ưu tiên việc trên Sprint Backlog (do Developers sở hữu), và không có vai trò 'báo cáo cho management'.",
+"tip": "Phân biệt ai sở hữu gì: Product Backlog thuộc PO, Sprint Backlog thuộc Developers; PO hợp tác chứ không chỉ huy."
+},
+{
+"id": 154,
+"type": "multi",
+"q": "What are two good ways for the Developers to make non-functional requirements visible? (choose two)",
+"opts": [
+"Put them on a separate list on the Scrum board, available for all to see.",
+"Add them to the Product Backlog and keep the Product Owner posted on the expected effort.",
+"Run the integration and regression tests before the end of the Sprint, and capture the open work for the Sprint Backlog of the next Sprint.",
+"Add them to the Definition of Done so the work is taken care of every Sprint."
+],
+"ans": [
+1,
+3
+],
+"prev": [],
+"exp": "Yêu cầu phi chức năng nên được minh bạch qua Product Backlog (nếu là việc riêng của một item) và Definition of Done (nếu áp dụng cho mọi Increment). Danh sách riêng trên board hoặc dồn kiểm thử về Sprint sau làm giảm tính minh bạch và để lại nợ kỹ thuật.",
+"tip": "Chọn các cách đưa việc vào artifact chuẩn của Scrum (Product Backlog, Definition of Done), không tạo danh sách ẩn hay dồn việc sang sau."
+},
+{
+"id": 155,
+"type": "multi",
+"q": "Which three questions might be answered by Developers at the Daily Scrum? (choose three)",
+"opts": [
+"How is the Sprint proceeding?",
+"What did I do yesterday that helped the Developers meet the Sprint Goal?",
+"Why were you late?",
+"What will I do today to help the Developers meet the Sprint Goal?",
+"How many hours did I spend on the project yesterday?",
+"What will I be working on tomorrow?",
+"Do I see any impediment that prevents me or the Developers from meeting the Sprint Goal?"
+],
+"ans": [
+1,
+3,
+6
+],
+"prev": [],
+"exp": "Daily Scrum là buổi Developers kiểm tra tiến độ hướng tới Sprint Goal: hôm qua đã làm gì giúp đạt Sprint Goal, hôm nay làm gì, và có trở ngại nào không. Các câu về giờ làm, đi trễ hay 'ngày mai' không phải mục đích của sự kiện.",
+"tip": "Câu hỏi Daily Scrum: chọn đáp án gắn với Sprint Goal và impediment, bỏ các câu kiểu giám sát cá nhân."
+},
+{
+"id": 156,
+"type": "single",
+"q": "What activities would a Product Owner typically undertake in the phase between the end of the current Sprint and the start of the next Sprint?",
+"opts": [
+"There are no such activities. The next Sprint starts immediately after the current Sprint.",
+"Refine the Product Backlog.",
+"Work with the Quality Assurance departments on the Increment of the current Sprint.",
+"Update the project plan with stakeholders."
+],
+"ans": [
+0
+],
+"prev": [],
+"exp": "Scrum Guide 2020: Sprint mới bắt đầu ngay sau khi Sprint trước kết thúc, nên không có khoảng trống giữa các Sprint để làm các hoạt động riêng. Refine Backlog là hoạt động liên tục trong Sprint, không phải 'phase' giữa hai Sprint.",
+"tip": "Nếu câu hỏi giả định một 'pha' hay 'Sprint 0' ngoài Sprint, đáp án thường là không tồn tại."
+},
+{
+"id": 157,
+"type": "single",
+"q": "When does a Developer become accountable for the value of a Product Backlog item selected for the Sprint?",
+"opts": [
+"During the Daily Scrum",
+"Whenever a team member can accommodate more work.",
+"Never. The entire Scrum Team is accountable for creating value every Sprint.",
+"At the Sprint Planning Event."
+],
+"ans": [
+2
+],
+"prev": [],
+"exp": "Theo Scrum Guide, cả Scrum Team cùng chịu trách nhiệm tạo ra Increment có giá trị mỗi Sprint; không có thời điểm nào một Developer riêng lẻ nhận trách nhiệm cho một item. (Lưu ý: Guide nói Developers chịu trách nhiệm tạo Increment dùng được, nhưng toàn Scrum Team chịu trách nhiệm về giá trị.)",
+"tip": "Scrum nhấn mạnh trách nhiệm tập thể của team, nên tránh đáp án gán trách nhiệm cho cá nhân."
+},
+{
+"id": 158,
+"type": "single",
+"q": "Every Developer should have:",
+"opts": [
+"At least one representative from each major software engineering discipline (like QA, Dev, UX).",
+"The competencies and skills needed to deliver a Done Increment in a Sprint.",
+"One Lead Developer and no more than 8 other members."
+],
+"ans": [
+1
+],
+"prev": [],
+"exp": "Developers cùng nhau phải có đủ năng lực và kỹ năng để tạo ra Increment Done trong Sprint (cross-functional). Scrum không yêu cầu đại diện từng chuyên ngành, không có Lead Developer hay phân cấp.",
+"tip": "Chọn đáp án nói về năng lực của cả nhóm, loại đáp án về chức danh, phân cấp hoặc quy tắc cứng."
+},
+{
+"id": 159,
+"type": "single",
+"q": "Which best describes the Product Backlog?",
+"opts": [
+"It is allowed to grow and change as more is learned about the product and its customers.",
+"It provides just enough information to enable a Scrum team to start the design phase of a product.",
+"It contains all foreseeable tasks and requirements from which the Scrum team can develop and maintain a complete project plan.",
+"It is baselined to follow change management processes."
+],
+"ans": [
+0
+],
+"prev": [],
+"exp": "Product Backlog là danh sách thay đổi liên tục, được cập nhật khi hiểu rõ hơn về sản phẩm và khách hàng. Nó không phải baseline hay kế hoạch dự án đầy đủ và không phải 'điểm xuất phát' của pha thiết kế.",
+"tip": "Product Backlog 'sống', phát triển theo hiểu biết; loại đáp án mang tính cố định, đóng băng hoặc waterfall."
+},
+{
+"id": 160,
+"type": "single",
+"q": "Who has the final decision about the order of items in the Product Backlog? (choose the best answer)",
+"opts": [
+"The Stakeholders.",
+"The Product Owner.",
+"The Scrum Team.",
+"The Scrum Master.",
+"The Developers."
+],
+"ans": [
+1
+],
+"prev": [],
+"exp": "Product Owner chịu trách nhiệm sắp xếp thứ tự Product Backlog và có quyết định cuối cùng; stakeholders, Developers hay Scrum Master chỉ đóng góp ý kiến. Mọi người phải tôn trọng quyết định của PO.",
+"tip": "Ai có 'quyết định cuối' về giá trị và thứ tự Product Backlog: luôn là Product Owner."
+},
+{
+"id": 161,
+"type": "multi",
+"q": "Which are properties of the Daily Scrum? (choose two)",
+"opts": [
+"It is facilitated by the team lead.",
+"It is held first thing in the morning.",
+"It is fifteen minutes or less in duration.",
+"It is free from and designed to promote conversation.",
+"It consists of the Scrum Master asking the Team members the three questions.",
+"Its location and time remain constant."
+],
+"ans": [
+2,
+5
+],
+"prev": [],
+"exp": "Daily Scrum giới hạn 15 phút và được tổ chức cùng giờ, cùng địa điểm mỗi ngày làm việc để giảm độ phức tạp. Nó do Developers tổ chức (không có team lead), không bắt buộc buổi sáng, không có câu hỏi cố định do Scrum Master hỏi.",
+"tip": "Tìm các thuộc tính trong Guide (15 phút, cố định giờ/địa điểm); loại đáp án áp đặt người điều hành hay giờ cố định tùy ý."
+},
+{
+"id": 162,
+"type": "single",
+"q": "What is the accountability of the Product Owner during Sprint 0? (choose the best answer)",
+"opts": [
+"There is no such thing as Sprint 0.",
+"Gathering, eliciting, and analyzing the requirements that will be inserted into the Product Backlog.",
+"Make the complete project plan to commit date, budget, and scope to the stakeholders.",
+"Determine the composition of the Developers so they have the capacity to deliver the completed forecast.",
+"Make sure enough Product Backlog items are refined to fill the first 3 Sprints."
+],
+"ans": [
+0
+],
+"prev": [],
+"exp": "Scrum không có khái niệm 'Sprint 0' hay pha chuẩn bị riêng; mọi Sprint đều hướng tới Increment Done. Các đáp án còn lại là hoạt động kiểu dự án truyền thống.",
+"tip": "Gặp thuật ngữ không có trong Scrum Guide (Sprint 0, hardening Sprint) thì đáp án là 'không tồn tại'."
+},
+{
+"id": 163,
+"type": "single",
+"q": "In accordance with Scrum theory, how should a group of 100 people be divided into multiple Scrum Teams?",
+"opts": [
+"Understanding the product, the product vision and the rules of the Scrum framework, the group divides itself into teams.",
+"It doesn't really matter because you can rotate the teams every Sprint to spread knowledge.",
+"Check with the allocation department to see who has worked together before and make these the first teams.",
+"Create a matrix of skills, seniority, and level of experience to assign people to teams."
+],
+"ans": [
+0
+],
+"prev": [],
+"exp": "Scrum dựa trên self-management: khi hiểu sản phẩm, tầm nhìn và luật Scrum, nhóm tự chia thành các Scrum Team. Phân công từ bên ngoài bằng ma trận hay phòng ban đi ngược lại tinh thần tự quản. (Lưu ý: Guide 2020 không quy định cách chia nhóm cụ thể.)",
+"tip": "Ưu tiên đáp án để team tự tổ chức, tránh đáp án quản lý chỉ định."
+},
+{
+"id": 164,
+"type": "single",
+"q": "Who is accountable for tracking the remaining work toward the Sprint Goal? (choose the best answer)",
+"opts": [
+"The Developers.",
+"The Scrum Master.",
+"The Product Owner.",
+"The Project Manager."
+],
+"ans": [
+0
+],
+"prev": [],
+"exp": "Developers là người chịu trách nhiệm lập Sprint Backlog và theo dõi tiến độ còn lại hướng tới Sprint Goal. PO và Scrum Master có thể hỗ trợ nhưng không chịu trách nhiệm; Scrum không có Project Manager.",
+"tip": "Việc quản lý công việc trong Sprint thuộc về Developers; loại Project Manager vì không có trong Scrum."
+},
+{
+"id": 165,
+"type": "single",
+"q": "When must a Product Owner release each Increment? (choose the best answer)",
+"opts": [
+"When it makes sense.",
+"When the Scrum Team finishes their work.",
+"Whenever the product is free of defects.",
+"After every Sprint, Without exception."
+],
+"ans": [
+0
+],
+"prev": [],
+"exp": "Product Owner quyết định khi nào phát hành, có thể trong Sprint hoặc sau Sprint, tùy việc có hợp lý hay không. Scrum không bắt buộc phát hành sau mỗi Sprint và cũng không đòi hỏi 'không còn lỗi' như điều kiện.",
+"tip": "Quyết định phát hành thuộc PO và theo 'khi hợp lý'; tránh đáp án mang tính tuyệt đối ('luôn luôn', 'không ngoại lệ')."
+},
+{
+"id": 166,
+"type": "multi",
+"q": "What are two good ways for a Scrum Team to ensure security concerns are satisfied? (choose two)",
+"opts": [
+"Postpone the work until a specialist can perform a security audit and create a list of security-related Product Backlog items.",
+"Add security concerns to the Definition of Done.",
+"Add a Sprint to specifically resolve all security concerns.",
+"Delegate the work to the concerned department.",
+"Have the Scrum Team create Product Backlog items for each concern."
+],
+"ans": [
+1,
+4
+],
+"prev": [],
+"exp": "Mối quan tâm về bảo mật được xử lý bằng cách đưa vào Definition of Done (nếu áp dụng cho mọi item) và/hoặc tạo Product Backlog item riêng. Hoãn việc, tạo Sprint riêng hay giao cho phòng ban khác làm mất tính minh bạch và không giữ Increment luôn Done.",
+"tip": "Việc liên quan chất lượng/bảo mật: chọn Definition of Done hoặc Product Backlog, tránh hoãn hoặc giao ra ngoài."
+},
+{
+"id": 167,
+"type": "single",
+"q": "What is the recommended size for a Scrum Team? (choose the best answer)",
+"opts": [
+"At least 7.",
+"9.",
+"10 or fewer.",
+"7 plus or minus 3."
+],
+"ans": [
+2
+],
+"prev": [],
+"exp": "Scrum Guide 2020: Scrum Team thường có 10 người hoặc ít hơn, nhỏ để nhanh nhẹn và đủ lớn để hoàn thành việc có ý nghĩa. Các con số 'ít nhất 7' hay '7 ± 3' là cách nói cũ.",
+"tip": "Nhớ con số theo Guide 2020: 10 người hoặc ít hơn."
+},
+{
+"id": 168,
+"type": "single",
+"q": "How do you know that a Scrum Team is cross-functional?",
+"opts": [
+"Scrum Team has all the skills to create a potentially releasable Increment by the end of every Sprint.",
+"A few of the Developers pair program and do Test Driven Development.",
+"There are no conflicts within the Scrum Team.",
+"Every member of the Scrum Team is able to perform every task."
+],
+"ans": [
+0
+],
+"prev": [],
+"exp": "Cross-functional nghĩa là cả Scrum Team có đủ kỹ năng để tạo Increment sử dụng được vào cuối mỗi Sprint; không có nghĩa mọi người làm được mọi việc. Pair programming hay TDD là thực hành kỹ thuật, không định nghĩa cross-functional.",
+"tip": "Cross-functional xét ở cấp team (đủ năng lực tạo Increment), không xét ở cấp cá nhân."
+},
+{
+"id": 169,
+"type": "multi",
+"q": "Select two ways in which technical debt impacts transparency. (choose two)",
+"opts": [
+"When calculated and estimated, the total amount of technical debt shows exactly how long until the Product Owner can release the Increment.",
+"It leads to false assumptions about the current state of the system, specifically of an Increment being releasable at the end of a Sprint.",
+"As development progresses and code is added, the system becomes more difficult to stabilize, which results in future work being slowed down in unpredictable ways.",
+"It enhances transparency for the Product Owner as a Developers are not allowed to do additional feature development in a Sprint as long as there is technical debt."
+],
+"ans": [
+1,
+2
+],
+"prev": [],
+"exp": "Nợ kỹ thuật làm giảm tính minh bạch: tạo ra giả định sai rằng Increment đã có thể phát hành, và làm hệ thống khó ổn định, khiến công việc sau bị chậm một cách khó đoán. Nó không cho biết chính xác thời điểm phát hành và Scrum không cấm làm tính năng khi còn nợ.",
+"tip": "Câu về technical debt: chọn đáp án nói nó che giấu trạng thái thực và làm giảm khả năng dự đoán."
+},
+{
+"id": 170,
+"type": "multi",
+"q": "The Developers are required to deliver a done Increment by the end of a Sprint. Select two statements that explain what \"Done\" means. (choose two)",
+"opts": [
+"All work the Developers are willing to do.",
+"Ready for integration.",
+"No work left from the Definition of Done.",
+"Whatever the Product Owner defines as quality.",
+"All work to create software that is ready to be released to end users."
+],
+"ans": [
+2,
+4
+],
+"prev": [],
+"exp": "'Done' nghĩa là Increment thỏa mãn Definition of Done, tức không còn việc nào còn lại từ Definition of Done, sẵn sàng phát hành. 'Sẵn sàng tích hợp' hay 'việc Developers muốn làm' thì chưa đủ, và PO không tự định nghĩa chất lượng một mình.",
+"tip": "'Done' bám vào Definition of Done và trạng thái sẵn sàng phát hành, không phải tiêu chuẩn cá nhân hay một phần công việc."
+},
+{
+"id": 171,
+"type": "multi",
+"q": "Which of the following are true about the length of the Sprint? (choose two)",
+"opts": [
+"The length of the Sprint should be proportional to the work that is done in between Sprints.",
+"It is best to have Sprints of consistent length throughout a development effort.",
+"Sprint length is determined during Sprint Planning, and should hold the time it will take to code the planned features in the upcoming Sprint, but does not include time for any testing.",
+"Sprint length is determined during Sprint Planning, and should be long enough to make sure the Developers can deliver what is to be accomplished in the upcoming Sprint.",
+"All Sprints must be 1 month or less."
+],
+"ans": [
+1,
+4
+],
+"prev": [],
+"exp": "Sprint là sự kiện có độ dài cố định, tối đa một tháng, và nên giữ độ dài nhất quán để có nhịp ổn định. Độ dài không được quyết định trong Sprint Planning theo khối lượng việc, và vẫn phải gồm cả kiểm thử. (Lưu ý: Guide 2020 nói Sprint 'một tháng hoặc ngắn hơn' và cố định; 'nhất quán' là thực hành tốt.)",
+"tip": "Về Sprint: chọn các ràng buộc cứng (tối đa 1 tháng, cố định) và nhịp nhất quán; loại đáp án quy độ dài theo khối lượng việc."
+},
+{
+"id": 172,
+"type": "single",
+"q": "What may be included in the Sprint Backlog? (choose the best answer)",
+"opts": [
+"User Stories.",
+"Tasks.",
+"Use Cases.",
+"Tests.",
+"Any of the above (or others) which are a decomposition of the selected Product Backlog items."
+],
+"ans": [
+4
+],
+"prev": [],
+"exp": "Sprint Backlog gồm Sprint Goal, các Product Backlog item được chọn và kế hoạch thực hiện; Developers tự chọn cách phân rã (task, user story, test...). Scrum không quy định một định dạng duy nhất.",
+"tip": "Khi các lựa chọn đều hợp lý và có đáp án 'tất cả các ý trên', Scrum không áp đặt định dạng nên hãy chọn đáp án bao quát."
+},
+{
+"id": 173,
+"type": "single",
+"q": "Developers include which role(s)?",
+"opts": [
+"No other roles. Developers is one of the 3 accountabilities in Scrum.",
+"Testers.",
+"Business Analysts.",
+"Software Architects."
+],
+"ans": [
+0
+],
+"prev": [],
+"exp": "Scrum chỉ có accountability 'Developers', không có chức danh phụ như tester, business analyst hay architect trong Scrum Team. Developers là bất kỳ ai tạo ra phần nào của Increment.",
+"tip": "Scrum không có sub-role hay chức danh bên trong Developers."
+},
+{
+"id": 174,
+"type": "single",
+"q": "The Sprint Backlog must be detailed enough that...",
+"opts": [
+"every task is identified when the Sprint Backlog is first created.",
+"changes in progress can be understood in the Daily Scrum.",
+"the Product Owner can understand what everyone is working on.",
+"stakeholders can monitor progress at task level."
+],
+"ans": [
+1
+],
+"prev": [],
+"exp": "Sprint Backlog phải đủ chi tiết để Developers có thể kiểm tra tiến độ và hiểu các thay đổi trong Daily Scrum. Nó không cần mọi task từ đầu (có thể phát sinh trong Sprint) và không phải công cụ theo dõi cho PO hay stakeholders ở cấp task.",
+"tip": "Sprint Backlog phục vụ Developers tự quản lý; loại đáp án hướng đến giám sát từ bên ngoài."
+},
+{
+"id": 175,
+"type": "single",
+"q": "True or False: The Scrum Master is accountable for the Product Backlog.",
+"opts": [
+"True.",
+"False."
+],
+"ans": [
+1
+],
+"prev": [],
+"exp": "Product Owner mới là người chịu trách nhiệm về Product Backlog, kể cả nội dung, thứ tự và sự minh bạch. Scrum Master chỉ giúp các kỹ thuật quản lý Product Backlog hiệu quả.",
+"tip": "Product Backlog luôn gắn với Product Owner; Scrum Master hỗ trợ, không sở hữu."
+},
+{
+"id": 176,
+"type": "single",
+"q": "True or False: A Scrum Team uses 2 weeks Sprints and time box their Sprint Planning to 6 hours. Does this break the rules of Scrum?",
+"opts": [
+"True.",
+"False."
+],
+"ans": [
+1
+],
+"prev": [],
+"exp": "Scrum Guide đặt giới hạn tối đa 8 giờ cho Sprint Planning của Sprint một tháng và nói rằng Sprint ngắn hơn thì thường ngắn hơn. Vì chỉ là giới hạn tối đa và dùng chữ 'usually', 6 giờ cho Sprint 2 tuần không vi phạm luật cứng. (Lưu ý: tuy vậy 6 giờ là khá dài so với Sprint 2 tuần.)",
+"tip": "Time-box là mức tối đa; chỉ coi là vi phạm khi vượt quá tối đa."
+},
+{
+"id": 177,
+"type": "single",
+"q": "Who is accountable for ensuring that the burn-down chart and gantt chart exist?",
+"opts": [
+"No one.",
+"The Developers.",
+"The Product Owner.",
+"The Scrum Master."
+],
+"ans": [
+0
+],
+"prev": [],
+"exp": "Scrum Guide không đề cập burn-down chart hay Gantt chart, nên không ai chịu trách nhiệm đảm bảo chúng tồn tại. Chúng chỉ là công cụ tùy chọn mà team có thể dùng để tăng tính minh bạch.",
+"tip": "Công cụ/biểu đồ không có trong Guide thì không ai bị bắt buộc; đáp án thường là 'không ai'."
+},
+{
+"id": 178,
+"type": "single",
+"q": "True or False: By the end of the Sprint Retrospective, the Scrum Team should have identified and planned improvements to increase its effectiveness.",
+"opts": [
+"True.",
+"False."
+],
+"ans": [
+0
+],
+"prev": [],
+"exp": "Mục đích của Sprint Retrospective là lập kế hoạch cách tăng chất lượng và hiệu quả; Scrum Team xác định các cải tiến hữu ích nhất và nên đưa vào Sprint Backlog kế tiếp. Vì vậy đến cuối sự kiện team đã xác định và lên kế hoạch cải tiến.",
+"tip": "Retrospective luôn kết thúc với các cải tiến cụ thể, hành động được."
+},
+{
+"id": 179,
+"type": "single",
+"q": "The Scrum Master is a leader and servant in service to which of the following?",
+"opts": [
+"The organisation and Scrum Team.",
+"The Product Owner.",
+"The Developers."
+],
+"ans": [
+0
+],
+"prev": [],
+"exp": "Scrum Master là true leader phục vụ Scrum Team và cả tổ chức: hỗ trợ Product Owner, Developers và giúp tổ chức áp dụng Scrum. Phục vụ chỉ riêng PO hay Developers là quá hẹp.",
+"tip": "Scrum Master phục vụ ở cả ba cấp: Product Owner, Developers và tổ chức; chọn đáp án bao quát nhất."
+},
+{
+"id": 180,
+"type": "single",
+"q": "The Product Owner manages...",
+"opts": [
+"the Developers.",
+"the Scrum Team.",
+"the Project.",
+"the Product Backlog."
+],
+"ans": [
+3
+],
+"prev": [],
+"exp": "Product Owner quản lý Product Backlog (tối đa hóa giá trị sản phẩm). Scrum không có quản lý dự án, và PO không quản lý Developers hay Scrum Team vì team tự quản.",
+"tip": "Từ 'manage' trong Scrum gắn với Product Backlog, không gắn với con người."
+},
+{
+"id": 181,
+"type": "multi",
+"q": "Management need to monitor progress on a daily basis and decide to do so by attending the Daily Scrum. What are the likely results? (choose three)",
+"opts": [
+"Management will be able to better direct the work of the Developers.",
+"Additional facilitation may be required to keep to the time-box.",
+"Developers may end up with less time in the Daily Scrum to re-plan their work.",
+"Developers may be less open and transparent during the Daily Scrum."
+],
+"ans": [
+1,
+2,
+3
+],
+"prev": [],
+"exp": "Nếu management dự Daily Scrum để giám sát, Developers có thể bớt cởi mở và minh bạch, mất thời gian tái lập kế hoạch và cần thêm facilitation để giữ time-box. Management không thể 'chỉ đạo tốt hơn' vì Developers tự quản lý.",
+"tip": "Câu hỏi về người ngoài tham dự: dự đoán tác động xấu đến sự cởi mở và time-box, không phải lợi ích điều hành."
+},
+{
+"id": 182,
+"type": "single",
+"q": "True or False: The Product Owner must attend the Sprint Retrospective.",
+"opts": [
+"True.",
+"False."
+],
+"ans": [
+0
+],
+"prev": [],
+"exp": "Scrum Guide 2020: Sprint Retrospective do cả Scrum Team tham dự, bao gồm Product Owner. Vì vậy PO phải tham gia.",
+"tip": "Retrospective là sự kiện của cả Scrum Team."
+},
+{
+"id": 183,
+"type": "single",
+"q": "True or False: A Scrum Team must only work on a single Product Goal at any time.",
+"opts": [
+"True.",
+"False."
+],
+"ans": [
+0
+],
+"prev": [],
+"exp": "Scrum Team tập trung vào một Product Goal tại một thời điểm; phải hoàn thành hoặc từ bỏ goal này trước khi làm Product Goal tiếp theo. Mỗi Sprint hướng tới một Sprint Goal duy nhất cho Product Goal đó.",
+"tip": "Scrum nhấn mạnh sự tập trung: một Product Goal, một Sprint Goal."
+},
+{
+"id": 184,
+"type": "single",
+"q": "True or False: The Definition of Done is a mandatory part of Scrum.",
+"opts": [
+"True.",
+"False."
+],
+"ans": [
+0
+],
+"prev": [],
+"exp": "Definition of Done là cam kết (commitment) của Increment, bắt buộc phải có. Nếu tổ chức chưa có chuẩn, Scrum Team phải tạo Definition of Done phù hợp cho sản phẩm.",
+"tip": "Mỗi artifact có một commitment bắt buộc: Product Goal, Sprint Goal, Definition of Done."
+},
+{
+"id": 185,
+"type": "single",
+"q": "True or False: The Scrum Master must facilitate the Daily Scrum.",
+"opts": [
+"True.",
+"False."
+],
+"ans": [
+1
+],
+"prev": [],
+"exp": "Daily Scrum do Developers tổ chức và chịu trách nhiệm; Scrum Master chỉ đảm bảo sự kiện diễn ra và tuân thủ time-box, và có thể dạy Developers cách làm. Scrum Master không bắt buộc facilitate.",
+"tip": "Daily Scrum thuộc về Developers; Scrum Master hỗ trợ chứ không điều hành."
+},
+{
+"id": 186,
+"type": "multi",
+"q": "Among the Developers, there is nobody with significant testing expertise. They should...",
+"opts": [
+"request for a specialist tester to join them and queue testing for them to do when they arrive in a later Sprint.",
+"produce an Increment that will be tested by a dedicated test team after the Sprint to guarantee the quality.",
+"raise this as an impediment which may require the assistance of the Scrum Master to resolve.",
+"quality is the responsibility of the Developers and they should undertake testing themselves to the best of their abilities."
+],
+"ans": [
+2,
+3
+],
+"prev": [],
+"exp": "Chất lượng là trách nhiệm của Developers, nên họ phải tự kiểm thử hết khả năng, và nếu thiếu kỹ năng thì nêu thành impediment để Scrum Master giúp giải quyết. Đẩy kiểm thử sang Sprint sau hay nhóm test riêng phá vỡ Increment Done.",
+"tip": "Thiếu kỹ năng: Developers tự chịu trách nhiệm và nêu impediment; không đẩy việc sang sau hay nhóm khác."
+},
+{
+"id": 187,
+"type": "single",
+"q": "True or False: The Sprint Planning event is comprised of 2 parts and the Product Owner is not needed at the 2nd part.",
+"opts": [
+"True.",
+"False."
+],
+"ans": [
+1
+],
+"prev": [],
+"exp": "Scrum Guide 2020 mô tả Sprint Planning gồm ba chủ đề (Why, What, How), không còn chia hai phần, và Product Owner là một phần của Scrum Team tham dự cả sự kiện. Vì vậy phát biểu này sai.",
+"tip": "Chú ý các phát biểu theo Guide cũ (chia 2 phần); Guide 2020 dùng ba chủ đề và cả Scrum Team tham gia."
+},
+{
+"id": 188,
+"type": "single",
+"q": "Product Backlog refinement is...",
+"opts": [
+"carried out once per Sprint.",
+"a Scrum event.",
+"the concern of the Product Owner.",
+"an ongoing process in which the Product Owner and the Developers collaborate."
+],
+"ans": [
+3
+],
+"prev": [],
+"exp": "Product Backlog refinement là hoạt động liên tục, nơi Product Owner và Developers cộng tác để làm rõ, chia nhỏ và ước lượng item. Nó không phải một Scrum event, không chỉ làm một lần mỗi Sprint và không chỉ là việc của PO.",
+"tip": "Refinement là hoạt động, không phải event, và cần cộng tác giữa Product Owner và Developers."
+},
+{
+"id": 189,
+"type": "single",
+"q": "An Increment is...",
+"opts": [
+"all work that has happened up to the current point in time.",
+"all work completed up to now, where there are no bugs present.",
+"all work that was carried out in the Sprint.",
+"the sum of the Done work during a Sprint, plus the work Done in earlier Sprints."
+],
+"ans": [
+3
+],
+"prev": [],
+"exp": "Increment là tổng các item Product Backlog Done trong Sprint cộng với các Increment của những Sprint trước, và phải dùng được. Không phải mọi công việc đã làm hay 'không có lỗi', chỉ những gì đạt Definition of Done.",
+"tip": "Increment = công việc Done cộng dồn; loại đáp án dùng từ 'mọi công việc' hoặc 'không có bug'."
+},
+{
+"id": 190,
+"type": "single",
+"q": "Which statement best describes a cross-functional team?",
+"opts": [
+"The team has all competencies needed to accomplish the work.",
+"The team has a good mix of skills.",
+"All members of the team have all the skills required to create the Product."
+],
+"ans": [
+0
+],
+"prev": [],
+"exp": "Cross-functional nghĩa là team có đủ mọi năng lực cần thiết để hoàn thành công việc, không phải mỗi cá nhân đều làm mọi thứ. 'Mix kỹ năng tốt' thì mơ hồ, chưa đảm bảo đủ năng lực.",
+"tip": "Chọn mức team ('có tất cả năng lực'), không chọn mức cá nhân."
+},
+{
+"id": 191,
+"type": "single",
+"q": "The result of the Sprint Review is...",
+"opts": [
+"incomplete Product Backlog Items have been reviewed and returned to the top of the Product Backlog.",
+"the Increment has been demonstrated to Stakeholders.",
+"a revised Product Backlog that defines the probable Product Backlog items for the next Sprint.",
+"acceptance (or rejection) of all Product Backlog Items."
+],
+"ans": [
+2
+],
+"prev": [],
+"exp": "Kết quả của Sprint Review là Product Backlog được điều chỉnh, xác định các item có thể làm trong Sprint tới, dựa trên phản hồi. Demo chỉ là phương tiện, và Scrum không có bước 'chấp nhận/từ chối' hàng loạt các item.",
+"tip": "Output của Sprint Review là Product Backlog điều chỉnh, không phải demo hay nghiệm thu."
+},
+{
+"id": 192,
+"type": "single",
+"q": "The Product Owner is using burn-up charts instead of burn-down charts. What would your response be as Scrum Master?",
+"opts": [
+"There's nothing wrong with it.",
+"Burn-up charts are used in traditional methods and should be replaced by burn-down charts."
+],
+"ans": [
+0
+],
+"prev": [],
+"exp": "Scrum Guide không quy định công cụ theo dõi tiến độ; burn-up hay burn-down đều được dùng để tăng minh bạch, miễn không thay thế việc kiểm tra thực tế. Do đó không có gì sai.",
+"tip": "Công cụ không được Guide quy định thì tùy chọn, 'không có gì sai'."
+},
+{
+"id": 193,
+"type": "single",
+"q": "True or False: The Scrum Master manages the Scrum Team.",
+"opts": [
+"True.",
+"False."
+],
+"ans": [
+1
+],
+"prev": [],
+"exp": "Scrum Master không quản lý Scrum Team; team tự quản. Scrum Master là leader phục vụ: huấn luyện, loại bỏ trở ngại và giúp Scrum hiệu quả.",
+"tip": "Scrum Master là coach/servant-leader, không phải manager."
+},
+{
+"id": 194,
+"type": "single",
+"q": "The Scrum Master is responsible for?",
+"opts": [
+"Delivering the Product on budget and to the agreed schedule.",
+"Ensuring Scrum is understood.",
+"Solving all impediments, blockers & issues.",
+"Coordinating the work of the Developers."
+],
+"ans": [
+1
+],
+"prev": [],
+"exp": "Scrum Master chịu trách nhiệm đảm bảo Scrum được hiểu và áp dụng, thể hiện qua việc huấn luyện team và tổ chức. Không chịu trách nhiệm về ngân sách/lịch (PO/team), không tự giải mọi impediment và không điều phối công việc của Developers.",
+"tip": "Scrum Master lo cho quy trình Scrum, không lo kết quả giao hàng hay điều phối việc."
+},
+{
+"id": 195,
+"type": "single",
+"q": "A Scrum Team has how many specific accountabilities?",
+"opts": [
+"1.",
+"4.",
+"2.",
+"3."
+],
+"ans": [
+3
+],
+"prev": [],
+"exp": "Scrum Guide 2020 định nghĩa ba accountability trong Scrum Team: Developers, Product Owner và Scrum Master.",
+"tip": "Nhớ con số: 3 accountability, 5 events, 3 artifacts."
+},
+{
+"id": 196,
+"type": "single",
+"q": "Who is responsible for monitoring the progress of work during a Sprint?",
+"opts": [
+"Project Manager.",
+"Product Owner.",
+"Scrum Master.",
+"Developers."
+],
+"ans": [
+3
+],
+"prev": [],
+"exp": "Developers chịu trách nhiệm quản lý công việc trong Sprint, gồm theo dõi tiến độ hướng tới Sprint Goal. Scrum không có Project Manager; PO và Scrum Master không giữ vai trò theo dõi này.",
+"tip": "Theo dõi tiến độ Sprint: Developers."
+},
+{
+"id": 197,
+"type": "single",
+"q": "True or False: During Sprint Planning, every task must be estimated so the Developers can be sure they have the capacity to complete them in the Sprint.",
+"opts": [
+"True.",
+"False."
+],
+"ans": [
+1
+],
+"prev": [],
+"exp": "Developers không buộc phải ước lượng từng task; họ chọn lượng việc phù hợp dựa trên năng lực và hiểu biết (forecast) và có thể tự điều chỉnh trong Sprint. Scrum không quy định ước lượng ở cấp task.",
+"tip": "Tránh đáp án 'bắt buộc' không có trong Guide; Scrum cho Developers tự chọn cách lập kế hoạch."
+},
+{
+"id": 198,
+"type": "single",
+"q": "Who may be best positioned to decide who will be the Scrum Master for a new Scrum Team?",
+"opts": [
+"The Developers and the Product Owner.",
+"The Developers.",
+"The Product Owner.",
+"Stakeholders."
+],
+"ans": [
+0
+],
+"prev": [],
+"exp": "Theo mark của đề, Developers và Product Owner cùng tham gia chọn Scrum Master là hợp lý vì họ là những người được Scrum Master phục vụ trực tiếp. (Lưu ý: Scrum Guide 2020 không quy định ai chọn Scrum Master; stakeholders thì chắc chắn không phải nhóm chính.)",
+"tip": "Chọn đáp án có sự tham gia của những người trực tiếp làm việc cùng, thay vì bên ngoài."
+},
+{
+"id": 199,
+"type": "single",
+"q": "The Daily Scrum is consistently taking longer than 15 minutes. Which statement best describes what should be done?",
+"opts": [
+"A 2nd Daily Scrum should be held at the end of the day.",
+"The Scrum Master should help the Developers understand why the 15 minute time-box should be respected and help them find ways to do it as required.",
+"Developers should leave at the end of the 15 minutes.",
+"The Developers should take the additional time that they need in the Daily Scrum."
+],
+"ans": [
+1
+],
+"prev": [],
+"exp": "Khi Daily Scrum vượt 15 phút, Scrum Master giúp Developers hiểu vì sao cần giữ time-box và tìm cách tuân thủ. Tăng thời gian, thêm buổi thứ hai hay bắt rời đi không giải quyết nguyên nhân.",
+"tip": "Với vấn đề của team: Scrum Master coach nguyên nhân, không áp đặt hay nới time-box."
+},
+{
+"id": 200,
+"type": "single",
+"q": "True or False: A Scrum Team must be 10 or fewer people.",
+"opts": [
+"True.",
+"False."
+],
+"ans": [
+1
+],
+"prev": [],
+"exp": "Scrum Guide chỉ nói Scrum Team 'thường' có 10 người hoặc ít hơn, đây là khuyến nghị chứ không phải luật cứng. Nếu quá lớn thì nên cân nhắc chia thành nhiều Scrum Team.",
+"tip": "'Typically' khác 'must': khuyến nghị không phải quy tắc bắt buộc."
+},
+{
+"id": 201,
+"type": "single",
+"q": "True or False: A Scrum Team must never have any technical debt.",
+"opts": [
+"True.",
+"False."
+],
+"ans": [
+1
+],
+"prev": [],
+"exp": "Sai. Scrum Guide không yêu cầu không có technical debt; nó chỉ yêu cầu Increment đạt Definition of Done và minh bạch về chất lượng. Technical debt có thể tồn tại nhưng cần được nhìn thấy và quản lý.",
+"tip": "Gặp các câu tuyệt đối như 'must never/always', hãy nghi ngờ vì Scrum Guide hiếm khi dùng quy tắc cực đoan."
+},
+{
+"id": 202,
+"type": "single",
+"q": "True or False: During Sprint Planning, all Product Backlog Items must be decomposed to a definitive set of tasks for the Developers to complete.",
+"opts": [
+"True.",
+"False."
+],
+"ans": [
+1
+],
+"prev": [],
+"exp": "Sai. Sprint Planning tạo Sprint Backlog gồm Sprint Goal, các PBI được chọn và kế hoạch thực hiện; Developers chỉ cần đủ kế hoạch cho những ngày đầu, phần việc còn lại được phân rã dần khi làm. Không cần phân rã mọi PBI thành tasks cố định.",
+"tip": "Scrum thích kế hoạch emergent, nên đáp án 'phải chi tiết đầy đủ ngay từ đầu' thường là sai."
+},
+{
+"id": 203,
+"type": "single",
+"q": "True or False: The Increment must be released at the end of every Sprint.",
+"opts": [
+"True.",
+"False."
+],
+"ans": [
+1
+],
+"prev": [],
+"exp": "Sai. Mỗi Sprint tạo ra ít nhất một Increment, nhưng Increment có thể được release trong Sprint hoặc sau Sprint Review; việc release không bắt buộc cuối mỗi Sprint. Điều bắt buộc là Increment sử dụng được và đạt Definition of Done.",
+"tip": "Phân biệt 'Increment phải sẵn sàng/usable' với 'phải release'; Scrum chỉ yêu cầu vế đầu."
+},
+{
+"id": 204,
+"type": "single",
+"q": "True or False: Developers should be set stretch goals by the Product Owner as part of Sprint Planning.",
+"opts": [
+"True.",
+"False."
+],
+"ans": [
+1
+],
+"prev": [],
+"exp": "Sai. Scrum Guide không có khái niệm stretch goals do Product Owner đặt; Developers tự cam kết Sprint Goal và tự chọn lượng việc. Product Owner không ép thêm việc cho Developers.",
+"tip": "Câu nào cho Product Owner áp đặt khối lượng việc lên Developers thì trái với self-management."
+},
+{
+"id": 205,
+"type": "single",
+"q": "True or False: During the Daily Scrum, the Developers must answer the \"3 questions\".",
+"opts": [
+"True.",
+"False."
+],
+"ans": [
+1
+],
+"prev": [],
+"exp": "Sai. Scrum Guide 2020 bỏ 3 câu hỏi bắt buộc; Developers tự chọn cấu trúc và kỹ thuật miễn tập trung vào tiến độ hướng tới Sprint Goal. 3 câu hỏi chỉ là ví dụ cũ.",
+"tip": "Nhớ rằng Guide 2020 giảm bớt cấu trúc quy định, nên 'must follow a fixed format' thường sai."
+},
+{
+"id": 206,
+"type": "single",
+"q": "Select the correct timebox for each Scrum event.",
+"opts": [
+"Sprint Planning - 8 hours, Daily Scrum - 30 minutes, Sprint Review - 4 hours, Sprint Retrospective - 3 hours.",
+"Sprint Planning - 4 hours, Daily Scrum - 15 minutes, Sprint Review - 4 hours, Sprint Retrospective - 4 hours.",
+"Sprint Planning - 4 hours, Daily Scrum - 15 minutes, Sprint Review - 8 hours, Sprint Retrospective - 4 hours.",
+"Sprint Planning - 8 hours, Daily Scrum - 15 minutes, Sprint Review - 4 hours, Sprint Retrospective - 3 hours."
+],
+"ans": [
+3
+],
+"prev": [],
+"exp": "Với Sprint 1 tháng: Sprint Planning tối đa 8 giờ, Daily Scrum 15 phút, Sprint Review 4 giờ, Sprint Retrospective 3 giờ. Các phương án khác lẫn lộn con số này.",
+"tip": "Học thuộc bộ 8-15p-4-3 (Planning/Daily/Review/Retro) rồi loại đáp án sai từng số."
+},
+{
+"id": 207,
+"type": "single",
+"q": "True or False: The Scrum Master can be removed once Scrum is adopted.",
+"opts": [
+"True.",
+"False."
+],
+"ans": [
+1
+],
+"prev": [],
+"exp": "Sai. Scrum Master là một accountability bắt buộc trong Scrum Team, giúp duy trì hiệu quả của Scrum, không phải vai trò chỉ cần lúc đầu. Bỏ Scrum Master thì không còn Scrum đầy đủ.",
+"tip": "Các vai trò Scrum không bị coi là 'tạm thời'; đáp án cho phép bỏ một accountability thường sai."
+},
+{
+"id": 208,
+"type": "multi",
+"q": "Who can do the work to ensure the Product Backlog is refined to a state that it is useful?",
+"opts": [
+"The Business Analyst.",
+"Stakeholders.",
+"The Developers, with support from the Product Owner who is still accountable for it.",
+"The Product Owner."
+],
+"ans": [
+2,
+3
+],
+"prev": [],
+"exp": "Product Owner chịu trách nhiệm về Product Backlog nhưng có thể ủy quyền việc refinement cho Developers; do đó cả Product Owner và Developers đều có thể làm. Business Analyst hay Stakeholders không phải vai trò trong Scrum Team để làm việc này (Stakeholders chỉ góp ý).",
+"tip": "Với câu 'ai có thể làm', hãy xem accountability (không đổi) khác với người thực hiện (có thể ủy quyền)."
+},
+{
+"id": 209,
+"type": "single",
+"q": "The purpose of the Sprint Review is...",
+"opts": [
+"to show Stakeholders work that is done and work that is near to completion.",
+"to inspect the outcome of the Sprint and determine future adaptations.",
+"to review the status of the Project.",
+"to check what was done and not done during the Sprint."
+],
+"ans": [
+1
+],
+"prev": [],
+"exp": "Mục đích Sprint Review là inspect kết quả của Sprint và xác định các điều chỉnh trong tương lai, kể cả Product Backlog. Các lựa chọn khác chỉ mô tả một phần (demo, status), không phải mục đích cốt lõi.",
+"tip": "Chọn đáp án dùng cụm 'inspect outcome + adapt', vì đây là khung của mọi sự kiện Scrum."
+},
+{
+"id": 210,
+"type": "single",
+"q": "Who can change the Sprint Backlog during a Sprint?",
+"opts": [
+"The Scrum Master.",
+"The Developers.",
+"The Product Owner.",
+"The Stakeholders."
+],
+"ans": [
+1
+],
+"prev": [],
+"exp": "Sprint Backlog là kế hoạch của và dành cho Developers, và chỉ Developers cập nhật nó trong Sprint khi có thêm hiểu biết. Scrum Master, Product Owner, Stakeholders không tự thay đổi nó.",
+"tip": "Artifact nào 'thuộc về' ai thì người đó mới được chỉnh sửa: Sprint Backlog thuộc Developers."
+},
+{
+"id": 211,
+"type": "single",
+"q": "True or False: Before the first Sprint, the Product Backlog must contain everything we will develop for the product.",
+"opts": [
+"True.",
+"False."
+],
+"ans": [
+1
+],
+"prev": [],
+"exp": "Sai. Product Backlog là danh sách emergent, luôn thay đổi; ban đầu chỉ cần những gì đã biết. Không cần đầy đủ trước Sprint đầu tiên.",
+"tip": "Đáp án nói 'phải đầy đủ/hoàn chỉnh trước' trái với tư duy empirical nên thường sai."
+},
+{
+"id": 212,
+"type": "single",
+"q": "A Product Backlog is never complete.",
+"opts": [
+"False - A complete Product Backlog should be created before starting the first Sprint.",
+"True - As long as a product exists, its Product Backlog also exists."
+],
+"ans": [
+1
+],
+"prev": [],
+"exp": "Đúng. Product Backlog tồn tại cùng sản phẩm và liên tục được cập nhật khi hiểu biết, thị trường thay đổi, nên không bao giờ 'hoàn chỉnh'. Phương án kia mô tả cách làm kiểu waterfall.",
+"tip": "Câu về artifact 'emergent' hãy chọn đáp án thể hiện tính sống và liên tục thay đổi."
+},
+{
+"id": 213,
+"type": "single",
+"q": "What does the Sprint burn-down chart show?",
+"opts": [
+"The evolution of the amount of uncertainty during a project.",
+"An overview of the release progress by plotting the remaining workload.",
+"Dependencies, start times and stop times for project tasks3.",
+"How much work remains until the end of the Sprint."
+],
+"ans": [
+3
+],
+"prev": [],
+"exp": "Sprint burn-down chart cho thấy lượng việc còn lại đến cuối Sprint. Các lựa chọn khác mô tả release burn-down, uncertainty hay Gantt chart, không phải Sprint burn-down. (Lưu ý: burn-down không phải thành phần của Scrum Guide 2020, chỉ là kỹ thuật phổ biến.)",
+"tip": "Đọc kỹ phạm vi (Sprint vs release/project) trong câu hỏi để loại các biểu đồ khác."
+},
+{
+"id": 214,
+"type": "single",
+"q": "A new Developer joins the Scrum Team taking the total number to 11 people. As a Scrum Master, What should you do?",
+"opts": [
+"Instruct the Developers to split into 2 teams.",
+"Do nothing, the Developers must fix its own issues.",
+"Instruct the Developers to split into 2 teams, they should decide the appropriate sizes.",
+"Raise the increased team size as a potential issue and help the Developers decide what to do about it."
+],
+"ans": [
+3
+],
+"prev": [],
+"exp": "Scrum Master nên làm minh bạch vấn đề quy mô (Scrum Team nên nhỏ, thường 10 người hoặc ít hơn) và hỗ trợ Developers tự quyết định giải pháp. Không áp đặt tách đội hay bỏ mặc.",
+"tip": "Hành động của Scrum Master: làm minh bạch và coaching, không ra lệnh cũng không phớt lờ."
+},
+{
+"id": 215,
+"type": "single",
+"q": "Which technique is the best way the Scrum Master can ensure that the Developers communicate effectively with the Product Owner?",
+"opts": [
+"Teach the Developers to talk in terms of business needs and objectives.",
+"Observe communications between them and facilitate direct collaboration.",
+"Function as a go-between for them.",
+"Teach the Product Owner about the technologies employed during the Sprints."
+],
+"ans": [
+1
+],
+"prev": [],
+"exp": "Scrum Master quan sát và tạo điều kiện cho Developers và Product Owner hợp tác trực tiếp, thay vì làm người trung gian. Dạy một phía hay làm go-between không giải quyết gốc rễ.",
+"tip": "Scrum Master 'facilitate/coach' chứ không 'làm hộ' hay làm cầu nối cố định."
+},
+{
+"id": 216,
+"type": "multi",
+"q": "Which two things should the Scrum Team do during the first Sprint? (choose the best two answers)",
+"opts": [
+"Develop and deliver at least one piece of functionality.",
+"Deliver an Increment of useful and valuable product",
+"Determine the complete architecture and infrastructure for the product.",
+"Create the complete Product Backlog to be developed in subsequent Sprints."
+],
+"ans": [
+0,
+1
+],
+"prev": [],
+"exp": "Mỗi Sprint, kể cả Sprint đầu, phải tạo ra Increment hữu ích có giá trị, bao gồm ít nhất một phần chức năng hoàn chỉnh. Không cần thiết kế toàn bộ kiến trúc hay Product Backlog đầy đủ trước.",
+"tip": "Sprint đầu cũng như mọi Sprint: hướng tới Increment, không phải giai đoạn chuẩn bị riêng."
+},
+{
+"id": 217,
+"type": "multi",
+"q": "Who is on the Scrum Team?(choose the best three answers)",
+"opts": [
+"The Scrum Master.",
+"Project Manager.",
+"The Product Owner.",
+"Developers."
+],
+"ans": [
+0,
+2,
+3
+],
+"prev": [],
+"exp": "Scrum Team gồm một Scrum Master, một Product Owner và Developers. Project Manager không phải vai trò trong Scrum.",
+"tip": "Loại ngay các vai trò không có trong Guide như Project Manager, Business Analyst, Tester riêng."
+},
+{
+"id": 218,
+"type": "single",
+"q": "The timebox for a Daily Scrum is?",
+"opts": [
+"15 minutes.",
+"15 minutes for a 4-week sprint. For shorter Sprints it is usually shorter.",
+"Two minutes per person.",
+"4 hours.",
+"The same time of day every day."
+],
+"ans": [
+0
+],
+"prev": [],
+"exp": "Daily Scrum luôn có timebox 15 phút, bất kể độ dài Sprint. Các phương án có 'ngắn hơn cho Sprint ngắn' hay '2 phút mỗi người' không đúng Guide.",
+"tip": "Nhớ: Daily Scrum cố định 15 phút; chỉ Planning/Review/Retro mới 'ngắn hơn cho Sprint ngắn'."
+},
+{
+"id": 219,
+"type": "single",
+"q": "The three pillars of empiricism are:",
+"opts": [
+"Respect For People, Kaizen, Eliminating Waste.",
+"Planning, Inspection, Adaptation",
+"Planning, Demonstration, Retrospective",
+"Inspection, Transparency, Adaptation",
+"Transparency, Eliminating Waste, Kaizen."
+],
+"ans": [
+3
+],
+"prev": [],
+"exp": "Ba trụ cột của empiricism là Transparency, Inspection, Adaptation. Các lựa chọn khác lấy từ Lean hay thuật ngữ sai.",
+"tip": "Thuật ngữ cốt lõi: T-I-A; loại đáp án chứa Planning hay Kaizen."
+},
+{
+"id": 220,
+"type": "single",
+"q": "What does it mean to say that an event has a timebox?",
+"opts": [
+"The event must happen by a given time.",
+"The event must happen at a set time.",
+"The event must take at least a minimum amount of time",
+"The event can take no more than a maximum amount of time."
+],
+"ans": [
+3
+],
+"prev": [],
+"exp": "Timebox là thời gian tối đa của sự kiện; sự kiện có thể kết thúc sớm hơn nếu đạt mục đích. Không phải thời gian tối thiểu hay giờ cố định.",
+"tip": "'Timebox' = giới hạn trên, không phải giới hạn dưới hay giờ hẹn."
+},
+{
+"id": 221,
+"type": "single",
+"q": "Upon what type of process control is Scrum based?",
+"opts": [
+"Hybrid.",
+"Empirical.",
+"Defined.",
+"Complex."
+],
+"ans": [
+1
+],
+"prev": [],
+"exp": "Scrum dựa trên empiricism (kinh nghiệm, quan sát) và lean thinking. Defined process control là hướng ngược lại với Scrum; 'Complex' mô tả loại vấn đề, không phải kiểu kiểm soát.",
+"tip": "Câu hỏi nền tảng: Scrum luôn gắn với 'empirical', không phải 'defined/predictive'."
+},
+{
+"id": 222,
+"type": "single",
+"q": "True or False: It is mandatory that the product Increment be released to production at the end of each Sprint.",
+"opts": [
+"True.",
+"False."
+],
+"ans": [
+1
+],
+"prev": [],
+"exp": "Sai. Increment phải sử dụng được (đạt Definition of Done) nhưng Product Owner quyết định có release hay không và khi nào. Không bắt buộc release mỗi Sprint.",
+"tip": "Câu hỏi tương tự: 'release là quyết định của Product Owner/doanh nghiệp', không phải quy tắc cứng của Scrum."
+},
+{
+"id": 223,
+"type": "single",
+"q": "The timebox for the Sprint Review is:",
+"opts": [
+"2 hours.",
+"1 day.",
+"4 hours for a monthly Sprint. For shorter Sprints it is usually shorter.",
+"4 hours and longer as needed.",
+"As long as needed."
+],
+"ans": [
+2
+],
+"prev": [],
+"exp": "Sprint Review có timebox tối đa 4 giờ cho Sprint một tháng, ngắn hơn với Sprint ngắn hơn. Không phải 'bao lâu cũng được' hay 'dài hơn nếu cần'.",
+"tip": "Khi gặp timebox Planning/Review/Retro, chọn đáp án nêu 'tối đa cho Sprint 1 tháng, ngắn hơn nếu Sprint ngắn'."
+},
+{
+"id": 224,
+"type": "single",
+"q": "Which statement best describes a Product Owner's responsibility?",
+"opts": [
+"Keep stakeholders from distracting the Developers.",
+"Optimizing the value of the work the Scrum Team does.",
+"Managing the project and ensuring that the work meets the commitments to the stakeholders.",
+"Directing the Developers."
+],
+"ans": [
+1
+],
+"prev": [],
+"exp": "Product Owner chịu trách nhiệm tối đa hóa giá trị của sản phẩm do Scrum Team tạo ra. Bảo vệ Developers khỏi nhiễu là việc của Scrum Master; Product Owner không 'chỉ đạo' Developers hay quản lý dự án.",
+"tip": "Nhớ từ khóa: Product Owner = value; Scrum Master = effectiveness; Developers = Increment."
+},
+{
+"id": 225,
+"type": "single",
+"q": "Why is the Daily Scrum held at the same time and same place?",
+"opts": [
+"The place can be named.",
+"Rooms are hard to book and this lets it be booked in advance.",
+"The consistency reduces complexity.",
+"The Product Owner demands it."
+],
+"ans": [
+2
+],
+"prev": [],
+"exp": "Daily Scrum cùng giờ, cùng nơi mỗi ngày để giảm độ phức tạp. Lý do là tính nhất quán, không phải việc đặt phòng hay yêu cầu của Product Owner.",
+"tip": "Chọn lý do gắn với nguyên lý Scrum (giảm complexity), không phải tiện lợi hành chính."
+},
+{
+"id": 226,
+"type": "multi",
+"q": "A Scrum Team consists of the following:(choose the best three answers)",
+"opts": [
+"Users.",
+"Product Owner.",
+"Customers.",
+"Developers.",
+"Scrum Master."
+],
+"ans": [
+1,
+3,
+4
+],
+"prev": [],
+"exp": "Scrum Team gồm Product Owner, Developers và Scrum Master. Users và Customers là Stakeholders bên ngoài.",
+"tip": "Scrum Team chỉ có ba accountability; mọi người khác là Stakeholders."
+},
+{
+"id": 227,
+"type": "single",
+"q": "True or False: The purpose of a Sprint is to produce a valuable and useful Increment of working product.",
+"opts": [
+"True.",
+"False."
+],
+"ans": [
+0
+],
+"prev": [],
+"exp": "Đúng. Mỗi Sprint nhằm tạo ra Increment giá trị, hữu ích, đáp ứng Definition of Done.",
+"tip": "Câu True/False về mục đích Sprint: nếu phát biểu khớp với 'tạo Increment giá trị' thì đúng."
+},
+{
+"id": 228,
+"type": "single",
+"q": "The timebox for the Sprint Planning event is?",
+"opts": [
+"4 hours.",
+"Monthly.",
+"8 hours for a monthly Sprint. For shorter Sprints it is usually shorter.",
+"Whenever itis done."
+],
+"ans": [
+2
+],
+"prev": [],
+"exp": "Sprint Planning có timebox tối đa 8 giờ với Sprint một tháng, ngắn hơn với Sprint ngắn hơn. Không phải 4 giờ cố định hay 'khi xong'.",
+"tip": "Nhớ Planning = 8h, Review = 4h, Retro = 3h (cho Sprint 1 tháng)."
+},
+{
+"id": 229,
+"type": "single",
+"q": "What is the main reason for the Scrum Master to be at the Daily Scrum?",
+"opts": [
+"To gather status and progress information to report to management",
+"To write down any changes to the Sprint Backlog, including adding new items, and tracking progress on the burn-down.",
+"They do not have to be there; they only need to ensure the Developers have a Daily Scrum",
+"To make sure every team member answers the three questions"
+],
+"ans": [
+2
+],
+"prev": [],
+"exp": "Scrum Master không bắt buộc có mặt tại Daily Scrum; họ chỉ phải bảo đảm Developers tổ chức được. Scrum Master không là người thu thập báo cáo hay ghi chép thay Developers.",
+"tip": "Daily Scrum là của Developers; Scrum Master chỉ đảm bảo sự kiện diễn ra."
+},
+{
+"id": 230,
+"type": "single",
+"q": "What is the function or purpose of Management in Scrum?",
+"opts": [
+"Identify and remove people that are not working hard enough",
+"Monitor the progress of the Developers on the Scrum Team",
+"Support the Product Owner with insights and information into high value product and system capabilities. Support the Scrum Master to encourage organizational change that fosters empiricism, self-management, bottom-up intelligence, and intelligent product delivery.",
+"Continually monitor staffing levels of the Scrum Team."
+],
+"ans": [
+2
+],
+"prev": [],
+"exp": "Management hỗ trợ Product Owner bằng thông tin về giá trị sản phẩm và hỗ trợ Scrum Master thúc đẩy thay đổi tổ chức, empiricism, self-management. Không giám sát hay đánh giá Developers theo kiểu kiểm soát.",
+"tip": "Chọn đáp án mang tính hỗ trợ/enable, loại các đáp án giám sát hay kiểm soát."
+},
+{
+"id": 231,
+"type": "single",
+"q": "When does a Developer become the sole owner of an item on the Sprint Backlog?",
+"opts": [
+"Whenever a team member can accommodate more work.",
+"At the Sprint Planning event",
+"Never. All Sprint Backlog items are \"owned\" by the Developers on the Scrum Team.",
+"During the Daily Scrum"
+],
+"ans": [
+2
+],
+"prev": [],
+"exp": "Sprint Backlog thuộc về cả Developers, nên không có ai là chủ sở hữu duy nhất của một mục. Developers cùng chịu trách nhiệm.",
+"tip": "Scrum nhấn mạnh trách nhiệm tập thể của Developers, không có cá nhân 'sở hữu' từng mục."
+},
+{
+"id": 232,
+"type": "single",
+"q": "What is the typical size for a Scrum Team?",
+"opts": [
+"10 or fewer.",
+"Minimum of 7.",
+"7 plus or minus",
+"9"
+],
+"ans": [
+0
+],
+"prev": [],
+"exp": "Scrum Team thường nhỏ, 10 người hoặc ít hơn, để giao tiếp hiệu quả. Không có quy định tối thiểu 7 hay đúng 9.",
+"tip": "Quy mô Scrum Team: 'tối đa 10', không phải con số cố định."
+},
+{
+"id": 233,
+"type": "single",
+"q": "An organization has decided to adopt Scrum, but management wants to change the terminology to fit with terminology already used. What will likely happen if this is done?",
+"opts": [
+"Without a new vocabulary as a reminder of the change, very little change may actually happen",
+"The organization may not understand what has changed with Scrum and the benefits of Scrum may be lost",
+"Management may feel less anxious",
+"Al of the above"
+],
+"ans": [
+3
+],
+"prev": [],
+"exp": "Đổi thuật ngữ có thể làm tổ chức không nhận ra thay đổi, mất lợi ích của Scrum và chỉ khiến quản lý bớt lo lắng; cả ba đều có thể xảy ra nên 'all of the above'. (Lưu ý: đây là đáp án dựa trên kinh nghiệm hơn là nội dung Guide.)",
+"tip": "Khi có 'tất cả các đáp án trên' và mỗi phương án đều hợp lý, hãy kiểm tra từng cái trước khi chọn."
+},
+{
+"id": 234,
+"type": "multi",
+"q": "Which of the following are examples of a Scrum Team practicing Scrum poorly or not exhibiting traits of a self-managing Scrum Team?",
+"opts": [
+"The Developers have all the skills they need to create a valuable, useful Increment",
+"StakeNolders attend the Daily Scrum to check on the Scrum Team's progress.",
+"The Developers create their own Sprint Backlog, reflecting all work that i required to meet the Definition of Done.",
+"The Developers are collaboratively selecting their own work during the Sprint",
+"The Developers invite external stakeholders to the Sprint Planning tosk them how to turn a Product Backlog item into an Increment via a complete and detailed Sprint Backlog",
+"The Developers are working within the boundaries of their organizations functional description and nicely handing off work from analyst to Developer to tester to integration"
+],
+"ans": [
+1,
+4,
+5
+],
+"prev": [],
+"exp": "Stakeholders đến Daily Scrum để theo dõi tiến độ, hoặc người ngoài ép Sprint Backlog chi tiết, hoặc làm việc theo kiểu bàn giao tuần tự theo chức năng đều trái với self-management. Các ý còn lại (đủ kỹ năng, tự tạo Sprint Backlog, tự chọn việc) là dấu hiệu tốt.",
+"tip": "Với câu 'dấu hiệu làm Scrum kém', tìm hành vi người ngoài kiểm soát hoặc làm việc tuần tự theo chuyên môn."
+},
+{
+"id": 235,
+"type": "single",
+"q": "Who is required to attend the Daily Scrum?",
+"opts": [
+"The Scrum Master and Product Owner.",
+"The Developers and Scrum Master.",
+"The Developers.",
+"The Developers and Product Owner.",
+"The Scrum Team"
+],
+"ans": [
+2
+],
+"prev": [],
+"exp": "Chỉ Developers bắt buộc tham gia Daily Scrum, vì đây là sự kiện của Developers. Scrum Master và Product Owner tham gia nếu họ đang làm việc trên các mục Sprint Backlog.",
+"tip": "Daily Scrum thuộc Developers; đáp án 'bắt buộc' chỉ chọn Developers."
+},
+{
+"id": 236,
+"type": "single",
+"q": "How much work must the Developers complete for each Product Backlog item they select for a Sprint?",
+"opts": [
+"All development work and at least some testing",
+"Enough so that each Product Backlog item they select meets the Definition of Done.",
+"Analysis, design, programming, testing and documentation",
+"As much as it can fit into the Sprint"
+],
+"ans": [
+1
+],
+"prev": [],
+"exp": "Mỗi PBI được chọn phải đạt Definition of Done, tức là đủ chất lượng để thành Increment. Danh sách công việc cụ thể do Definition of Done quy định chứ không cố định như các lựa chọn khác.",
+"tip": "Câu hỏi 'bao nhiêu là đủ' thì đáp án luôn liên quan tới Definition of Done."
+},
+{
+"id": 237,
+"type": "single",
+"q": "During a Sprint, a Developer determines that the Scrum Team will not be able to complete the items in their forecast. Who should be present to review and adjust the Product Backlog items selected?",
+"opts": [
+"The Product Owner and all stakeholders",
+"The Scrum Master, the project manager, and the Developers",
+"The Product Owner and the Developers.",
+"The Developers."
+],
+"ans": [
+2
+],
+"prev": [],
+"exp": "Khi dự báo không khả thi, Developers cùng Product Owner thương lượng lại phạm vi Sprint Backlog mà vẫn giữ Sprint Goal. Không cần Stakeholders hay Project Manager.",
+"tip": "Điều chỉnh phạm vi trong Sprint: Developers + Product Owner thương lượng."
+},
+{
+"id": 238,
+"type": "single",
+"q": "Who has the final say on the order of the Product Backlog?",
+"opts": [
+"The Product Owner.",
+"The CEO.",
+"The Developers.",
+"The Scrum Master.",
+"The Stakeholders"
+],
+"ans": [
+0
+],
+"prev": [],
+"exp": "Product Owner có quyền quyết định cuối cùng về thứ tự Product Backlog. Người khác có thể góp ý nhưng không quyết định.",
+"tip": "Quyền quyết định về order/value luôn thuộc Product Owner."
+},
+{
+"id": 239,
+"type": "single",
+"q": "Who should know the most about the progress toward a business objective or a release, and be able to explain the alternatives most clearly?",
+"opts": [
+"The Product Owner",
+"The Project Manager",
+"The Developers",
+"The Scrum Master"
+],
+"ans": [
+0
+],
+"prev": [],
+"exp": "Product Owner chịu trách nhiệm tối đa hóa giá trị và nên hiểu rõ nhất tiến độ tới mục tiêu kinh doanh hay release cùng các lựa chọn. Project Manager không có trong Scrum.",
+"tip": "Câu liên quan tiến độ kinh doanh/release thì chọn Product Owner."
+},
+{
+"id": 240,
+"type": "single",
+"q": "Which of the following services is appropriate for a Scrum Master in regard to the Daily Scrum?",
+"opts": [
+"Teach the Developers to keep the Daily Scrum within the 15 minute timebox.",
+"Lead the discussions of the Developers.",
+"Facilitate in a way that ensures each team member has a chance to speak",
+"All answers apply.",
+"Ensure that all 3 questions have been answered"
+],
+"ans": [
+0
+],
+"prev": [],
+"exp": "Scrum Master dạy Developers giữ Daily Scrum trong 15 phút. Họ không dẫn dắt thảo luận hay bảo đảm trả lời 3 câu hỏi, vì Daily Scrum thuộc Developers.",
+"tip": "Với Scrum Master và Daily Scrum, chọn hành vi 'teach/coach', tránh 'lead/ensure answers'."
+},
+{
+"id": 241,
+"type": "single",
+"q": "The Developers should not be interrupted during the Sprint and the Sprint Goal should remain intact. These are conditions that foster creativity, quality and productivity. Which one of the following answers is FALSE?",
+"opts": [
+"The Product Owner can help clarify or optimize the Sprint when asked by the Developers.",
+"The Developers may work with the Product Owner to add or remove work if they find themselves with more or less capacity than expected.",
+"The Sprint Backlog is fully formulated in the Sprint Planning event and does not change during the Sprint.",
+"As a decomposition of the selected Product Backlog items, the Sprint Backlog changes and may grow as the work emerges."
+],
+"ans": [
+2
+],
+"prev": [],
+"exp": "Phát biểu sai là Sprint Backlog được hoàn thiện đầy đủ ở Planning và không đổi; thực tế nó được cập nhật liên tục khi công việc emergent, miễn Sprint Goal không đổi.",
+"tip": "Khi hỏi cái nào 'sai', tìm phát biểu mang tính cố định, trái với tính emergent của Sprint Backlog."
+},
+{
+"id": 242,
+"type": "single",
+"q": "When does the next Sprint begin?",
+"opts": [
+"Next Monday.",
+"Immediately after the conclusion of the previous Sprint.",
+"Immediately following the next Sprint Planning.",
+"When the Product Owner is ready."
+],
+"ans": [
+1
+],
+"prev": [],
+"exp": "Sprint mới bắt đầu ngay sau khi Sprint trước kết thúc, không có khoảng nghỉ. Không cần chờ Product Owner hay Sprint Planning mới bắt đầu.",
+"tip": "Sprint nối tiếp nhau liên tục, không có khoảng trống."
+},
+{
+"id": 243,
+"type": "multi",
+"q": "What are two ways a Scrum Master serves to enable effective Scrum Teams?",
+"opts": [
+"By facilitating Developer decision-making.",
+"By keeping high value features high in the Product Backlog",
+"By removing impediments that hinder the Scrum Team.",
+"By starting and ending the meetings at the proper time."
+],
+"ans": [
+0,
+2
+],
+"prev": [],
+"exp": "Scrum Master phục vụ Scrum Team bằng cách tạo điều kiện cho Developers ra quyết định và loại bỏ impediments. Giữ thứ tự Product Backlog là việc của Product Owner; bắt đầu/kết thúc họp đúng giờ không phải trọng tâm.",
+"tip": "Việc của Scrum Master: facilitate, coach, remove impediments."
+},
+{
+"id": 244,
+"type": "single",
+"q": "True or False: When multiple Scrum Teams work together on the same product, each team should maintain a separate Product Backlog.",
+"opts": [
+"True.",
+"False."
+],
+"ans": [
+1
+],
+"prev": [],
+"exp": "Sai. Nhiều Scrum Teams cùng một sản phẩm dùng một Product Backlog duy nhất và một Product Owner.",
+"tip": "Một sản phẩm, một Product Backlog, một Product Owner."
+},
+{
+"id": 245,
+"type": "single",
+"q": "When should a Developer on a Scrum Team be replaced?",
+"opts": [
+"As needed, while taking into account a short-term reduction in productivity.",
+"Every Sprint to promote shared learning",
+"As needed, with no special allowance for changes in productivity.",
+"Never, it reduces productivity."
+],
+"ans": [
+0
+],
+"prev": [],
+"exp": "Developer có thể được thay khi cần, nhưng cần tính đến việc năng suất tạm giảm do thay đổi thành viên. Không thay định kỳ hay không bao giờ thay.",
+"tip": "Chọn đáp án cân bằng, thừa nhận chi phí ngắn hạn thay vì cực đoan."
+},
+{
+"id": 246,
+"type": "multi",
+"q": "Which are characteristics of the Daily Scrum? (choose the best two answers)",
+"opts": [
+"It is facilitated by the team lead.",
+"It consists of the Scrum Master asking the team for status.",
+"Its purpose is to inspect progress toward the Sprint Goal and adapt the Sprint Backlog.",
+"Is is held first thing in the morning.",
+"Its location and time remain constant."
+],
+"ans": [
+2,
+4
+],
+"prev": [],
+"exp": "Mục đích Daily Scrum là inspect tiến độ hướng tới Sprint Goal và điều chỉnh Sprint Backlog, và nên cùng giờ cùng nơi để giảm complexity. Không do team lead điều hành, không phải báo cáo trạng thái, không bắt buộc buổi sáng.",
+"tip": "Loại các đáp án có yếu tố quản lý kiểu báo cáo hay thời điểm cố định không có trong Guide."
+},
+{
+"id": 247,
+"type": "single",
+"q": "True or False: The Scrum Team must choose at least one high priority process improvement item, identified during the Sprint Retrospective, and place it in the Sprint Backlog.",
+"opts": [
+"True.",
+"False."
+],
+"ans": [
+1
+],
+"prev": [],
+"exp": "Sai. Guide 2020 nói những cải tiến có tác động lớn nhất nên được xử lý sớm và có thể đưa vào Sprint Backlog, nhưng không bắt buộc.",
+"tip": "Câu có 'must' về nội dung cụ thể thường sai; Scrum Team tự quyết."
+},
+{
+"id": 248,
+"type": "single",
+"q": "When does a Sprint conclude?",
+"opts": [
+"When the Product Owner decides enough has been delivered to meet the Sprint Goal.",
+"When the Sprint Retrospective is complete.",
+"When all the tasks are completed by the Developers.",
+"When all Product Backlog items meet their Definition of Done."
+],
+"ans": [
+1
+],
+"prev": [],
+"exp": "Sprint kết thúc khi Sprint Retrospective hoàn tất; đây là sự kiện cuối cùng. Sprint có độ dài cố định, không kết thúc theo việc hoàn thành task hay quyết định của Product Owner.",
+"tip": "Thứ tự sự kiện cuối Sprint: Review rồi Retrospective; Retrospective kết thúc Sprint."
+},
+{
+"id": 249,
+"type": "single",
+"q": "When must a Scrum Team release each Increment?",
+"opts": [
+"When the Scrum Team finishes their work.",
+"After every Sprint, without exception.",
+"Whenever the product is free of defects.",
+"When it makes sense to release it."
+],
+"ans": [
+3
+],
+"prev": [],
+"exp": "Increment có thể được release khi hợp lý (do Product Owner quyết định), không bắt buộc mỗi Sprint hay chờ không có lỗi.",
+"tip": "Release phụ thuộc giá trị kinh doanh, không phụ thuộc lịch Sprint."
+},
+{
+"id": 250,
+"type": "single",
+"q": "Which of the following is an example of an Increment?",
+"opts": [
+"A plan for the overall product release.",
+"A mock-up of the product marketing materials.",
+"A design for the product.",
+"A product roll-out plan.",
+"A valuable, useful set of product features.",
+"All of the above."
+],
+"ans": [
+4
+],
+"prev": [],
+"exp": "Increment là tập hợp các tính năng sản phẩm hữu ích, đạt Definition of Done và sử dụng được. Kế hoạch, mock-up, thiết kế chỉ là tài liệu, không phải Increment.",
+"tip": "Increment luôn là sản phẩm làm việc được, không phải tài liệu hay kế hoạch."
+}
+];
+
+/* ===== TIỆN ÍCH ===== */
+const $ = s => document.querySelector(s);
+const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const letter = i => String.fromCharCode(65 + i);
+const sameSet = (a, b) => a.length === b.length && a.every(x => b.includes(x));
+const prevOk = q => sameSet(q.prev, q.ans);
+const expHtml = t => t.split('\n').filter(Boolean).map(p => '<p>' + esc(p) + '</p>').join('');
+function hint(q){
+  if (q.hint) return q.hint;
+  if (q.type === 'multi') return `(chọn ${q.ans.length} đáp án)`;
+  if (q.type === 'tf') return '(chọn Đúng / Sai)';
+  return '(chọn đáp án tốt nhất)';
+}
+function shuffle(arr){
+  const a = arr.slice();
+  for (let i = a.length - 1; i > 0; i--){
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+/* ===== TABS ===== */
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.toggle('active', b === btn));
+    $('#tab-bank').hidden = btn.dataset.tab !== 'bank';
+    $('#tab-practice').hidden = btn.dataset.tab !== 'practice';
+    window.scrollTo({top: 0});
+  });
+});
+
+/* ===== TAB 1: NGÂN HÀNG CÂU HỎI ===== */
+let bankFilter = 'all';
+function bankCard(q){
+  const ok = prevOk(q);
+  const opts = q.opts.map((t, i) => {
+    const isAns = q.ans.includes(i), picked = q.prev.includes(i);
+    let cls = 'opt', tag = '';
+    if (isAns){
+      cls += ' correct';
+      tag = '<span class="tag good-outline">Đáp án đúng</span>';
+    }
+    return `<li class="${cls}"><span class="letter">${letter(i)}.</span><span class="txt">${esc(t)}</span>${tag}</li>`;
+  }).join('');
+  return `<article class="qcard">
+    <div class="qhead"><span class="qnum">Câu ${q.id} / ${QUESTIONS.length}</span>
+      </div>
+    <div class="qbody">
+      <p class="qtext">${esc(q.q)}</p><p class="qhint">${hint(q)}</p>
+      <ul class="opts">${opts}</ul>
+      <div class="exp good"><b>Giải thích${q.own ? ' <span class="own">(do Claude bổ sung, PDF không có)</span>' : ''}</b>${expHtml(q.exp)}</div>
+      ${q.tip ? `<div class="tip"><span class="ic">💡</span><span><b>Cách tư duy nhóm câu này</b> (Claude bổ sung, không có trong file gốc): ${esc(q.tip)}</span></div>` : ''}
+    </div></article>`;
+}
+function renderBank(){
+  const kw = $('#bankSearch').value.trim().toLowerCase();
+  const items = QUESTIONS.filter(q => {
+    const ok = prevOk(q);
+    if (bankFilter === 'multi' && q.type !== 'multi') return false;
+    if (kw && !(q.q + ' ' + q.opts.join(' ')).toLowerCase().includes(kw)) return false;
+    return true;
+  });
+  $('#bankList').innerHTML = items.map(bankCard).join('') || '<div class="empty">Không có câu hỏi phù hợp.</div>';
+  $('#bankCount').textContent = `${items.length} câu`;
+}
+document.querySelectorAll('[data-filter]').forEach(b => b.addEventListener('click', () => {
+  bankFilter = b.dataset.filter;
+  document.querySelectorAll('[data-filter]').forEach(x => x.classList.toggle('active', x === b));
+  renderBank();
+}));
+$('#bankSearch').addEventListener('input', renderBank);
+
+/* ===== TAB 2: LÀM BÀI NGẪU NHIÊN (không lưu lịch sử) ===== */
+let session = null;
+
+function startPractice(){
+  const pool = QUESTIONS.slice();
+  const v = $('#numQ').value;
+  const n = v === 'all' ? pool.length : Math.min(parseInt(v, 10), pool.length);
+  const chosen = shuffle(pool).slice(0, n);
+  session = {
+    start: Date.now(), end: null, submitted: false,
+    items: chosen.map(q => {
+      const idx = q.opts.map((_, i) => i);
+      return { q, order: q.type === 'tf' ? idx : shuffle(idx), sel: new Set() };
+    })
+  };
+  $('#setup').hidden = true;
+  $('#quizArea').hidden = false;
+  renderPractice();
+  window.scrollTo({top: 0});
+}
+
+function practiceCard(item, k){
+  const { q, order, sel } = item;
+  const sub = session.submitted;
+  const ok = sub && sameSet([...sel], q.ans);
+  const inputType = q.type === 'multi' ? 'checkbox' : 'radio';
+  const opts = order.map((orig, pos) => {
+    const isAns = q.ans.includes(orig), picked = sel.has(orig);
+    let cls = 'opt pick', tag = '';
+    if (!sub){
+      if (picked) cls += ' selected';
+    } else {
+      if (isAns){ cls += ' correct'; tag = picked ? '<span class="tag good">Bạn đã chọn đúng</span>'
+                    : (q.type === 'multi' ? '<span class="tag miss">Bạn đã bỏ sót</span>' : '<span class="tag good-outline">Đáp án đúng</span>'); }
+      else if (picked){ cls += ' wrong'; tag = '<span class="tag bad">Bạn đã chọn sai</span>'; }
+    }
+    return `<li><label class="${cls}">
+      <input type="${inputType}" name="q${k}" value="${orig}" data-k="${k}" ${picked ? 'checked' : ''} ${sub ? 'disabled' : ''}>
+      <span class="letter">${q.type === 'tf' ? '' : letter(pos) + '.'}</span><span class="txt">${esc(q.opts[orig])}</span>${tag}</label></li>`;
+  }).join('');
+  const badge = sub ? `<span class="badge ${ok ? 'ok' : 'no'}">${sel.size === 0 ? '✕ Bỏ trống' : ok ? '✓ Đúng' : '✕ Sai'}</span>` : '';
+  const exp = sub ? `<div class="exp ${ok ? 'good' : 'bad'}"><b>Giải thích${q.own ? ' <span class="own">(do Claude bổ sung, PDF không có)</span>' : ''}</b>${expHtml(q.exp)}</div>` : '';
+  return `<article class="qcard ${sub ? (ok ? 'is-ok' : 'is-bad') : ''}" id="pq${k}">
+    <div class="qhead"><span class="qnum">Câu ${k + 1} / ${session.items.length}</span>${badge}</div>
+    <div class="qbody"><p class="qtext">${esc(q.q)}</p><p class="qhint">${hint(q)}</p>
+    <ul class="opts">${opts}</ul>${exp}</div></article>`;
+}
+
+function renderPractice(){
+  $('#quizList').innerHTML = session.items.map(practiceCard).join('');
+  $('#quizList').classList.remove('hide-ok');
+  $('#submitBtn').hidden = session.submitted;
+  $('#quizBar').hidden = session.submitted;
+  if (!session.submitted) updateProgress(); else renderResult();
+}
+
+function updateProgress(){
+  const total = session.items.length;
+  const done = session.items.filter(i => i.sel.size > 0).length;
+  $('#progLbl').textContent = `Đã trả lời ${done} / ${total} câu`;
+  $('#progFill').style.width = (done / total * 100) + '%';
+}
+
+function fmtTime(ms){
+  const s = Math.round(ms / 1000);
+  return String(Math.floor(s / 3600)).padStart(2, '0') + ':' + String(Math.floor(s % 3600 / 60)).padStart(2, '0') + ':' + String(s % 60).padStart(2, '0');
+}
+
+function renderResult(){
+  const total = session.items.length;
+  const right = session.items.filter(i => sameSet([...i.sel], i.q.ans)).length;
+  const blank = session.items.filter(i => i.sel.size === 0).length;
+  const pct = total ? right / total * 100 : 0;
+  const color = pct >= 85 ? 'var(--good)' : pct >= 60 ? 'var(--primary)' : 'var(--bad)';
+  $('#resultBox').innerHTML = `
+    <div class="panel summary">
+      <div class="ring" style="--p:${pct.toFixed(1)};--c:${color}"><span>${pct.toFixed(1)}%</span></div>
+      <div class="stats">
+        <h2>Kết quả: ${right} / ${total} câu đúng</h2>
+        <div class="line">
+          <span>✓ Đúng: <b>${right}</b></span><span>✕ Sai: <b>${total - right - blank}</b></span>
+          <span>○ Bỏ trống: <b>${blank}</b></span><span>⏱ Thời gian: <b>${fmtTime(session.end - session.start)}</b></span>
+        </div>
+        <div class="note">Câu nhiều đáp án chỉ tính đúng khi chọn đủ và đúng toàn bộ. Kết quả này không được lưu lại.</div>
+        <div class="toolbar" style="margin-top:14px">
+          <button class="btn" id="againBtn">🔀 Làm lại (trộn mới)</button>
+          <button class="btn secondary" id="setupBtn">Đổi thiết lập</button>
+          <button class="chip" id="toggleWrong">Chỉ hiện câu sai</button>
+        </div>
+      </div>
+    </div>`;
+  $('#againBtn').onclick = startPractice;
+  $('#setupBtn').onclick = backToSetup;
+  $('#toggleWrong').onclick = e => {
+    const on = $('#quizList').classList.toggle('hide-ok');
+    e.target.classList.toggle('active', on);
+    e.target.textContent = on ? 'Hiện tất cả câu' : 'Chỉ hiện câu sai';
+  };
+}
+
+function submitPractice(){
+  const blank = session.items.filter(i => i.sel.size === 0).length;
+  if (blank && !confirm(`Còn ${blank} câu chưa trả lời. Vẫn nộp bài?`)) return;
+  session.submitted = true;
+  session.end = Date.now();
+  renderPractice();
+  window.scrollTo({top: 0, behavior: 'smooth'});
+}
+
+function backToSetup(){
+  session = null;
+  $('#resultBox').innerHTML = '';
+  $('#quizList').innerHTML = '';
+  $('#quizArea').hidden = true;
+  $('#setup').hidden = false;
+  window.scrollTo({top: 0});
+}
+
+$('#quizList').addEventListener('change', e => {
+  const inp = e.target;
+  if (!inp.matches('input[data-k]') || session.submitted) return;
+  const item = session.items[+inp.dataset.k];
+  const val = +inp.value;
+  if (inp.type === 'radio'){ item.sel = new Set([val]); }
+  else { inp.checked ? item.sel.add(val) : item.sel.delete(val); }
+  // cập nhật highlight lựa chọn
+  inp.closest('ul').querySelectorAll('label.pick').forEach(l => {
+    l.classList.toggle('selected', l.querySelector('input').checked);
+  });
+  updateProgress();
+});
+$('#startBtn').addEventListener('click', startPractice);
+$('#submitBtn').addEventListener('click', submitPractice);
+$('#restartBtn').addEventListener('click', () => {
+  if (confirm('Làm lại từ đầu? Các câu đã chọn sẽ bị xóa và đề được trộn mới.')) startPractice();
+});
+
+renderBank();
+</script>
+</body>
+</html>
