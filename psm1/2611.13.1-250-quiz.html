@@ -1,0 +1,2789 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PSM I Practice & Mock Exam — Warm Cream Edition</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Lora:ital,wght@0,600;0,700;1,400&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        paper: {
+                            bg: '#FAF7F2',
+                            card: '#FFFDF9',
+                            sidebar: '#F3EDE2',
+                            border: '#E5DEC9',
+                            borderStrong: '#D8CEBE',
+                            text: '#2C2523',
+                            muted: '#5C5346',
+                            accent: '#8C5A3C',
+                            accentHover: '#73472D',
+                            sage: '#2E6F5E'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Lora', 'serif'],
+                        mono: ['JetBrains Mono', 'monospace']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Warm Cream Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #F3EDE2;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #D8CEBE;
+            border-radius: 9999px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #B8A992;
+        }
+
+        .option-item {
+            transition: all 0.16s ease;
+        }
+        .option-item:hover:not(.locked) {
+            transform: translateY(-1px);
+            border-color: #8C5A3C;
+            background-color: #FAF5EC;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(4px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade {
+            animation: fadeIn 0.22s ease-out forwards;
+        }
+
+        /* Zoom / Focus mode enlarged typography */
+        .zoom-active #questionTitleText {
+            font-size: 1.35rem;
+            line-height: 1.65;
+        }
+        .zoom-active .option-text-content {
+            font-size: 1.075rem;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body class="bg-[#FAF7F2] text-[#2C2523] font-sans h-screen overflow-hidden flex flex-col selection:bg-[#8C5A3C] selection:text-white">
+
+    <!-- COMPACT TOP HEADER BAR (Fixed h-11 / 44px, never overlapped) -->
+    <header class="shrink-0 z-40 bg-[#FFFDF9] border-b border-[#E5DEC9] px-3 sm:px-5 h-11 flex items-center justify-between gap-2 shadow-2xs">
+        <div class="max-w-[1600px] w-full mx-auto flex items-center justify-between gap-2">
+            
+            <!-- Left: Mobile Sidebar Toggle & Compact Brand -->
+            <div class="flex items-center gap-2">
+                <button onclick="toggleSidebar()" class="lg:hidden flex items-center gap-1.5 bg-[#F3EDE2] hover:bg-[#E5DEC9] text-[#2C2523] border border-[#D8CEBE] font-semibold px-2.5 py-1 rounded-lg text-xs transition cursor-pointer">
+                    <i class="fa-solid fa-table-list text-[#8C5A3C]"></i>
+                    <span>DS Câu</span>
+                </button>
+
+                <div class="flex items-center gap-2">
+                    <span class="w-6 h-6 rounded-md bg-[#8C5A3C] text-white font-serif font-bold text-xs flex items-center justify-center shadow-2xs">P1</span>
+                    <h1 class="font-serif font-bold text-xs sm:text-sm text-[#2C2523] tracking-tight truncate">
+                        PSM I Practice & Mock Exam
+                    </h1>
+                    <span id="headerTotalBadge" class="hidden sm:inline-block bg-[#F3EDE2] text-[#8C5A3C] border border-[#D8CEBE] text-[10px] font-bold px-1.5 py-0.2 rounded font-mono">163 câu</span>
+                </div>
+            </div>
+
+            <!-- Center: Compact Mode Switcher & Timer -->
+            <div class="flex items-center gap-1 bg-[#F3EDE2] p-0.5 rounded-lg border border-[#E5DEC9]">
+                <button id="btnModePractice" onclick="switchMode('practice')" class="px-2.5 py-1 rounded-md text-[11px] font-semibold transition cursor-pointer bg-[#8C5A3C] text-white shadow-2xs">
+                    <i class="fa-solid fa-book-open-reader mr-1"></i>Luyện tập
+                </button>
+                <button id="btnModeExam" onclick="switchMode('exam')" class="px-2.5 py-1 rounded-md text-[11px] font-semibold transition cursor-pointer text-[#5C5346] hover:text-[#2C2523]">
+                    <i class="fa-solid fa-stopwatch mr-1"></i>Thi thử (80c/60p)
+                </button>
+                <div id="examTimerBox" class="hidden items-center gap-1.5 px-2 py-0.5 bg-[#FFFDF9] border border-[#D8CEBE] rounded-md text-[11px] font-mono font-bold text-[#8C5A3C]">
+                    <i class="fa-regular fa-clock"></i>
+                    <span id="examTimerDisplay">60:00</span>
+                    <button onclick="submitMockExam()" class="ml-1 bg-[#2E6F5E] hover:bg-[#24584A] text-white font-sans px-1.5 py-0.5 rounded text-[10px] cursor-pointer">
+                        Nộp
+                    </button>
+                </div>
+            </div>
+
+            <!-- Right: Compact Live Stats & Quick Actions -->
+            <div class="flex items-center gap-1.5">
+                <!-- Stats Pills -->
+                <div class="hidden md:flex items-center gap-1.5 bg-[#FAF7F2] border border-[#E5DEC9] px-2.5 py-1 rounded-lg text-[11px]">
+                    <span class="text-[#5C5346]">Đã làm: <strong id="statAnswered" class="text-[#2C2523] font-mono">0/163</strong></span>
+                    <span class="text-[#D8CEBE]">|</span>
+                    <span class="text-[#246A4E] font-semibold"><i class="fa-solid fa-check mr-0.5"></i><span id="statCorrect" class="font-mono">0</span></span>
+                    <span class="text-[#D8CEBE]">|</span>
+                    <span class="text-[#B83B3B] font-semibold"><i class="fa-solid fa-xmark mr-0.5"></i><span id="statWrong" class="font-mono">0</span></span>
+                    <span class="text-[#D8CEBE]">|</span>
+                    <span class="text-[#8C5A3C] font-bold"><span id="statPercent" class="font-mono">0%</span></span>
+                </div>
+
+                <!-- Utility Buttons -->
+                <button onclick="toggleZoomFocusMode()" id="btnHeaderZoom" class="hidden lg:flex items-center gap-1 px-2 py-1 rounded-lg bg-[#F3EDE2] hover:bg-[#E5DEC9] border border-[#D8CEBE] text-[#2C2523] text-[11px] font-semibold transition cursor-pointer" title="Phóng to bảng câu hỏi / Ẩn danh sách (Phím Z)">
+                    <i id="iconHeaderZoom" class="fa-solid fa-expand text-[#8C5A3C]"></i>
+                    <span id="textHeaderZoom" class="hidden xl:inline">Phóng to</span>
+                </button>
+                <button onclick="shuffleQuestions()" class="px-2 py-1 rounded-lg bg-[#F3EDE2] hover:bg-[#E5DEC9] border border-[#D8CEBE] text-[#2C2523] text-[11px] font-semibold transition cursor-pointer" title="Trộn ngẫu nhiên thứ tự câu hỏi">
+                    <i class="fa-solid fa-shuffle text-[#8C5A3C]"></i>
+                    <span class="hidden xl:inline ml-1">Trộn</span>
+                </button>
+                <button onclick="openImportModal()" class="px-2 py-1 rounded-lg bg-[#F3EDE2] hover:bg-[#E5DEC9] border border-[#D8CEBE] text-[#2C2523] text-[11px] font-semibold transition cursor-pointer" title="Nạp thêm file .txt / .md hoặc dán câu hỏi">
+                    <i class="fa-solid fa-file-import text-[#8C5A3C]"></i>
+                    <span class="hidden xl:inline ml-1">Nạp TXT</span>
+                </button>
+                <button onclick="confirmResetProgress()" class="px-2 py-1 rounded-lg bg-[#FDF0F0] hover:bg-[#F9E0E0] border border-[#E8C5C5] text-[#B83B3B] text-[11px] font-semibold transition cursor-pointer" title="Xóa lịch sử làm bài và làm lại từ đầu">
+                    <i class="fa-solid fa-rotate-left"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN WORKSPACE (Fixed remaining height, independent scrolling columns) -->
+    <div id="mainWorkspace" class="flex-1 flex max-w-[1600px] w-full mx-auto overflow-hidden relative">
+
+        <!-- LEFT SIDEBAR: QUESTION NAVIGATOR & FILTERS -->
+        <aside id="questionSidebar" class="fixed top-11 bottom-0 left-0 z-30 w-80 sm:w-96 bg-[#F3EDE2] border-r border-[#E5DEC9] transform -translate-x-full lg:translate-x-0 lg:static lg:h-full lg:w-80 xl:w-96 transition-all duration-200 ease-in-out flex flex-col shrink-0 overflow-hidden">
+            
+            <!-- Search & Filter Controls -->
+            <div class="p-3 border-b border-[#E5DEC9] bg-[#FAF7F2] space-y-2 shrink-0">
+                <div class="flex items-center justify-between">
+                    <span class="font-serif font-bold text-xs sm:text-sm text-[#2C2523] flex items-center gap-1.5">
+                        <i class="fa-solid fa-compass text-[#8C5A3C]"></i>
+                        Danh Sách Câu Hỏi
+                    </span>
+                    <div class="flex items-center gap-1.5">
+                        <button onclick="toggleSidebarViewMode()" id="btnViewModeToggle" class="text-[11px] px-2 py-0.5 rounded-md bg-[#F3EDE2] border border-[#D8CEBE] text-[#5C5346] hover:text-[#2C2523] font-medium cursor-pointer" title="Chuyển đổi hiển thị Lưới số / Danh sách chi tiết">
+                            <i class="fa-solid fa-grip"></i> Lưới / DS
+                        </button>
+                        <button onclick="toggleSidebar()" class="lg:hidden w-6 h-6 rounded-md bg-[#E5DEC9] text-[#5C5346] hover:text-[#2C2523] flex items-center justify-center">
+                            <i class="fa-solid fa-xmark text-xs"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Keyword Search -->
+                <div class="relative">
+                    <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-[#5C5346] text-xs"></i>
+                    <input id="searchInput" oninput="renderSidebar()" type="text" placeholder="Tìm từ khóa (VD: Daily Scrum, DoD...)" class="w-full bg-[#FFFDF9] border border-[#D8CEBE] focus:border-[#8C5A3C] rounded-lg pl-8 pr-7 py-1.5 text-xs text-[#2C2523] placeholder-[#8C8273] outline-none transition">
+                    <button onclick="clearSearch()" id="btnClearSearch" class="hidden absolute right-2.5 top-1/2 -translate-y-1/2 text-[#5C5346] hover:text-[#2C2523] text-xs">
+                        <i class="fa-solid fa-circle-xmark"></i>
+                    </button>
+                </div>
+
+                <!-- Filter Tabs -->
+                <div class="grid grid-cols-5 gap-1 text-[11px]">
+                    <button onclick="setSidebarFilter('all')" id="tab-all" class="py-1 rounded-md font-semibold bg-[#8C5A3C] text-white transition cursor-pointer">Tất cả</button>
+                    <button onclick="setSidebarFilter('unanswered')" id="tab-unanswered" class="py-1 rounded-md font-semibold bg-[#E5DEC9]/70 text-[#5C5346] hover:text-[#2C2523] transition cursor-pointer">Chưa làm</button>
+                    <button onclick="setSidebarFilter('correct')" id="tab-correct" class="py-1 rounded-md font-semibold bg-[#E5DEC9]/70 text-[#246A4E] hover:bg-[#EBF7F1] transition cursor-pointer">Đúng</button>
+                    <button onclick="setSidebarFilter('wrong')" id="tab-wrong" class="py-1 rounded-md font-semibold bg-[#E5DEC9]/70 text-[#B83B3B] hover:bg-[#FDF0F0] transition cursor-pointer">Sai</button>
+                    <button onclick="setSidebarFilter('bookmarked')" id="tab-bookmarked" class="py-1 rounded-md font-semibold bg-[#E5DEC9]/70 text-[#8C5A3C] hover:bg-[#FFFDF9] transition cursor-pointer">★ Lưu</button>
+                </div>
+            </div>
+
+            <!-- Question List / Grid Container (Independently scrollable) -->
+            <div id="sidebarListContainer" class="flex-1 overflow-y-auto p-2.5">
+                <!-- Rendered by JS -->
+            </div>
+
+            <!-- Sidebar Footer: Auto-check setting + Keyboard Shortcut Help Text -->
+            <div class="p-2.5 bg-[#FAF7F2] border-t border-[#E5DEC9] space-y-2 shrink-0">
+                <div class="flex items-center justify-between text-[11px] text-[#5C5346]">
+                    <label class="flex items-center gap-1.5 cursor-pointer select-none">
+                        <input type="checkbox" id="chkAutoCheckSingle" checked onchange="toggleAutoCheckSetting()" class="accent-[#8C5A3C] w-3.5 h-3.5 rounded cursor-pointer">
+                        <span>Tự chấm câu chọn 1 đáp án</span>
+                    </label>
+                    <span class="font-mono font-semibold text-[#8C5A3C]" id="sidebarFilteredCount">163 câu</span>
+                </div>
+
+                <!-- Help Text placed right under the question list as requested -->
+                <div class="pt-1.5 border-t border-[#E5DEC9]/80 flex flex-wrap items-center justify-between gap-1 text-[11px] text-[#5C5346]">
+                    <span><kbd class="px-1 py-0.5 bg-[#F3EDE2] border border-[#D8CEBE] rounded font-mono text-[10px] text-[#2C2523]">1-6</kbd> Chọn câu</span>
+                    <span><kbd class="px-1 py-0.5 bg-[#F3EDE2] border border-[#D8CEBE] rounded font-mono text-[10px] text-[#2C2523]">Enter</kbd> Kiểm tra</span>
+                    <span><kbd class="px-1 py-0.5 bg-[#F3EDE2] border border-[#D8CEBE] rounded font-mono text-[10px] text-[#2C2523]">←</kbd> <kbd class="px-1 py-0.5 bg-[#F3EDE2] border border-[#D8CEBE] rounded font-mono text-[10px] text-[#2C2523]">→</kbd> Chuyển câu</span>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Mobile Backdrop -->
+        <div id="sidebarBackdrop" onclick="toggleSidebar()" class="fixed inset-0 top-11 bg-[#2C2523]/35 backdrop-blur-xs z-20 hidden lg:hidden"></div>
+
+        <!-- MAIN STAGE: QUESTION CARD & EXAM AREA (Independently scrollable) -->
+        <main class="flex-1 h-full overflow-y-auto p-1 sm:p-3 flex flex-col justify-between gap-4">
+            <div id="questionStageWrapper" class="max-w-4xl w-full mx-auto flex-1 flex flex-col justify-between gap-4 transition-all duration-200">
+                
+                <!-- MOCK EXAM RESULT SUMMARY BANNER (Shown when exam is submitted) -->
+                <div id="examResultBanner" class="hidden bg-[#FFFDF9] border-2 border-[#8C5A3C] rounded-2xl p-5 shadow-md animate-fade">
+                    <!-- Populated dynamically on Exam Finish -->
+                </div>
+
+                <!-- QUESTION PAPER CARD -->
+                <div class="bg-[#FFFDF9] border border-[#E5DEC9] rounded-3xl shadow-sm overflow-hidden flex flex-col">
+                    
+                    <!-- Card Top Metadata Bar -->
+                    <div class="bg-[#F3EDE2]/80 px-4 sm:px-7 py-3 border-b border-[#E5DEC9] flex flex-wrap items-center justify-between gap-2">
+                        <div class="flex items-center gap-2">
+                            <span id="qIndexBadge" class="bg-[#8C5A3C] text-white font-mono font-bold text-xs px-3 py-1 rounded-lg shadow-2xs">
+                                Câu #1 / 163
+                            </span>
+                            <span id="qRequirementBadge" class="bg-[#FAF7F2] border border-[#D8CEBE] text-[#5C5346] text-xs font-semibold px-3 py-1 rounded-lg">
+                                Chọn 1 đáp án
+                            </span>
+                            <span id="qStatusPill" class="hidden text-xs font-bold px-2.5 py-0.5 rounded-full"></span>
+                        </div>
+
+                        <div class="flex items-center gap-2">
+                            <!-- Zoom / Hide Question List Toggle Button directly on Question Card -->
+                            <button id="btnCardZoom" onclick="toggleZoomFocusMode()" class="px-3 py-1 rounded-lg border border-[#D8CEBE] bg-[#FAF7F2] hover:bg-[#F3EDE2] text-xs font-semibold text-[#5C5346] hover:text-[#2C2523] transition flex items-center gap-1.5 cursor-pointer" title="Phóng to bảng câu hỏi & Ẩn thanh danh sách (Phím Z)">
+                                <i id="iconCardZoom" class="fa-solid fa-expand text-[#8C5A3C]"></i>
+                                <span id="textCardZoom">Phóng to</span>
+                            </button>
+
+                            <button id="btnBookmark" onclick="toggleBookmarkCurrent()" class="px-3 py-1 rounded-lg border border-[#D8CEBE] bg-[#FAF7F2] hover:bg-[#F3EDE2] text-xs font-semibold text-[#5C5346] transition flex items-center gap-1.5 cursor-pointer">
+                                <i id="iconBookmark" class="fa-regular fa-star text-[#8C5A3C]"></i>
+                                <span id="textBookmark">Đánh dấu</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Question Body & Options -->
+                    <div class="p-4 sm:p-6 space-y-5">
+                        
+                        <!-- Question Prompt -->
+                        <div class="space-y-2">
+                            <h2 id="questionTitleText" class="font-serif font-bold text-base sm:text-xl text-[#2C2523] leading-relaxed transition-all">
+                                <!-- Question text here -->
+                            </h2>
+                            <div class="flex items-center justify-between text-xs text-[#5C5346] pt-1">
+                                <span id="selectionHintText">Hãy chọn đáp án đúng nhất bên dưới</span>
+                                <span id="selectedCountLabel" class="font-mono font-semibold text-[#8C5A3C]">Đã chọn: 0/1</span>
+                            </div>
+                        </div>
+
+                        <!-- Options List -->
+                        <div id="optionsList" class="space-y-2.5">
+                            <!-- Rendered by JS -->
+                        </div>
+
+                        <!-- Action Bar: Check Answer / Retry Question -->
+                        <div class="flex flex-wrap items-center justify-end gap-2.5">
+                            <button id="btnResetSingleQuestion" onclick="resetCurrentQuestion()" class="hidden px-4 py-2.5 rounded-xl bg-[#F3EDE2] hover:bg-[#E5DEC9] border border-[#D8CEBE] text-[#2C2523] text-xs sm:text-sm font-semibold transition cursor-pointer">
+                                <i class="fa-solid fa-rotate-right mr-1 text-[#8C5A3C]"></i>Làm lại câu này
+                            </button>
+                            <button id="btnCheckAnswer" onclick="checkCurrentAnswer()" class="w-full sm:w-auto px-6 py-2.5 rounded-xl bg-[#8C5A3C] hover:bg-[#73472D] disabled:opacity-40 disabled:pointer-events-none text-white font-semibold text-xs sm:text-sm shadow-xs transition cursor-pointer flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-circle-check"></i>
+                                <span>Kiểm Tra Đáp Án</span>
+                            </button>
+                        </div>
+
+                        <!-- Answer Explanation & Personal Note Box (Visible after checking in Practice Mode or after Exam Submit) -->
+                        <div id="feedbackContainer" class="hidden rounded-2xl border p-2 sm:p-3 space-y-1 animate-fade">
+                            <!-- Populated by JS -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- BOTTOM NAVIGATION BAR -->
+                <div class="bg-[#FFFDF9] border border-[#E5DEC9] rounded-2xl p-2.5 sm:p-3 shadow-2xs flex flex-wrap items-center justify-between gap-3">
+                    <button id="btnPrevQ" onclick="navigateQuestion(-1)" class="flex items-center gap-2 px-4 py-2 rounded-xl bg-[#F3EDE2] hover:bg-[#E5DEC9] disabled:opacity-40 disabled:pointer-events-none border border-[#D8CEBE] text-[#2C2523] text-xs sm:text-sm font-semibold transition cursor-pointer">
+                        <i class="fa-solid fa-arrow-left text-xs"></i>
+                        <span>Câu trước</span>
+                    </button>
+
+                    <!-- Quick Jump Strip -->
+                    <div id="quickJumpStrip" class="flex items-center gap-1.5 overflow-x-auto py-1 max-w-[220px] sm:max-w-md md:max-w-lg">
+                        <!-- Nearby question pills -->
+                    </div>
+
+                    <button id="btnNextQ" onclick="navigateQuestion(1)" class="flex items-center gap-2 px-4 py-2 rounded-xl bg-[#8C5A3C] hover:bg-[#73472D] disabled:opacity-40 disabled:pointer-events-none text-white text-xs sm:text-sm font-semibold shadow-2xs transition cursor-pointer">
+                        <span>Câu tiếp</span>
+                        <i class="fa-solid fa-arrow-right text-xs"></i>
+                    </button>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <!-- MODAL: IMPORT TXT / MARKDOWN QUESTIONS -->
+    <div id="importModal" class="fixed inset-0 z-50 bg-[#2C2523]/40 backdrop-blur-xs hidden items-center justify-center p-4">
+        <div class="bg-[#FFFDF9] border border-[#D8CEBE] rounded-3xl max-w-2xl w-full p-6 shadow-2xl space-y-4 animate-fade">
+            <div class="flex items-center justify-between border-b border-[#E5DEC9] pb-3">
+                <div class="flex items-center gap-2.5">
+                    <div class="w-9 h-9 rounded-xl bg-[#F3EDE2] border border-[#D8CEBE] flex items-center justify-center text-[#8C5A3C]">
+                        <i class="fa-solid fa-file-lines"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-serif font-bold text-base sm:text-lg text-[#2C2523]">Nạp Đề Thi Từ File TXT / Markdown</h3>
+                        <p class="text-xs text-[#5C5346]">Tải lên file <code class="font-mono text-[#8C5A3C]">README.txt</code> (250+ câu) hoặc dán trực tiếp nội dung vào bên dưới</p>
+                    </div>
+                </div>
+                <button onclick="closeImportModal()" class="w-8 h-8 rounded-lg bg-[#F3EDE2] text-[#5C5346] hover:text-[#2C2523] flex items-center justify-center cursor-pointer">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <!-- File Upload Input -->
+            <div class="bg-[#FAF7F2] border border-dashed border-[#D8CEBE] rounded-2xl p-4 flex flex-col sm:flex-row items-center justify-between gap-3">
+                <div class="text-xs text-[#5C5346]">
+                    <strong class="text-[#2C2523] block mb-0.5">Cách 1: Chọn file .txt hoặc .md từ máy tính của bạn</strong>
+                    Hỗ trợ định dạng <code class="font-mono">### Câu hỏi</code> và <code class="font-mono">- [x] Đáp án đúng</code>
+                </div>
+                <label class="px-4 py-2 rounded-xl bg-[#F3EDE2] hover:bg-[#E5DEC9] border border-[#D8CEBE] text-[#2C2523] text-xs font-semibold cursor-pointer shrink-0 transition">
+                    <i class="fa-solid fa-upload mr-1.5 text-[#8C5A3C]"></i>Chọn File...
+                    <input type="file" accept=".txt,.md" onchange="handleFileUpload(event)" class="hidden">
+                </label>
+            </div>
+
+            <!-- Paste Markdown Area -->
+            <div class="space-y-1.5">
+                <label class="text-xs font-semibold text-[#2C2523] block">Cách 2: Dán nội dung câu hỏi Markdown vào đây:</label>
+                <textarea id="importTextarea" rows="7" class="w-full bg-[#FAF7F2] border border-[#D8CEBE] focus:border-[#8C5A3C] rounded-2xl p-3.5 text-xs font-mono text-[#2C2523] outline-none" placeholder="### Who has the final say on the order of the Product Backlog?
+
+- [x] The Product Owner.
+- [ ] The CEO.
+- [ ] The Developers.
+- [ ] The Scrum Master."></textarea>
+            </div>
+
+            <div class="flex flex-wrap items-center justify-between gap-2 pt-2">
+                <div class="flex items-center gap-3 text-xs text-[#5C5346]">
+                    <label class="flex items-center gap-1.5 cursor-pointer">
+                        <input type="radio" name="importMode" value="append" checked class="accent-[#8C5A3C]">
+                        <span>Gộp thêm vào bộ đề hiện tại (Bỏ trùng)</span>
+                    </label>
+                    <label class="flex items-center gap-1.5 cursor-pointer">
+                        <input type="radio" name="importMode" value="replace" class="accent-[#8C5A3C]">
+                        <span>Thay thế toàn bộ bộ đề</span>
+                    </label>
+                </div>
+
+                <div class="flex items-center gap-2">
+                    <button onclick="closeImportModal()" class="px-4 py-2 rounded-xl bg-[#F3EDE2] hover:bg-[#E5DEC9] text-[#5C5346] text-xs font-semibold cursor-pointer">
+                        Đóng
+                    </button>
+                    <button onclick="processImportedMarkdown()" class="px-5 py-2 rounded-xl bg-[#8C5A3C] hover:bg-[#73472D] text-white text-xs sm:text-sm font-semibold shadow-xs cursor-pointer">
+                        <i class="fa-solid fa-check mr-1"></i>Nạp Câu Hỏi
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CUSTOM CONFIRM / MESSAGE MODAL (NO ALERT/CONFIRM) -->
+    <div id="confirmModal" class="fixed inset-0 z-50 bg-[#2C2523]/40 backdrop-blur-xs hidden items-center justify-center p-4">
+        <div class="bg-[#FFFDF9] border border-[#D8CEBE] rounded-2xl max-w-md w-full p-6 shadow-xl space-y-4 animate-fade">
+            <h3 id="confirmModalTitle" class="font-serif font-bold text-lg text-[#2C2523]">Xác nhận</h3>
+            <p id="confirmModalBody" class="text-xs sm:text-sm text-[#5C5346] leading-relaxed"></p>
+            <div class="flex items-center justify-end gap-2.5 pt-2">
+                <button onclick="closeConfirmModal()" class="px-4 py-2 rounded-xl bg-[#F3EDE2] hover:bg-[#E5DEC9] text-[#5C5346] text-xs font-semibold cursor-pointer">
+                    Hủy
+                </button>
+                <button id="confirmModalActionBtn" class="px-4 py-2 rounded-xl bg-[#8C5A3C] hover:bg-[#73472D] text-white text-xs font-semibold cursor-pointer">
+                    Đồng ý
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- EMBEDDED FULL RAW MARKDOWN FROM USER'S README.TXT -->
+    <script id="embeddedReadmeMarkdown" type="text/plain">
+### You have just been hired by a company new to Scrum. Your management has assigned you to be the Scrum Master of six new Scrum Teams. These teams will build one product. Select two conditions you should strive for in this scenario. (choose two)
+- [ ] There should be six Product Owners, one for each Scrum Team.
+- [ ] There should be six Product Owners, reporting to a chief Product Owner.
+- [x] The product has one Product Backlog.
+- [ ] Each Scrum Team should have a separate Product Backlog.
+- [x] There should be only one Product Owner.
+
+### A Scrum Team has been working on a product for nine Sprints. A new Product Owner comes in, understanding he is accountable for the Product Backlog. However, he is unsure about his responsibilities. Which two activities are part of the Product Owner role according to Scrum? (choose two)
+- [x] Ensuring that the most valuable functionality is produced first, at all times.
+- [x] Interacting with stakeholders.
+- [ ] Providing the Scrum Team with detailed specifications.
+- [ ] Describing features as Use Cases.
+- [ ] Creating detailed functional test cases.
+
+### User documentation is part of your Definition of Done. However, there aren't enough technical writers for all teams. Your Developers don't have a technical writer. What should you do?
+- [ ] Form a separate team of technical writers that will work on an on-demand basis for the various Product Owners. Work order will be first in, first out.
+- [ ] Let the user documentation remain undone and accumulate until after the last development Sprint. It will then be done by any available technical writers.
+- [ ] Wait until you have a technical writer on your Scrum Team to take care of this.
+- [x] Your Scrum Team is still responsible for creating user documentation. In this case, the Scrum Team members will write it.
+
+### You are the Scrum Master for four Scrum Teams working from the same Product Backlog. Several of the Developers come to you complaining that work identified for the upcoming two Sprints will require full-time commitment from a technical specialist who is external to the teams. What are two key concerns for the Scrum Master to take into account in this situation? (choose two)
+- [ ] The desire to maintain a stable velocity.
+- [x] The benefit of Developers figuring out a solution for themselves.
+- [ ] The need to have enough work to keep all Developers busy.
+- [x] The ability of the Developers to produce integrated Increments.
+
+### The Product Backlog is ordered by:
+- [x] The Product Owner with the most valuable items placed at the top.
+- [ ] Risk, where safer items are at the top, and riskier items are at the bottom.
+- [ ] Items are randomly arranged.
+- [ ] Size, where small items are at the top and large items are at the bottom.
+
+### What happens if the Scrum Team cannot complete its work by the end of the Sprint?
+- [ ] The Sprint is extended and future Sprints use this new duration.
+- [x] The Sprint length holds and the Scrum Team continuously learns what is actually possible to do within a Sprint of this length.
+- [ ] The Sprint is extended temporarily. Lessons are taken to ensure it doesn't happen again.
+
+### Which topics should be discussed in the Sprint Review?
+- [ ] The Scrum process, and how it was used during the Sprint.
+- [ ] Coding and engineering practices.
+- [x] Sprint results.
+- [ ] All of the above.
+
+### A member of the Scrum Team takes the Scrum Master aside to express his concerns about data security issues. What should the Scrum Master do?
+- [ ] Add security to the Definition of Done.
+- [ ] Tell the Product Owner to stop further development of features until the issues are fixed.
+- [ ] Create a Product Backlog item for security.
+- [ ] Go check with the testers.
+- [x] Ask the person to share the issue with the team as soon as possible.
+
+### What does it mean for a Scrum Team to be cross-functional?
+- [ ] The Scrum Team includes not only Developers but also business analysts, architects, and testers.
+- [x] The Scrum Team includes cross-skilled individuals who are able to contribute to do what is necessary to deliver an Increment of software.
+- [ ] Developers on the Scrum Team work closely with business analysts, architects, Developers and testers who are not on the team.
+- [ ] The Scrum Team is a virtual team drawing from separate teams of business analysts, architects, Developers and testers.
+
+### Sprint burndown charts are an efficient tracking tool, because they show:
+- [x] An estimate of the total work remaining for the Sprint.
+- [ ] How much effort has gone into a Sprint.
+- [ ] How many hours have been worked by each Scrum Team member.
+- [ ] How many Product Backlog items remain.
+
+### How much work must a Scrum Team do to a Product Backlog item it selects for a Sprint?
+- [ ] A proportional amount of time on analysis, design, programming, testing, and documentation.
+- [ ] As much as it can fit into the Sprint. Any remaining work will be transferred to a subsequent Sprint.
+- [ ] All development work and at least some testing.
+- [x] As much as it has told the Product Owner will be done for every Product Backlog item it selects in conformance with the Definition of Done.
+
+### Which statement best describes the Sprint Backlog as outcome of the Sprint Planning?
+- [ ] It is a complete list of all work to be done in a Sprint.
+- [ ] Every item has a designated owner.
+- [ ] Each task is estimated in hours.
+- [x] It is the Scrum Team's plan for the Sprint.
+- [ ] It is ordered by the Product Owner.
+
+### If burndown charts are used to visualize progress, what does a trend line through a release burndown chart indicate? (choose the best answer)
+- [ ] The evolution of the cost spent on the project.
+- [ ] When all work will be completed to the Scrum Team can be released for other work.
+- [x] When the work remaining will likely be completed if nothing changes on the Product Backlog or the Developers.
+- [ ] When the project will be over if the Product Owner removes work that is equal in effort to any new work that is added.
+
+### Who is responsible for engaging the stakeholders? (choose the best answer)
+- [ ] The Business Analyst.
+- [ ] The Developers.
+- [ ] The Team Manager.
+- [ ] The Project Manager.
+- [x] The Product Owner.
+
+### At the end of a Sprint, a Product Backlog item worked on during the Sprint does not meet the Definition of Done. What two things should happen with the undone Product Backlog item? (choose the best two answers)
+- [ ] If the stakeholders agree, the Product Owner can accept it and release it to the users.
+- [x] Put it on the Product Backlog for the Product Owner to decide what to do with it.
+- [ ] Review the item, add the Done part of the estimate to the velocity and create a Story for the remaining work.
+- [x] Do not include the item in the Increment this Sprint.
+
+### Which two of the following are true about the Scrum Master role? (choose the best two answers)
+- [ ] At the Sprint Review, the Scrum Master identifies what has been "done" and what has not been "done".
+- [x] The Scrum Master teaches the Developers to keep the Scrum meetings to their time-box.
+- [x] The Scrum Master helps those outside the team interact with the Scrum Team.
+- [ ] The Scrum Master assigns tasks to Developers when they need work.
+- [ ] The Scrum Master is responsible for updating the Sprint Burndown.
+
+### What are three benefits of self-management? (choose the best three answers)
+- [x] Increased creativity.
+- [ ] Increased rule compliance.
+- [ ] Increased accuracy of estimates.
+- [x] Increased self-accountability
+- [x] Increased commitment.
+
+### Which three of the following are time-boxed events in Scrum? (choose the best three answers)
+- [ ] Release Testing.
+- [ ] Release Retrospective.
+- [x] Sprint Retrospective.
+- [x] Sprint Planning.
+- [ ] Sprint Testing.
+- [ ] Sprint 0.
+- [x] Daily Scrum.
+
+### Who is responsible for clearly expressing Product Backlog items? (choose the best answer)
+- [ ] The Scrum Master, or the Scrum Master may have the Developers do it.
+- [ ] The Scrum Master.
+- [x] The Product Owner.
+- [ ] The business analyst who represents the Product Owner in the Scrum Team.
+
+### What is the best suited structure for Scrum Teams in order to produce integrated Increments? (choose the best answer)
+- [ ] Each Scrum Team works only one technical layer of the system (e.g. GUI, database, middle tier, interfaces).
+- [x] Each Scrum Team develops functionality from beginning to end throughout all technical layers.
+
+### Why should the Product Owner be present at the Daily Scrum? (choose the best answer)
+- [x] He/She doesn't need to be there.
+- [ ] To hear about impediments in functionality.
+- [ ] To represent the stakeholder's point of view.
+- [ ] To participate as a Scrum Team member.
+
+### What two techniques could the Scrum Master use when the Scrum Team gets caught in an internal disagreement about which development techniques to apply? (choose the best two answers)
+- [x] Involve the complete Scrum Team.
+- [x] Use coaching techniques; such as open questions and active listening.
+- [ ] Ask an external technical specialist to make the decision.
+- [ ] Send every team member to the company's Human Resources department to express their concerns.
+
+### What enhances the transparency of an Increment? (choose the best answer)
+- [x] Doing all work needed to meet the Definition of Done
+- [ ] Reporting Sprint progress to the stakeholders daily
+- [ ] Keeping track of and estimating all undone work to be completed in a separate Sprint.
+- [ ] Updating Sprint tasks properly in the electronic tracking tool.
+
+### Who determines how work is performed during the Sprint? (choose the best answer)
+- [ ] Architects.
+- [x] The Scrum Team.
+- [ ] The Scrum Master.
+- [ ] Subject matter experts.
+- [ ] The Developers managers.
+
+### When does the second Sprint start? (choose the best answer)
+- [ ] Once the architectural changes for the second Sprint have been approved by the senior architect.
+- [ ] After the Product Backlog for the second Sprint has been selected.
+- [x] Immediately after the first Sprint.
+- [ ] After the customer completes acceptance testing of the first Sprint.
+
+### What is included in the Sprint Backlog? (choose the best answer)
+- [ ] User Stories.
+- [ ] Tasks.
+- [ ] Use Cases.
+- [ ] Tests.
+- [x] Any of the above (or others) which are a decomposition of the selected Product Backlog items.
+
+### Which of the following are true about the Product Owner role? (choose the best two answers)
+- [x] The Product Owner is one person.
+- [x] The Product Owner is accountable for ordering the Product Backlog.
+- [ ] Multiple people can share the Product Owner role on a Scrum Team.
+- [ ] The Product Owner role can be played by a committee or a team of people.
+
+### True or False: When multiple teams work together on the same product, each team should maintain a separate Product Backlog.
+- [ ] True.
+- [x] False.
+
+### If two Scrum Teams are added to the development of a product that previously had only one Scrum Team, what will be the immediate impact on the productivity of the original Scrum Team? (choose the best answer)
+- [x] Its productivity is likely to decrease.
+- [ ] Its productivity is likely to stay the same.
+- [ ] Its productivity is likely to increase.
+
+### A Scrum Master is introducing Scrum to a new Scrum Team. The Scrum Team has decided that a Sprint Retrospective is unnecessary. What action should the Scrum Master take? (choose the best answer)
+- [ ] Call a meeting between the Scrum Team and senior management.
+- [ ] Comply with the decision of the self-managing team.
+- [ ] Consult with the Product Owner to see how he/she feels about the situation.
+- [x] Begin facilitating productive and useful Sprint Retrospectives.
+
+### Which two things are appropriate for a Scrum Master to do if the Developers don't have the engineering tools and infrastructure to completely finish each selected Product Backlog item? (choose the best two answers)
+- [x] Coach the Scrum Team to improve its skills, tools, and infrastructure over time and adjust the Definition of Done accordingly.
+- [ ] Encourage the Product Owner to accept partially "Done" Increments until the situation improves.
+- [ ] Refocus the current Sprint on establishing the Scrum Team's infrastructure instead of delivering an Increment.
+- [ ] Declare the Scrum Team not ready for Scrum.
+- [x] Have the Scrum Team establish a Definition of Done that is actually possible to achieve given current circumstances.
+
+### When is implementation of a Product Backlog item considered complete? (choose the best answer)
+- [ ] At the end of the Sprint.
+- [x] When the item has no work remaining in order to be potentially released.
+- [ ] When QA reports that the item passes all acceptance criteria.
+- [ ] When all work in the Sprint Backlog related to the item is finished.
+
+### Choose two responsibilities of a self-managing Scrum Team. (choose the best two answers)
+- [ ] Reorder the Product Backlog.
+- [x] Pull Product Backlog items for the Sprint.
+- [x] Do the work planned in the Sprint Backlog.
+- [ ] Increase velocity.
+- [ ] Report daily progress to stakeholders.
+
+### Every Scrum Team should have: (choose the best answer)
+- [ ] At least one representative from each major software engineering discipline (like QA, Dev, UX).
+- [x] The competencies and skills needed to deliver a Done Increment in a Sprint.
+- [ ] One Lead Developer and no more than 8 other members.
+
+### Why does the Product Owner want the Scrum Team to adhere to its Definition of Done? (choose the best answer)
+- [x] To have complete transparency into what has been done at the end of each Sprint.
+- [ ] To be able to reprimand the team when they don't meet their velocity goal for the Sprint.
+- [ ] To know what the team will deliver over the next three Sprints.
+- [ ] To predict the team's productivity over time.
+
+### During a Sprint Retrospective, for what is the Scrum Master responsible? (choose the best answer)
+- [ ] Prioritizing the resulting action items.
+- [x] Participating as a Scrum team member and facilitating as requested or needed.
+- [ ] Acting as a scribe to capture the Developers answers.
+- [ ] Summarizing and reporting the discussions to management.
+
+### The Scrum Team should have all the skills needed to: (choose the best answer)
+- [x] Turn Product Backlog items into an Increment of potentially releasable product functionality.
+- [ ] Do all of the development work, except for specialized testing that requires additional tools and environments.
+- [ ] Complete the project within the date and cost as calculated by the Product Owner.
+
+### During the Sprint, the Scrum Master's role is to do which two of the following: (choose the best two answers)
+- [x] Facilitate inspection and adaptation opportunities as requested or needed.
+- [x] Coaching the team members in the self-management.
+- [ ] Ensure the Product Owner attends all Scrum events.
+- [ ] Escalate team conflicts to functional line managers.
+- [ ] Monitor the progress of the Developers.
+- [ ] Assign tasks with the Scrum Team.
+
+### The Scrum Master observes the Product Owner struggling with ordering the Product Backlog. What is an appropriate action for the Scrum Master to take? (choose the best answer)
+- [ ] Suggest the Product Owner extend the Sprint, so he can have more time to order the Product Backlog.
+- [ ] Suggest that the Developers do the ordering to be sure that it is a feasible ordering of work.
+- [x] Offer the Product Owner help in understanding that the goal of ordering the Product Backlog is to maximize value.
+- [ ] Present the Product Owner with an ordered Product Backlog to use.
+- [ ] Encourage the Product Owner to work with the Developers to see which items technically are fastest to implement.
+
+### True or False: The Product Owner makes sure the team selects enough from the Product Backlog for a Sprint to satisfy the stakeholders.
+- [ ] True.
+- [x] False.
+
+### Which statement best describes the Sprint Review? (choose the best answer)
+- [ ] It is used to congratulate the Developers if it did what it forecast, or to punish the Developers if it failed to meet its forecast.
+- [ ] It is a demo at the end of the Sprint for everyone in the organization to check on the work done.
+- [ ] It is a mechanism to control the Developers activities during a Sprint.
+- [x] It is when the Scrum Team and stakeholders inspect the outcome of a Sprint and figure out what to do next.
+
+### Who owns the Sprint Backlog? (choose the best answer)
+- [ ] The Chief Backlog Officer.
+- [ ] The Product Owner.
+- [ ] The Scrum Master.
+- [x] The Scrum Team.
+
+### When might a Sprint be abnormally cancelled? (choose the best answer)
+- [ ] When the Scrum Team feels that the work is too hard.
+- [x] When the Sprint Goal becomes obsolete.
+- [ ] When the sales department has an important new opportunity.
+- [ ] When it becomes clear that not everything will be finished by the end of the Sprint.
+
+### A Sprint Retrospective should be held: (choose the best answer)
+- [x] At the end of each Sprint.
+- [ ] At the beginning of each Sprint.
+- [ ] Only when the Scrum Team determines it needs one.
+- [ ] At the end of the last Sprint in a project or a release.
+
+### A new Developer is having continuing conflicts with existing Developers and creating the hostile environment. If necessary, who is responsible for removing the team member? (choose the best answer)
+- [ ] The hiring manager is responsible, because he/she hired the Developer.
+- [ ] The Scrum Manager is responsible, because he/she removes Impediments.
+- [x] The Developers are responsible, and may need help from the Scrum Master.
+- [ ] The Product Owner is responsible, because he/she controls the return on investment (ROI).
+
+### Which three purposes does the Definition of Done serve? (choose the best three answers)
+- [x] Guide the Developers on how many Product Backlog items to select for the Sprint.
+- [x] Create a shared understanding of when work is complete.
+- [ ] Describe the purpose, objective, and time-box of each Scrum event.
+- [ ] Describe the work that must be done before the Sprint is allowed to end.
+- [x] Increase transparency.
+
+### During a Sprint Retrospective, the Developers proposes moving the Daily Scrum to only occur on Tuesdays and Thursdays. Which two are the most appropriate responses for the Scrum Master? (choose the best two answers)
+- [ ] Consider the request and decide on which days the Daily Scrum should occur.
+- [x] Coach the team on why the Daily Scrum is important as an opportunity to update the plan.
+- [ ] Have the Developers vote.
+- [x] Learn why the Developers wants this and work with them to improve the outcome of the Daily Scrum.
+- [ ] Acknowledge and support the self-managing team's decision.
+
+### When should a Sprint Goal be created? (choose the best answer)
+- [ ] It should have been created in the previous Sprint during Product Backlog refinement.
+- [ ] It must be established before Sprint Planning in order to begin planning.
+- [ ] A Sprint Goal is not mandatory in Scrum.
+- [ ] At any time during the Sprint.
+- [x] During Sprint Planning.
+
+### True or False: Every Scrum team must have a Product Owner and Scrum Master.
+- [x] True. Outcomes affected by their participation and availability.
+- [ ] False. A Product Owner can be replaced by a business analyst in the Scrum Team.
+- [ ] False. A Scrum Master is only required when asked for by the Scrum Team.
+- [ ] True. Each must be 100% dedicated to the Scrum Team.
+
+### Who can abnormally terminate a Sprint? (choose the best answer)
+- [ ] The Scrum Master.
+- [ ] The Scrum Team or its members.
+- [x] The Product Owner.
+- [ ] The Stakeholders.
+
+### True or False: The Sprint Goal is a result of Sprint Planning, as is the Sprint Backlog.
+- [x] True.
+- [ ] False.
+
+### Which two of the following are appropriate topics for discussion during a Sprint Retrospective? (choose the best two answers)
+- [x] Identifying high priority process improvements for the next Sprint.
+- [ ] The order of items in the Product Backlog.
+- [x] How the team collaborates.
+- [ ] Documenting acceptance criteria for items in the next Sprint.
+
+### A Scrum Master is working with a Scrum Team that has members in different physical locations. The Scrum Team meets in a variety of meeting rooms and has much to do logistically (for example, set up conference calls) before the Daily Scrum. What action should the Scrum Master take? (choose the best answer)
+- [x] Allow the Scrum Team to self-manage and determine for itself what to do.
+- [ ] Set up the meeting and tell the Scrum Team that is how it will be done.
+- [ ] Ask the Scrum Team members to alternate who is responsible for meeting setup.
+- [ ] Inform management and ask them to solve it.
+
+### True or False: Cross-functional teams are optimized to work on one technical layer of a system only (e.g. GUI, database, middle tier, interfaces).
+- [ ] True.
+- [x] False.
+
+### Which of the following might the Scrum Team discuss during a Sprint Retrospective? (choose the best answer)
+- [ ] Methods of communication.
+- [ ] The way the Scrum Team does Sprint Planning.
+- [ ] Skills needed to improve the Developers ability to deliver.
+- [ ] Its Definition of Done.
+- [x] All of the above.
+
+### What are the two primary ways a Scrum Master keeps a Developers working at its highest level of productivity? (choose the best two answers)
+- [ ] By ensuring the meetings start and end at the proper time.
+- [x] By removing impediments that hinder the Developers.
+- [x] By facilitating Developers decisions.
+- [ ] By keeping high value features high in the Product Backlog.
+
+### What is the recommended size for the Developers? (choose the best answer)
+- [ ] 7 plus or minus 3.
+- [ ] At least 7.
+- [ ] 9.
+- [x] 3 to 9.
+
+### You are the Scrum Master of a new, to be developed product. Development is going to require 45 people. What is a good first question-for you to suggest the group thinks about when forming into teams? (choose the best answer)
+- [x] How will we make sure all teams have the right amount or expertise?
+- [ ] What is the right mixture of senior and junior people on each team?
+- [ ] Who are going to be the team leads?
+- [ ] Who are the subject matter experts on each team?
+
+### Which three of the following are feedback loops in Scrum? (choose the best three answers)
+- [x] Sprint Review.
+- [ ] Release Planning.
+- [x] Sprint Retrospective.
+- [ ] Refinement Meeting.
+- [x] Daily Scrum.
+
+### When the Developers are having trouble delivering a working Increment because they don't understand a functional requirement, what should they do? (choose the best answer)
+- [ ] Add a specialist to the Developers.
+- [ ] Partially complete the functionality, and discuss the remaining work at the Sprint Review.
+- [x] Collaborate with the Product Owner to determine what is possible and acceptable.
+- [ ] Defer the work to a more appropriate Sprint.
+
+### When is the Sprint Backlog created? (choose the best answer)
+- [ ] At the beginning of the project.
+- [x] During the Sprint Planning meeting.
+- [ ] Prior to the Sprint Planning meeting.
+- [ ] During the Sprint.
+
+### Which of the following services are appropriate for a Scrum Master in regard to the Daily Scrum? (choose the best answer)
+- [ ] Lead the discussions of the Developers.
+- [ ] Make sure that all 3 questions have been answered by each member of the team.
+- [ ] Keep track of whether each team member has a chance to speak.
+- [x] Teach the Developers to keep the Daily Scrum within the 15 minute time-box.
+- [ ] All of the above.
+
+### Which of the following best describes an Increment of working software? (choose the best answer)
+- [ ] A decomposition of all Product Backlog items into tasks for future Sprint Backlog lists.
+- [x] Additional features in a usable state that complement those delivered in previous iterations.
+- [ ] A new user interface design for functionality delivered in previous iterations.
+- [ ] An automated test suite to verify functionality delivered in previous iterations.
+- [ ] UML diagrams that describe how to deliver functionality in future iterations.
+
+### In order to achieve the benefits of Scrum, it is important to enact the value of commitment. What two actions demonstrate the commitment of Scrum Team members? (choose the best two answers)
+- [ ] Always deliver the items in the Sprint forecast.
+- [x] Help the other Scrum Team members.
+- [x] Do your best
+- [ ] Send out a daily status report.
+- [ ] Work late.
+
+### True or False: The Product Owner determines how many Product Backlog items the Developers selects for a Sprint. (choose the best answer)
+- [x] False.
+- [ ] True, accordingly to what was committed to the stakeholders.
+- [ ] True, but only after confirmation by the resource manager that the Team has enough capacity.
+- [ ] True.
+- [ ] False, the Scrum Master does that.
+- [ ] False, capacity and commitment are the Project manager's responsibility.
+
+### What are two ways that regulatory compliance requirements are dealt with in Scrum? (choose the best two answers)
+- [ ] They are addressed by a separate team who is responsible for compliance issues.
+- [ ] They are discussed, analyzed, and documented before the first Sprint can begin.
+- [x] They are added to the Product Backlog and addressed during each Sprint, alongside the creation of new Product capabilities.
+- [x] They are addressed as part of meeting the Definition of Done during each Sprint.
+
+### The Sprint Review is mainly an inspect and adapt opportunity for which group?
+- [ ] The Developers and stakeholders.
+- [ ] The Product Owner and Developers.
+- [x] The Scrum Team and stakeholders.
+- [ ] The Product Owner and management.
+- [ ] The Developers and management.
+- [ ] The Product Owner and stakeholders.
+
+### True or False: To get started in terms of what to build, Scrum requires no more than a Product Owner with enough ideas for a first Sprint, Developers to implement those ideas and a Scrum Master to help guide the process.
+- [x] True.
+- [ ] False.
+
+### What is the time-box for the Sprint Review?
+- [ ] As long as needed.
+- [ ] 2 hours for a monthly Sprint.
+- [x] 4 hours for a monthly Sprint.
+- [ ] 4 hours and longer as needed.
+- [ ] 1 day
+
+### Who is responsible for tracking the remaining work of the Sprint?
+- [x] The Developers.
+- [ ] The Scrum Master.
+- [ ] The Project Manager.
+- [ ] The Developers is consultation with the Product Owner.
+- [ ] The Product Owner.
+
+### What is the tactic a Scrum Master should use to divide a group of 100 people into multiple Scrum Teams?
+- [ ] Create teams based on their skills across multiple layers (such as database, UI, etc.)
+- [ ] Ask the Product Owner to assign the people to teams.
+- [x] Ask the Developers to divide themselves into teams.
+
+### True or False: A product Increment must be released to production at the end of each Sprint.
+- [ ] True.
+- [x] False.
+
+### If burndown charts are used to visualize progress, what do they track?
+- [ ] Accumulated cost.
+- [ ] Individual worker productivity.
+- [x] Work remaining across time.
+- [ ] Accumulated business value delivered to the customer.
+
+### How is management external to the Scrum Team involved in the Daily Scrum?
+- [ ] The Scrum Master speaks on their behalf.
+- [x] The Scrum Team self-manages and is the only management required at the Daily Scrum.
+- [ ] Management gives an update at the start of each Daily Scrum.
+- [ ] The Product Owner represents their opinions.
+
+### A Scrum Master is keeping a list of open impediments, but it is growing and he/she has been able to resolve only a small portion of the impediments. Which three techniques would be most helpful in this situation? (choose three)
+- [x] Consulting with the Scrum Team.
+- [x] Prioritizing the list and working on them in order.
+- [ ] Arranging a triage meeting with all project managers.
+- [x] Alerting management to the impediments and their impact.
+
+### Which Scrum Value is affected by a lack of trust in the Scrum Team?
+- [ ] Focus.
+- [ ] Respect.
+- [ ] Openness.
+- [ ] Courage.
+- [ ] Commitment.
+- [x] All of the above.
+
+### What is the time-box for the Sprint Planning meeting?
+- [ ] 4 Hours for a monthly Sprint.
+- [x] 8 Hours for a monthly Sprint.
+- [ ] Monthly.
+- [ ] Whenever it is done.
+
+### A Product Owner wants advice from the Scrum Master about estimating work in Scrum. Which of these is the guideline that a Scrum Master should give?
+- [ ] Product Backlog items must be estimated in story points.
+- [x] Estimates are made by the Scrum Team.
+- [ ] Estimates must be in relative units.
+- [ ] Scrum forbids estimating.
+- [ ] Estimates are made by the Product Owner, but are best checked with the Scrum Team.
+
+### What is a Scrum Team responsible for? (choose two)
+- [x] Resolving internal team conflicts.
+- [ ] Reporting productivity.
+- [ ] Selecting the Product Owner.
+- [x] Organizing the work required to meet the Sprint Goal.
+
+### Which two ways of creating Scrum Teams are consistent with Scrum's values? (choose two)
+- [x] Existing teams propose how they would like to go about organizing into the new structure.
+- [ ] Managers personally re-assign current subordinates to new teams.
+- [ ] Managers collaborate to assign individuals to specific teams.
+- [x] Bring all the Developers together and let them self-manage into Scrum Teams.
+- [ ] The Chief Product Owner determines the new team structures and assignments.
+
+### True or False: A Scrum Master is essentially the same thing as a traditional PM (Project Manager).
+- [ ] True.
+- [x] False.
+
+### The Product Owner is not collaborating with the Developers during the Sprint. What are two valuable actions for a Scrum Master to take? (choose two)
+- [ ] Inform the Product Owner's functional manager.
+- [ ] Stop the Sprint, send the Product Owner to a course and restart.
+- [x] Bring up the problem in the Sprint Retrospective.
+- [x] Coach the Product Owner in the values of Scrum and incremental delivery.
+- [ ] Nominate a proxy Product Owner.
+
+### True or False: Multiple Scrum Teams working on the same product or system all select work from the same Product Backlog.
+- [x] True.
+- [ ] False.
+
+### For the purpose of transparency, when does Scrum say a new Increment of working software must be available?
+- [ ] After the acceptance testing phase.
+- [ ] Before the release Sprint.
+- [ ] Every 3 Sprints.
+- [x] At the end of every Sprint.
+- [ ] When the Product Owner asks to create one.
+
+### True or False: Multiple Scrum Teams working on the same project must have the same Sprint start date.
+- [ ] True.
+- [x] False.
+
+### During a Sprint Retrospective, for what is the Product Owner responsible?
+- [x] Participating as a Scrum Team member.
+- [ ] Summarizing and reporting the discussions to the stakeholders that he/she represents in the Scrum Team.
+- [ ] Capturing requirements for the Product Backlog.
+- [ ] The Product Owner should not take part in Sprint Retrospectives.
+
+### Marian is the Product Owner envisioning a project for a new release of her product. She made a projection of a release date based upon a sustained velocity of 17 completed units of work per Sprint. Over the first 3 Sprints, the average velocity was 13 for work that the Developers estimated as 90% done. The Developers, feeling the need to meet the plan, figured that a velocity of 17 was within their reach. A good way to continue is:
+- [x] The Developers makes sure that all of the selected scope per Sprint is as "Done" as possible. The undone work is estimated and added to the Sprint Backlog of the next Sprint, so it doesn't mess up the Product Backlog.
+- [ ] Add enough people to the Developers for the deadline to be made.
+- [ ] The opportunity to inspect and adapt is lost. Opaqueness has replaced transparency. Predictability has dropped below zero. The produced software is not usable. As the rules of Scrum have not been respected, it is the Scrum Master's duty to assess whether repair is possible, or a restart with a more reliable team. If not, the Scrum Master should cancel the project.
+- [ ] The Developers should remind Marian to find funding for enough Release Sprints in which the remaining work can be done.
+
+### The time-box for a Daily Scrum?
+- [ ] Two minutes per person.
+- [x] 15 minutes.
+- [ ] 15 minutes for a 4 week sprint. For shorter Sprints it is usually shorter.
+- [ ] 4 hours.
+- [ ] The same time of day every day.
+
+### Which phrase best describes a Product Owner?
+- [ ] Go-between Developers and customers.
+- [x] Value optimizer.
+- [ ] Requirements engineer.
+- [ ] Team manager.
+
+### The length of a Sprint should be:
+- [ ] Short enough to keep the business risk acceptable to the Product Owner.
+- [ ] Short enough to be able to synchronize the development work with other business events.
+- [ ] No more than one calendar month.
+- [x] All of these answers are correct.
+
+### What are two responsibilities of testers in a Scrum Team? (choose two)
+- [ ] Verifying the work of programmers.
+- [x] Everyone in the Developers is responsible for quality.
+- [ ] Tracking quality metrics.
+- [ ] Finding bugs.
+- [x] Scrum has no "tester" role.
+
+### The CEO asks the Developers to add a "very important" item to a Sprint that is in progress. What should the Developers do?
+- [ ] Add the item to the current Sprint and drop an item of equal size.
+- [ ] Add the item to the current Sprint without any adjustments.
+- [x] Inform the Product Owner so he/she can work with the CEO.
+- [ ] Add the item to the next Sprint.
+
+### What is the role of management in Scrum?
+- [x] To facilitate the Scrum Teams with insights and resources that help them improve.
+- [ ] To monitor the Scrum Team's productivity.
+- [ ] To identify and remove people that aren't working hard enough.
+- [ ] To continually monitor staffing levels of the Developers.
+
+### Which technique is the best way the Scrum Master can ensure that the Developers communicates effectively with the Product Owner?
+- [x] Monitor communications between them and facilitate direct collaboration.
+- [ ] Teach the Developers to talk in terms of business needs and objectives.
+- [ ] Teach the Product Owner about the technologies employed during the Sprints.
+- [ ] Act as a go-between for them.
+
+### How much of the Sprint Backlog must be defined during the Sprint Planning event?
+- [ ] Just enough tasks for the Scrum Master to be confident in the Developers understanding of the Sprint.
+- [ ] The entire Sprint Backlog must be identified and estimated by the end of the Sprint Planning meeting.
+- [x] Enough so the Developers can create its best forecast of what is can do, and to start the first several days of the Sprint.
+- [ ] Just enough to understand design and architectural implications.
+
+### Who is responsible for managing the progress of work during a Sprint?
+- [ ] The Scrum Master.
+- [x] The Developers.
+- [ ] The Product Owner.
+- [ ] The most junior member of the Team.
+
+### Who is responsible for collaborating with stakeholders?
+- [ ] The Developers.
+- [ ] The Team Manager.
+- [ ] The Project Manager.
+- [x] The Scrum Team.
+- [ ] The Business Analyst.
+
+### What two factors are best considered when establishing the Sprint length? (choose two)
+- [ ] The organization has mandated similar length sprints.
+- [x] The level of uncertainty over the technology to be used.
+- [ ] The frequency at which team formation can be changed.
+- [x] The risk of being disconnected from the stakeholders.
+
+### Which of these may a Developers deliver at the end of a Sprint?
+- [ ] Failing unit tests, to identify acceptance tests for the next Sprint.
+- [ ] An Increment of software with minor known bugs in it.
+- [x] An Increment of working software that is "done".
+- [ ] A single document, if that is what the Scrum Master asked for.
+
+### Who creates a Product Backlog item's estimate?
+- [x] The Developers after clarifying requirements with the Product Owner.
+- [ ] The Product Owner with input from the Developers.
+- [ ] The most senior people in the organization, including architects and subject matter experts.
+- [ ] The Scrum Master.
+- [ ] The Developers, alone.
+
+### Who starts the Daily Scrum?
+- [ ] The person coming in last. This encourages people to be on time and helps to stay within the time-box.
+- [x] Whoever the Developers decides should start.
+- [ ] The person who has the token.
+- [ ] The Scrum Master. This ensures that the Developers have the meeting and stays within the time-box.
+- [ ] The person who last broke the build.
+
+### You are the Scrum Master on a newly formed Scrum Team. Which three of the following activities would probably help the team in starting up? (choose three)
+- [ ] Introduce a bonus system for the top performers in the team.
+- [x] Have the Scrum Team members introduce themselves to each other and give a brief background of their skills and work history.
+- [ ] Have the development managers for each Developer introduce their direct reports and go over their responsibilities on the Scrum Team.
+- [ ] Ensure the Scrum Team members have compatible personalities.
+- [x] Ensure the team understands they need a Definition of Done.
+- [x] Ask the Product Owner to discuss the product or project, its history, goals, and context, as well as answer questions.
+
+### The Developers selects a set of Product Backlog items for a Sprint Backlog with the intent to get the selected items "Done" by the end of the Sprint. Which three phrases best describe the purpose of a Definition of Done? (choose three)
+- [ ] It controls whether the Developers have performed their tasks.
+- [ ] It provides a template for elements that need to be included in the technical documentation.
+- [x] It creates transparency over the work inspected at the Sprint Review.
+- [ ] It tracks the percent completeness of a Product Backlog item.
+- [x] It guides the Developers is creating a forecast at the Sprint Planning.
+- [x] It defines what it takes for an Increment to be ready for release.
+
+### The Daily Scrum is an event that happens every day. What would be three key concerns if the frequency were to be lowered to every two or three days? (choose three)
+- [x] Opportunities to inspect and adapt the Sprint Backlog are lost.
+- [x] Impediments are raised and resolved more slowly.
+- [ ] The Product Owner cannot accurately report progress to the stakeholders.
+- [ ] Too much work is spent updating the Scrum board before the meeting.
+- [ ] The Scrum Master loses the ability to update the Gantt chart properly.
+- [x] The Sprint Backlog may become inaccurate.
+
+### Which statement best describes Scrum?
+- [ ] A defined and predictive process that confirms to the principles of Scientific Management.
+- [ ] A complete methodology that defines how to develop software.
+- [ ] A cookbook that defines best practices for software development.
+- [x] A framework within which complex products in complex environments are developed.
+
+### Which Scrum Values are exhibited by not building Product Backlog items that have low business value? (choose three)
+- [ ] Economic Value Added.
+- [x] Respect.
+- [x] Focus.
+- [ ] Earned Value.
+- [x] Courage.
+
+### How should Product Backlog items be chosen when multiple Scrum Teams work from the same Product Backlog?
+- [ ] The Scrum Team with the highest velocity pulls Product Backlog items first.
+- [x] The Developers pull in work in agreement with the Product Owner.
+- [ ] The Product Owner should provide each team with its own Product Backlog.
+- [ ] Each Scrum Team takes an equal numbers of items.
+- [ ] The Product Owner decides.
+
+### How often should Developers change?
+- [x] As needed, while taking into account a short term reduction in productivity.
+- [ ] Never, because it reduces productivity.
+- [ ] As needed, with no special allowance for changes in productivity.
+- [ ] Every Sprint to promote shared learning.
+
+### Who should make sure everyone on the Developers does his or her tasks for the Sprint?
+- [ ] The Project Manager.
+- [ ] The Product Owner.
+- [ ] The Scrum Master.
+- [x] The Developers.
+- [ ] All of the above.
+
+### When is it most appropriate for a Developers to change the Definition of Done?
+- [ ] During Spring Planning.
+- [ ] Prior to starting a new Sprint.
+- [x] During the Sprint Retrospective.
+- [ ] Prior to starting a new project.
+
+### As the Sprint Planning meeting progresses, the Developers sees that the workload is greater than they can handle. Which two are valid actions? (choose two)
+- [ ] Recruit additional Developers before the work can begin.
+- [x] The Developers ensures that the Product Owner is aware, starts the Sprint, and monitors progress.
+- [ ] Cancel the Sprint.
+- [x] Remove or change selected Product Backlog items.
+- [ ] The Developers works overtime during this Sprint.
+
+### Currently, your Developers are organized to address a single layer only (for example, front end, middle tier, back end, and interfaces). What are three things to consider when deciding to move away from such component teams toward feature teams? (choose three)
+- [ ] You cannot do Scrum without feature teams.
+- [x] Productivity may suffer when making this kind of move.
+- [x] Getting support from the business side first helps.
+- [x] Feature teams have less communication overhead.
+- [ ] With feature teams, it is easier to calculate the productivity per team.
+
+### During a Sprint, when is new work or further decomposition of work added to the Sprint Backlog?
+- [ ] When the Product Owner identifies new work.
+- [x] As soon as possible after they are identified.
+- [ ] When the Scrum Master has time to enter them.
+- [ ] During the Daily Scrum after the Developers approves them.
+
+### What is the main reason for the Scrum Master to be at the Daily Scrum?
+- [ ] To gather status and progress information to report to management.
+- [ ] To write down any changes to the Sprint Backlog, including adding new items, and tracking progress on the burn-down.
+- [x] He or she does not have to be there; he or she only has to ensure the Developers have a Daily Scrum.
+- [ ] To make sure every team member answers the three questions.
+
+### You have six teams using a traditional method to deliver a product. Your management has asked you to start using Scrum. In the initial project there were separate plans and teams for the layers of a software system, i.e. one for the frontend, one for the middle tier, one for the back-end, and one for the interfaces and services. This resembles what is known as component teams. But you have read that it's a good idea to have teams organized by feature. What are the advantages of keeping component teams while starting Scrum?
+- [x] There's less initial disruption than organizing into new teams. As they start, they will discover what works best, and how to potentially re-organize towards this.
+- [ ] Component teams generally have the skills needed to create a working Increment of software that provides business value.
+- [ ] Because they have worked together for some time, they are likely able to start producing shippable Increments faster that new feature teams would.
+- [ ] There are fewer cross-team dependencies than working in feature teams.
+
+### True or False: A properly functioning Scrum Team will have at least one Release Sprint and may well have several.
+- [ ] True.
+- [x] False.
+
+### True or False: Scrum is a methodology that tells in detail how to build software incrementally.
+- [ ] True.
+- [x] False.
+
+### For which is the Scrum Master responsible?
+- [ ] Managing the performance of the Scrum Team.
+- [ ] The meetings and the objectives that a Scrum Team sets for itself.
+- [x] The Scrum framework being adopted and used properly.
+- [ ] Keeping track of resource allocation.
+
+### The Developers asks their Product Owner to re-order the Product Backlog. The team is waiting for an external supplier to deliver a specific software component. Without that component there won't be enough work in the next Sprint to occupy the full team. The Product Owner asks the Scrum Master for help. What would be good advice to give the Product Owner?
+- [x] Remind the Product Owner that his primary concern is the flow of value reflected in the ordering of the Product Backlog.
+- [ ] Tell the Product Owner to re-order the Product Backlog so the work involving the external component can be planned in a separate sprint.
+- [ ] Tell the Product Owner that the Product Backlog should be ordered to maximize utilization of the Developers.
+
+### What are three ways Scrum promotes self-management? (choose three)
+- [ ] By not allowing documentation.
+- [x] By the Developers deciding what work to do in a Sprint.
+- [ ] By preventing stakeholders from entering the development room.
+- [x] By removing titles for Developers.
+- [x] By being a lightweight framework.
+
+### What is the key concern when multiple Scrum Teams are working from the same Product Backlog?
+- [x] Minimizing dependencies between teams.
+- [ ] Clear definition of requirements.
+- [ ] Meeting original scope projections.
+- [ ] Making sure there's enough work for everyone on every team.
+- [ ] Maximizing velocity.
+
+### What does it mean to say that an event has a time-box?
+- [ ] The event must happen at a set time.
+- [ ] The event must happen by a given time.
+- [ ] The event must take at least a minimum amount of time.
+- [x] The event can take no more than a maximum amount of time.
+
+### Which outcome is expected as Scrum Teams mature?
+- [x] They will improve their Definition of Done to include more stringent criteria.
+- [ ] The Sprint Retrospectives will grow to be longer than 4 hours.
+- [ ] There is no need for a time-boxed Sprint, since time-boxes are only for new Scrum Teams.
+- [ ] Sprint Reviews will no longer be needed.
+- [ ] A Scrum Master is no longer needed since they are a mature team now.
+
+### The Product Owner must release each Increment to production.
+- [x] When it makes sense.
+- [ ] To make sure the Developers are done every Sprint.
+- [ ] Whenever the product is free of defects.
+- [ ] Without exception.
+
+### Who creates the Definition of Done?
+- [ ] The Scrum Master as he/she is responsible for the Developers productivity.
+- [ ] The Scrum Team, in a collaborative effort where the result is the common denominator of all members' definition.
+- [ ] The Product Owner as he/she is responsible for the product's success.
+- [x] The development organization (or Developers if none is available from the development organization).
+
+### Five new Scrum Teams have been created to build one product. A few of the Developers on one of the Scrum Teams ask the Scrum Master how to coordinate their work with the order teams. What should the Scrum Master do?
+- [ ] Teach the Product Owner to work with the lead Developers on ordering Product Backlog in a way to avoid too much technical and development overlap during a Sprint.
+- [x] Teach them that it is their responsibility to work with the other teams to create an integrated Increment.
+- [ ] Collect the Sprint tasks from the teams at the end of their Sprint Planning and merge that into a consolidated plan for the entire Sprint.
+- [ ] Visit the five teams each day to inspect that their Sprint Backlogs are aligned.
+
+### Which two things should the Developers do during the first Sprint? (choose two)
+- [ ] Make up a plan for the rest of the project.
+- [ ] Analyze, describe, and document the requirements for the subsequent Sprints.
+- [x] Develop at least one piece of functionality.
+- [ ] Analyze, design, and describe the complete architecture and infrastructure.
+- [x] Create an Increment of potentially releasable software.
+
+### Who determines when it is appropriate to update the Sprint Backlog during a Sprint?
+- [ ] The Project Manager.
+- [x] The Developers.
+- [ ] The Scrum Team.
+- [ ] The Product Owner.
+
+### Who must attend the Daily Scrum?
+- [ ] The Scrum Master and Product Owner.
+- [x] The Developers.
+- [ ] The Developers and Product Owner.
+- [ ] The Scrum Team.
+- [ ] The Developers and Scrum Master.
+
+### When do Developers take ownership of a Sprint Backlog item?
+- [ ] At the Sprint planning meeting.
+- [ ] During the Daily Scrum.
+- [x] Never. All Sprint Backlog Items are "owned" by the entire Scrum Team, even though each one may be done by an individual Developers.
+- [ ] Whenever a team member can accommodate more work.
+
+### True or False: The purpose of a Sprint is to produce a done Increment of product.
+- [x] True.
+- [ ] False.
+
+### In the Sprint Planning meeting, the Product Owner and the Developers were unable to reach a clear understanding about the highest order Product Backlog items. Because of this, the Developers couldn't figure out how many Product Backlog items it could forecast for the upcoming Sprint. They were able to agree on a Sprint Goal, however. Which of the following two actions should the Scrum Master support? (choose two)
+- [ ] Cancel the Sprint. Send the entire team to an advanced Scrum training and then start a new Sprint.
+- [x] Forecast the most likely Product Backlog items to meet the goal and create a Sprint Backlog based on a likely initial design and plan. Once the time-box for the Sprint Planning meeting is over, start the Sprint and continue to analyze, decompose, and create additional functionality during the Sprint.
+- [ ] Continue the Sprint Planning meeting past its time-box until an adequate number of Product Backlog items are well enough understood for the Developers to make a complete forecast. Then start the Sprint.
+- [x] Discuss in the upcoming Sprint Retrospective why this happened and what changes will make it less likely to recur.
+- [ ] Ask everyone to take as much time as needed to analyze the Product Backlog first, and then reconvene another Sprint Planning meeting.
+
+### Which answer best describes the topics covered in Sprint Planning?
+- [ ] What to do and who will do it.
+- [ ] How conditions have changed and how the Product Backlog should evolve.
+- [x] What can be done and how to do it.
+- [ ] What went wrong in the last Sprint and what to do differently this Sprint.
+- [ ] Who is on the team and what team member roles will be.
+
+### Which of the following is required by Scrum? (choose all that apply)
+- [x] Sprint Retrospective.
+- [ ] Members must be stand up at the Daily Scrum.
+- [ ] Sprint Burndown Chart.
+- [ ] Release planning.
+- [ ] All of the above.
+
+### What is the purpose of a Sprint Review?
+- [ ] To take time to judge the validity of the project.
+- [x] To inspect the product Increment with the stakeholders and collect feedback on next steps.
+- [ ] To review the Scrum Team's activities and processes during the Sprint.
+- [ ] To build team sprint.
+
+### How should the Developers deal with non-functional requirements?
+- [x] Ensure every Increment meets them.
+- [ ] Make sure the release department understands these requirements, but it is not the Developers responsibility.
+- [ ] Handle them during the Integration Sprint preceding the Release Sprint.
+- [ ] Assign them to the lead Developers on the team.
+
+### When is a Sprint over?
+- [ ] When the Product Owner says it is done.
+- [ ] When all Product Backlog items meet their Definition of Done.
+- [ ] When all the tasks are completed.
+- [x] When the time-box expires.
+
+### True or False: Scrum has a role called "Project Manager".
+- [ ] True.
+- [x] False.
+
+### Which Scrum Values are violated by building Product Backlog items that have low business value?
+- [x] Courage.
+- [x] Focus.
+- [x] Respect.
+- [ ] Economic Value Added.
+- [ ] Earned Value.
+
+### How much time is required after a Sprint to prepare for the next Sprint?
+- [ ] The break between Sprints is time-boxed to 1 week for 30 day Sprints, and usually less for shorter sprints.
+- [ ] Enough time for the requirements for the next Sprint to be determined and documented.
+- [ ] Enough time for the Developers to finish the testing from the last Sprint.
+- [x] None. A new Sprint starts immediately following the end of the previous Sprint.
+- [ ] All of the above are allowed depending on the situation.
+
+### When many Scrum Teams are working on the same product, should all of their Increments be integrated every Sprint?
+- [ ] Yes, but only for Scrum Teams whose work has dependencies.
+- [x] Yes, otherwise the Product Owners (and stakeholders) may not be able to accurately inspect what is done.
+- [ ] No, each Scrum Team stands alone.
+- [ ] No, that is far too hard and must be done in a hardening Sprint.
+
+### When can the Developers cancel a Sprint?
+- [x] It can't. Only Product Owners can cancel Sprints.
+- [ ] When functional expectations are not well understood.
+- [ ] When the Product Owner is absent too often.
+- [ ] When the selected Product Backlog items for the Sprint become unachievable.
+- [ ] When a technical dependency cannot be resolved.
+
+### Which output from Sprint Planning provides the Developers with a target and overarching direction for the Sprint?
+- [ ] The Sprint Backlog.
+- [x] The Sprint Goal
+- [ ] The release plan.
+- [ ] Sprint Review minutes.
+
+### During the Sprint Retrospective a Scrum Team has identified several high priority process improvements. Which of the following statements is most accurate? (choose the best answer)
+- [x] The Scrum Team may add items to the Sprint Backlog for the next Sprint.
+- [ ] The Scrum Team should choose at least one high priority process improvement to place in the Product Backlog.
+- [ ] The Scrum Team should decline to add a process improvement to the Sprint Backlog when things are running smoothly.
+- [ ] The Scrum Master selects the most important process improvement and places it in the Sprint Backlog.
+
+### What techniques could the Scrum Master use when the Scrum Team gets caught in an internal disagreement about which agile practices to apply? (choose the best two answers)
+- [x] Involve the complete Scrum Team in making a decision.
+- [x] Use coaching techniques; such as open questions and active listening.
+- [ ] Ask an external agile coach what they recommend.
+- [ ] Ask team members to take the issue up with to the company's Human Resources department.
+
+### Who is accountable for clearly expressing Product Backlog items? (choose the best answer)
+- [ ] The business analyst who represents the Product Owner.
+- [x] The Product Owner.
+- [ ] The Scrum Master, or the Scrum Master may have the Developers do it.
+- [ ] The Scrum Master.
+
+### When many Scrum Teams are working on a single product, what best describes the Definition of Done? (choose the best answer)
+- [ ] Each Scrum Team defines and uses its own. The differences are discussed and reconciled during a hardening Sprint.
+- [ ] The Scrum Masters from each Scrum Team define a common Definition of Done.
+- [ ] Each Scrum Team uses its own, but must make their definition clear to all other teams so the differences are known.
+- [x] All Scrum Teams must have a Definition of Done that makes their combined work potentially releasable.
+
+### When many Developers are working on a single product, what best describes the Definition of Done? (choose the best answer)
+- [ ] Each Developer defines and uses its own. The differences are discussed and reconciled during a hardening Sprint.
+- [ ] It depends.
+- [ ] Each Developer uses its own but must make their definition clear to all other teams so the differences are known.
+- [x] All Developers must have a Definition of Done that makes their combined work potentially releasable.
+
+### At the seventh Sprint Review, the stakeholders are disappointed and angry. They have determined that the product or system being built will not meet their needs and will cost more than they are willing to spend. What factors likely led to this? (choose two)
+- [ ] The Project Management Office (PMO) has not been engaged adequately.
+- [x] The Product Owner has not been keeping the stakeholders aware of the progress of the project.
+- [x] The stakeholders haven't been using the Sprint Reviews to inspect and evaluate progress.
+- [ ] The stakeholders were not allowed to enter the development area.
+
+### When a Scrum Team determines that it will not be able to finish the complete forecast, who has to be present when reviewing and adjusting the Sprint work selected? (choose the best answer)
+- [ ] The Developers.
+- [ ] The Product Owner and all stakeholders.
+- [x] The Product Owner and the Developers.
+- [ ] The Scrum Master, project manager and Developers.
+
+### As the Scrum Team starts work during the Sprint, it realizes it has selected too much work to finish in the Sprint. What should it do?
+- [ ] Inform the Product Owner at the Sprint Review, but prior to the demonstration.
+- [ ] Find another Scrum Team to give the excess work to.
+- [x] As soon as possible in the Sprint, work with the Product Owner to remove some work or Product Backlog items.
+- [ ] Reduce the Definition of Done and get all of the Product Backlog items "Done" by the new definition.
+
+### Which of the following are roles on a Scrum Team? (choose all that apply)
+- [ ] Users.
+- [x] Scrum Master.
+- [x] Product Owner.
+- [x] The Developers.
+- [ ] Customers.
+
+### Which two activities will a Product Owner engage in during a Sprint? (choose two)
+- [ ] Run the Daily Scrum.
+- [ ] Prioritize the Developers work on the Sprint Backlog.
+- [ ] Update management on what is being worked on.
+- [x] Answer questions from the Developers about items in the current Sprint.
+- [x] Work with the stakeholders.
+
+### What are two good ways for the Developers to make non-functional requirements visible? (choose two)
+- [ ] Put them on a separate list on the Scrum board, available for all to see.
+- [x] Add them to the Product Backlog and keep the Product Owner posted on the expected effort.
+- [ ] Run the integration and regression tests before the end of the Sprint, and capture the open work for the Sprint Backlog of the next Sprint.
+- [x] Add them to the Definition of Done so the work is taken care of every Sprint.
+
+### Which three questions might be answered by Developers at the Daily Scrum? (choose three)
+- [ ] How is the Sprint proceeding?
+- [x] What did I do yesterday that helped the Developers meet the Sprint Goal?
+- [ ] Why were you late?
+- [x] What will I do today to help the Developers meet the Sprint Goal?
+- [ ] How many hours did I spend on the project yesterday?
+- [ ] What will I be working on tomorrow?
+- [x] Do I see any impediment that prevents me or the Developers from meeting the Sprint Goal?
+
+### What activities would a Product Owner typically undertake in the phase between the end of the current Sprint and the start of the next Sprint?
+- [x] There are no such activities. The next Sprint starts immediately after the current Sprint.
+- [ ] Refine the Product Backlog.
+- [ ] Work with the Quality Assurance departments on the Increment of the current Sprint.
+- [ ] Update the project plan with stakeholders.
+
+### When does a Developer become accountable for the value of a Product Backlog item selected for the Sprint?
+- [ ] During the Daily Scrum
+- [ ] Whenever a team member can accommodate more work.
+- [x] Never. The entire Scrum Team is accountable for creating value every Sprint.
+- [ ] At the Sprint Planning Event.
+
+### Every Developer should have:
+- [ ] At least one representative from each major software engineering discipline (like QA, Dev, UX).
+- [x] The competencies and skills needed to deliver a Done Increment in a Sprint.
+- [ ] One Lead Developer and no more than 8 other members.
+
+### Which best describes the Product Backlog?
+- [x] It is allowed to grow and change as more is learned about the product and its customers.
+- [ ] It provides just enough information to enable a Scrum team to start the design phase of a product.
+- [ ] It contains all foreseeable tasks and requirements from which the Scrum team can develop and maintain a complete project plan.
+- [ ] It is baselined to follow change management processes.
+
+### Who has the final decision about the order of items in the Product Backlog? (choose the best answer)
+- [ ] The Stakeholders.
+- [x] The Product Owner.
+- [ ] The Scrum Team.
+- [ ] The Scrum Master.
+- [ ] The Developers.
+
+### Which are properties of the Daily Scrum? (choose two)
+- [ ] It is facilitated by the team lead.
+- [ ] It is held first thing in the morning.
+- [x] It is fifteen minutes or less in duration.
+- [ ] It is free from and designed to promote conversation.
+- [ ] It consists of the Scrum Master asking the Team members the three questions.
+- [x] Its location and time remain constant.
+
+### What is the accountability of the Product Owner during Sprint 0? (choose the best answer)
+- [x] There is no such thing as Sprint 0.
+- [ ] Gathering, eliciting, and analyzing the requirements that will be inserted into the Product Backlog.
+- [ ] Make the complete project plan to commit date, budget, and scope to the stakeholders.
+- [ ] Determine the composition of the Developers so they have the capacity to deliver the completed forecast.
+- [ ] Make sure enough Product Backlog items are refined to fill the first 3 Sprints.
+
+### In accordance with Scrum theory, how should a group of 100 people be divided into multiple Scrum Teams?
+- [x] Understanding the product, the product vision and the rules of the Scrum framework, the group divides itself into teams.
+- [ ] It doesn't really matter because you can rotate the teams every Sprint to spread knowledge.
+- [ ] Check with the allocation department to see who has worked together before and make these the first teams.
+- [ ] Create a matrix of skills, seniority, and level of experience to assign people to teams.
+
+### Who is accountable for tracking the remaining work toward the Sprint Goal? (choose the best answer)
+- [x] The Developers.
+- [ ] The Scrum Master.
+- [ ] The Product Owner.
+- [ ] The Project Manager.
+
+### When must a Product Owner release each Increment? (choose the best answer)
+- [x] When it makes sense.
+- [ ] When the Scrum Team finishes their work.
+- [ ] Whenever the product is free of defects.
+- [ ] After every Sprint, Without exception.
+
+### What are two good ways for a Scrum Team to ensure security concerns are satisfied? (choose two)
+- [ ] Postpone the work until a specialist can perform a security audit and create a list of security-related Product Backlog items.
+- [x] Add security concerns to the Definition of Done.
+- [ ] Add a Sprint to specifically resolve all security concerns.
+- [ ] Delegate the work to the concerned department.
+- [x] Have the Scrum Team create Product Backlog items for each concern.
+
+### What is the recommended size for a Scrum Team? (choose the best answer)
+- [ ] At least 7.
+- [ ] 9.
+- [x] 10 or fewer.
+- [ ] 7 plus or minus 3.
+
+### How do you know that a Scrum Team is cross-functional?
+- [x] Scrum Team has all the skills to create a potentially releasable Increment by the end of every Sprint.
+- [ ] A few of the Developers pair program and do Test Driven Development.
+- [ ] There are no conflicts within the Scrum Team.
+- [ ] Every member of the Scrum Team is able to perform every task.
+
+### Select two ways in which technical debt impacts transparency. (choose two)
+- [ ] When calculated and estimated, the total amount of technical debt shows exactly how long until the Product Owner can release the Increment.
+- [x] It leads to false assumptions about the current state of the system, specifically of an Increment being releasable at the end of a Sprint.
+- [x] As development progresses and code is added, the system becomes more difficult to stabilize, which results in future work being slowed down in unpredictable ways.
+- [ ] It enhances transparency for the Product Owner as a Developers are not allowed to do additional feature development in a Sprint as long as there is technical debt.
+
+### The Developers are required to deliver a done Increment by the end of a Sprint. Select two statements that explain what "Done" means. (choose two)
+- [ ] All work the Developers are willing to do.
+- [ ] Ready for integration.
+- [x] No work left from the Definition of Done.
+- [ ] Whatever the Product Owner defines as quality.
+- [x] All work to create software that is ready to be released to end users.
+
+### Which of the following are true about the length of the Sprint? (choose two)
+- [ ] The length of the Sprint should be proportional to the work that is done in between Sprints.
+- [x] It is best to have Sprints of consistent length throughout a development effort.
+- [ ] Sprint length is determined during Sprint Planning, and should hold the time it will take to code the planned features in the upcoming Sprint, but does not include time for any testing.
+- [ ] Sprint length is determined during Sprint Planning, and should be long enough to make sure the Developers can deliver what is to be accomplished in the upcoming Sprint.
+- [x] All Sprints must be 1 month or less.
+
+### Developers include which role(s)?
+- [x] No other roles. Developers is one of the 3 accountabilities in Scrum.
+- [ ] Testers.
+- [ ] Business Analysts.
+- [ ] Software Architects.
+
+### The Sprint Backlog must be detailed enough that...
+- [ ] every task is identified when the Sprint Backlog is first created.
+- [x] changes in progress can be understood in the Daily Scrum.
+- [ ] the Product Owner can understand what everyone is working on.
+- [ ] stakeholders can monitor progress at task level.
+
+### True or False: The Scrum Master is accountable for the Product Backlog.
+- [ ] True.
+- [x] False.
+
+### True or False: A Scrum Team uses 2 weeks Sprints and time box their Sprint Planning to 6 hours. Does this break the rules of Scrum?
+- [ ] True.
+- [x] False.
+
+### Who is accountable for ensuring that the burn-down chart and gantt chart exist?
+- [x] No one.
+- [ ] The Developers.
+- [ ] The Product Owner.
+- [ ] The Scrum Master.
+
+### True or False: By the end of the Sprint Retrospective, the Scrum Team should have identified and planned improvements to increase its effectiveness.
+- [x] True.
+- [ ] False.
+
+### The Scrum Master is a leader and servant in service to which of the following?
+- [x] The organisation and Scrum Team.
+- [ ] The Product Owner.
+- [ ] The Developers.
+
+### The Product Owner manages...
+- [ ] the Developers.
+- [ ] the Scrum Team.
+- [ ] the Project.
+- [x] the Product Backlog.
+
+### Management need to monitor progress on a daily basis and decide to do so by attending the Daily Scrum. What are the likely results? (choose three)
+- [ ] Management will be able to better direct the work of the Developers.
+- [x] Additional facilitation may be required to keep to the time-box.
+- [x] Developers may end up with less time in the Daily Scrum to re-plan their work.
+- [x] Developers may be less open and transparent during the Daily Scrum.
+
+### True or False: The Product Owner must attend the Sprint Retrospective.
+- [x] True.
+- [ ] False.
+
+### True or False: A Scrum Team must only work on a single Product Goal at any time.
+- [x] True.
+- [ ] False.
+
+### True or False: The Definition of Done is a mandatory part of Scrum.
+- [x] True.
+- [ ] False.
+
+### True or False: The Scrum Master must facilitate the Daily Scrum.
+- [ ] True.
+- [x] False.
+
+### Among the Developers, there is nobody with significant testing expertise. They should...
+- [ ] request for a specialist tester to join them and queue testing for them to do when they arrive in a later Sprint.
+- [ ] produce an Increment that will be tested by a dedicated test team after the Sprint to guarantee the quality.
+- [x] raise this as an impediment which may require the assistance of the Scrum Master to resolve.
+- [x] quality is the responsibility of the Developers and they should undertake testing themselves to the best of their abilities.
+
+### True or False: The Sprint Planning event is comprised of 2 parts and the Product Owner is not needed at the 2nd part.
+- [ ] True.
+- [x] False.
+
+### Product Backlog refinement is...
+- [ ] carried out once per Sprint.
+- [ ] a Scrum event.
+- [ ] the concern of the Product Owner.
+- [x] an ongoing process in which the Product Owner and the Developers collaborate.
+
+### An Increment is...
+- [ ] all work that has happened up to the current point in time.
+- [ ] all work completed up to now, where there are no bugs present.
+- [ ] all work that was carried out in the Sprint.
+- [x] the sum of the Done work during a Sprint, plus the work Done in earlier Sprints.
+
+### Which statement best describes a cross-functional team?
+- [x] The team has all competencies needed to accomplish the work.
+- [ ] The team has a good mix of skills.
+- [ ] All members of the team have all the skills required to create the Product.
+
+### The result of the Sprint Review is...
+- [ ] incomplete Product Backlog Items have been reviewed and returned to the top of the Product Backlog.
+- [ ] the Increment has been demonstrated to Stakeholders.
+- [x] a revised Product Backlog that defines the probable Product Backlog items for the next Sprint.
+- [ ] acceptance (or rejection) of all Product Backlog Items.
+
+### The Product Owner is using burn-up charts instead of burn-down charts. What would your response be as Scrum Master?
+- [x] There's nothing wrong with it.
+- [ ] Burn-up charts are used in traditional methods and should be replaced by burn-down charts.
+
+### True or False: The Scrum Master manages the Scrum Team.
+- [ ] True.
+- [x] False.
+
+### The Scrum Master is responsible for?
+- [ ] Delivering the Product on budget and to the agreed schedule.
+- [x] Ensuring Scrum is understood.
+- [ ] Solving all impediments, blockers & issues.
+- [ ] Coordinating the work of the Developers.
+
+### A Scrum Team has how many specific accountabilities?
+- [ ] 1.
+- [ ] 4.
+- [ ] 2.
+- [x] 3.
+
+### Who is responsible for monitoring the progress of work during a Sprint?
+- [ ] Project Manager.
+- [ ] Product Owner.
+- [ ] Scrum Master.
+- [x] Developers.
+
+### True or False: During Sprint Planning, every task must be estimated so the Developers can be sure they have the capacity to complete them in the Sprint.
+- [ ] True.
+- [x] False.
+
+### Who may be best positioned to decide who will be the Scrum Master for a new Scrum Team?
+- [x] The Developers and the Product Owner.
+- [ ] The Developers.
+- [ ] The Product Owner.
+- [ ] Stakeholders.
+
+### The Daily Scrum is consistently taking longer than 15 minutes. Which statement best describes what should be done?
+- [ ] A 2nd Daily Scrum should be held at the end of the day.
+- [x] The Scrum Master should help the Developers understand why the 15 minute time-box should be respected and help them find ways to do it as required.
+- [ ] Developers should leave at the end of the 15 minutes.
+- [ ] The Developers should take the additional time that they need in the Daily Scrum.
+
+### True or False: A Scrum Team must be 10 or fewer people.
+- [ ] True.
+- [x] False.
+
+### True or False: A Scrum Team must never have any technical debt.
+- [ ] True.
+- [x] False.
+
+### True or False: During Sprint Planning, all Product Backlog Items must be decomposed to a definitive set of tasks for the Developers to complete.
+- [ ] True.
+- [x] False.
+
+### True or False: The Increment must be released at the end of every Sprint.
+- [ ] True.
+- [x] False.
+
+### True or False: Developers should be set stretch goals by the Product Owner as part of Sprint Planning.
+- [ ] True.
+- [x] False.
+
+### True or False: During the Daily Scrum, the Developers must answer the "3 questions".
+- [ ] True.
+- [x] False.
+
+### Select the correct timebox for each Scrum event.
+- [ ] Sprint Planning - 8 hours, Daily Scrum - 30 minutes, Sprint Review - 4 hours, Sprint Retrospective - 3 hours.
+- [ ] Sprint Planning - 4 hours, Daily Scrum - 15 minutes, Sprint Review - 4 hours, Sprint Retrospective - 4 hours.
+- [ ] Sprint Planning - 4 hours, Daily Scrum - 15 minutes, Sprint Review - 8 hours, Sprint Retrospective - 4 hours.
+- [x] Sprint Planning - 8 hours, Daily Scrum - 15 minutes, Sprint Review - 4 hours, Sprint Retrospective - 3 hours.
+
+### True or False: The Scrum Master can be removed once Scrum is adopted.
+- [ ] True.
+- [x] False.
+
+### Who can do the work to ensure the Product Backlog is refined to a state that it is useful?
+- [ ] The Business Analyst.
+- [ ] Stakeholders.
+- [x] The Developers, with support from the Product Owner who is still accountable for it.
+- [x] The Product Owner.
+
+### The purpose of the Sprint Review is...
+- [ ] to show Stakeholders work that is done and work that is near to completion.
+- [x] to inspect the outcome of the Sprint and determine future adaptations.
+- [ ] to review the status of the Project.
+- [ ] to check what was done and not done during the Sprint.
+
+### Who can change the Sprint Backlog during a Sprint?
+- [ ] The Scrum Master.
+- [x] The Developers.
+- [ ] The Product Owner.
+- [ ] The Stakeholders.
+
+### True or False: Before the first Sprint, the Product Backlog must contain everything we will develop for the product.
+- [ ] True.
+- [x] False.
+
+### A Product Backlog is never complete.
+- [ ] False - A complete Product Backlog should be created before starting the first Sprint.
+- [x] True - As long as a product exists, its Product Backlog also exists.
+
+### What does the Sprint burn-down chart show?
+- [ ] The evolution of the amount of uncertainty during a project.
+- [ ] An overview of the release progress by plotting the remaining workload.
+- [ ] Dependencies, start times and stop times for project tasks3.
+- [x] How much work remains until the end of the Sprint.
+
+### A new Developer joins the Scrum Team taking the total number to 11 people. As a Scrum Master, What should you do?
+- [ ] Instruct the Developers to split into 2 teams.
+- [ ] Do nothing, the Developers must fix its own issues.
+- [ ] Instruct the Developers to split into 2 teams, they should decide the appropriate sizes.
+- [x] Raise the increased team size as a potential issue and help the Developers decide what to do about it.
+
+### Which technique is the best way the Scrum Master can ensure that the Developers communicate effectively with the Product Owner?
+- [ ] Teach the Developers to talk in terms of business needs and objectives.
+- [x] Observe communications between them and facilitate direct collaboration.
+- [ ] Function as a go-between for them.
+- [ ] Teach the Product Owner about the technologies employed during the Sprints.
+
+### Which two things should the Scrum Team do during the first Sprint? (choose the best two answers)
+- [x] Develop and deliver at least one piece of functionality.
+- [x] Deliver an Increment of useful and valuable product
+- [ ] Determine the complete architecture and infrastructure for the product.
+- [ ] Create the complete Product Backlog to be developed in subsequent Sprints.
+
+### Who is on the Scrum Team?(choose the best three answers)
+- [x] The Scrum Master.
+- [ ] Project Manager.
+- [x] The Product Owner.
+- [x] Developers.
+
+### The three pillars of empiricism are:
+- [ ] Respect For People, Kaizen, Eliminating Waste.
+- [ ] Planning, Inspection, Adaptation
+- [ ] Planning, Demonstration, Retrospective
+- [x] Inspection, Transparency, Adaptation
+- [ ] Transparency, Eliminating Waste, Kaizen.
+
+### Upon what type of process control is Scrum based?
+- [ ] Hybrid.
+- [x] Empirical.
+- [ ] Defined.
+- [ ] Complex.
+
+### True or False: It is mandatory that the product Increment be released to production at the end of each Sprint.
+- [ ] True.
+- [x] False.
+
+### The timebox for the Sprint Review is:
+- [ ] 2 hours.
+- [ ] 1 day.
+- [x] 4 hours for a monthly Sprint. For shorter Sprints it is usually shorter.
+- [ ] 4 hours and longer as needed.
+- [ ] As long as needed.
+
+### Which statement best describes a Product Owner's responsibility?
+- [ ] Keep stakeholders from distracting the Developers.
+- [x] Optimizing the value of the work the Scrum Team does.
+- [ ] Managing the project and ensuring that the work meets the commitments to the stakeholders.
+- [ ] Directing the Developers.
+
+### Why is the Daily Scrum held at the same time and same place?
+- [ ] The place can be named.
+- [ ] Rooms are hard to book and this lets it be booked in advance.
+- [x] The consistency reduces complexity.
+- [ ] The Product Owner demands it.
+
+### A Scrum Team consists of the following:(choose the best three answers)
+- [ ] Users.
+- [x] Product Owner.
+- [ ] Customers.
+- [x] Developers.
+- [x] Scrum Master.
+
+### True or False: The purpose of a Sprint is to produce a valuable and useful Increment of working product.
+- [x] True.
+- [ ] False.
+
+### The timebox for the Sprint Planning event is?
+- [ ] 4 hours.
+- [ ] Monthly.
+- [x] 8 hours for a monthly Sprint. For shorter Sprints it is usually shorter.
+- [ ] Whenever itis done.
+
+### What is the function or purpose of Management in Scrum?
+- [ ] Identify and remove people that are not working hard enough
+- [ ] Monitor the progress of the Developers on the Scrum Team
+- [x] Support the Product Owner with insights and information into high value product and system capabilities. Support the Scrum Master to encourage organizational change that fosters empiricism, self-management, bottom-up intelligence, and intelligent product delivery.
+- [ ] Continually monitor staffing levels of the Scrum Team.
+
+### When does a Developer become the sole owner of an item on the Sprint Backlog?
+- [ ] Whenever a team member can accommodate more work.
+- [ ] At the Sprint Planning event
+- [x] Never. All Sprint Backlog items are "owned" by the Developers on the Scrum Team.
+- [ ] During the Daily Scrum
+
+### What is the typical size for a Scrum Team?
+- [x] 10 or fewer.
+- [ ] Minimum of 7.
+- [ ] 7 plus or minus
+- [ ] 9
+
+### An organization has decided to adopt Scrum, but management wants to change the terminology to fit with terminology already used. What will likely happen if this is done?
+- [ ] Without a new vocabulary as a reminder of the change, very little change may actually happen
+- [ ] The organization may not understand what has changed with Scrum and the benefits of Scrum may be lost
+- [ ] Management may feel less anxious
+- [x] Al of the above
+
+### Which of the following are examples of a Scrum Team practicing Scrum poorly or not exhibiting traits of a self-managing Scrum Team?
+- [ ] The Developers have all the skills they need to create a valuable, useful Increment
+- [x] StakeNolders attend the Daily Scrum to check on the Scrum Team's progress.
+- [ ] The Developers create their own Sprint Backlog, reflecting all work that i required to meet the Definition of Done.
+- [ ] The Developers are collaboratively selecting their own work during the Sprint
+- [x] The Developers invite external stakeholders to the Sprint Planning tosk them how to turn a Product Backlog item into an Increment via a complete and detailed Sprint Backlog
+- [x] The Developers are working within the boundaries of their organizations functional description and nicely handing off work from analyst to Developer to tester to integration
+
+### Who is required to attend the Daily Scrum?
+- [ ] The Scrum Master and Product Owner.
+- [ ] The Developers and Scrum Master.
+- [x] The Developers.
+- [ ] The Developers and Product Owner.
+- [ ] The Scrum Team
+
+### How much work must the Developers complete for each Product Backlog item they select for a Sprint?
+- [ ] All development work and at least some testing
+- [x] Enough so that each Product Backlog item they select meets the Definition of Done.
+- [ ] Analysis, design, programming, testing and documentation
+- [ ] As much as it can fit into the Sprint
+
+### During a Sprint, a Developer determines that the Scrum Team will not be able to complete the items in their forecast. Who should be present to review and adjust the Product Backlog items selected?
+- [ ] The Product Owner and all stakeholders
+- [ ] The Scrum Master, the project manager, and the Developers
+- [x] The Product Owner and the Developers.
+- [ ] The Developers.
+
+### Who has the final say on the order of the Product Backlog?
+- [x] The Product Owner.
+- [ ] The CEO.
+- [ ] The Developers.
+- [ ] The Scrum Master.
+- [ ] The Stakeholders
+
+### Who should know the most about the progress toward a business objective or a release, and be able to explain the alternatives most clearly?
+- [x] The Product Owner
+- [ ] The Project Manager
+- [ ] The Developers
+- [ ] The Scrum Master
+
+### Which of the following services is appropriate for a Scrum Master in regard to the Daily Scrum?
+- [x] Teach the Developers to keep the Daily Scrum within the 15 minute timebox.
+- [ ] Lead the discussions of the Developers.
+- [ ] Facilitate in a way that ensures each team member has a chance to speak
+- [ ] All answers apply.
+- [ ] Ensure that all 3 questions have been answered
+
+### The Developers should not be interrupted during the Sprint and the Sprint Goal should remain intact. These are conditions that foster creativity, quality and productivity. Which one of the following answers is FALSE?
+- [ ] The Product Owner can help clarify or optimize the Sprint when asked by the Developers.
+- [ ] The Developers may work with the Product Owner to add or remove work if they find themselves with more or less capacity than expected.
+- [x] The Sprint Backlog is fully formulated in the Sprint Planning event and does not change during the Sprint.
+- [ ] As a decomposition of the selected Product Backlog items, the Sprint Backlog changes and may grow as the work emerges.
+
+### When does the next Sprint begin?
+- [ ] Next Monday.
+- [x] Immediately after the conclusion of the previous Sprint.
+- [ ] Immediately following the next Sprint Planning.
+- [ ] When the Product Owner is ready.
+
+### What are two ways a Scrum Master serves to enable effective Scrum Teams?
+- [x] By facilitating Developer decision-making.
+- [ ] By keeping high value features high in the Product Backlog
+- [x] By removing impediments that hinder the Scrum Team.
+- [ ] By starting and ending the meetings at the proper time.
+
+### True or False: When multiple Scrum Teams work together on the same product, each team should maintain a separate Product Backlog.
+- [ ] True.
+- [x] False.
+
+### When should a Developer on a Scrum Team be replaced?
+- [x] As needed, while taking into account a short-term reduction in productivity.
+- [ ] Every Sprint to promote shared learning
+- [ ] As needed, with no special allowance for changes in productivity.
+- [ ] Never, it reduces productivity.
+
+### Which are characteristics of the Daily Scrum? (choose the best two answers)
+- [ ] It is facilitated by the team lead.
+- [ ] It consists of the Scrum Master asking the team for status.
+- [x] Its purpose is to inspect progress toward the Sprint Goal and adapt the Sprint Backlog.
+- [ ] Is is held first thing in the morning.
+- [x] Its location and time remain constant.
+
+### True or False: The Scrum Team must choose at least one high priority process improvement item, identified during the Sprint Retrospective, and place it in the Sprint Backlog.
+- [ ] True.
+- [x] False.
+
+### When does a Sprint conclude?
+- [ ] When the Product Owner decides enough has been delivered to meet the Sprint Goal.
+- [x] When the Sprint Retrospective is complete.
+- [ ] When all the tasks are completed by the Developers.
+- [ ] When all Product Backlog items meet their Definition of Done.
+
+### When must a Scrum Team release each Increment?
+- [ ] When the Scrum Team finishes their work.
+- [ ] After every Sprint, without exception.
+- [ ] Whenever the product is free of defects.
+- [x] When it makes sense to release it.
+
+### Which of the following is an example of an Increment?
+- [ ] A plan for the overall product release.
+- [ ] A mock-up of the product marketing materials.
+- [ ] A design for the product.
+- [ ] A product roll-out plan.
+- [x] A valuable, useful set of product features.
+- [ ] All of the above.
+    </script>
+
+    <!-- APPLICATION LOGIC -->
+    <script>
+        /********************************************************************
+         * 1. PARSE MARKDOWN QUESTIONS & STATE MANAGEMENT
+         ********************************************************************/
+        let ALL_QUESTIONS = [];
+        let ACTIVE_QUESTIONS = []; // Either all questions or 80 random questions in Exam Mode
+        let currentIndex = 0;
+
+        // App Mode: 'practice' | 'exam'
+        let appMode = 'practice';
+        let examSubmitted = false;
+        let examTimerInterval = null;
+        let examSecondsRemaining = 3600; // 60 minutes
+
+        // User answers & state per question ID
+        // userResponses[qId] = { selected: Set<number>, checked: boolean, isCorrect: boolean }
+        let userResponses = {};
+        let bookmarkedIds = new Set();
+        let personalNotes = {}; // { [qId]: string }
+
+        // UI Preferences
+        let sidebarFilter = 'all'; // 'all' | 'unanswered' | 'correct' | 'wrong' | 'bookmarked'
+        let sidebarGridMode = false; // false = Detailed List, true = Compact Number Grid
+        let autoCheckSingle = true;
+        let isZoomFocused = false; // Zoom / Focus Mode (Hides sidebar & expands question card)
+
+        function parseMarkdownToQuestions(rawMarkdown, startId = 1) {
+            const blocks = rawMarkdown.split(/###\s+/).map(b => b.trim()).filter(Boolean);
+            const parsed = [];
+            let idCounter = startId;
+
+            blocks.forEach(block => {
+                const lines = block.split('\n').map(l => l.trim()).filter(Boolean);
+                if (lines.length < 2) return;
+
+                const questionText = lines[0].replace(/\*\*\[⬆ Back to Top\]\(#table-of-contents\)\*\*/g, '').trim();
+                const options = [];
+                let correctCount = 0;
+
+                lines.slice(1).forEach(line => {
+                    const match = line.match(/^-\s*\[([ xX])\]\s*(.+)$/);
+                    if (match) {
+                        const isCorrect = match[1].toLowerCase() === 'x';
+                        const text = match[2].trim();
+                        if (isCorrect) correctCount++;
+                        options.push({ text, correct: isCorrect });
+                    }
+                });
+
+                if (options.length >= 2 && correctCount >= 1) {
+                    parsed.push({
+                        id: idCounter++,
+                        question: questionText,
+                        options: options,
+                        requiredCount: correctCount
+                    });
+                }
+            });
+
+            return parsed;
+        }
+
+        function loadSavedData() {
+            try {
+                const savedBookmarks = localStorage.getItem('psm1_bookmarks');
+                if (savedBookmarks) bookmarkedIds = new Set(JSON.parse(savedBookmarks));
+
+                const savedNotes = localStorage.getItem('psm1_notes');
+                if (savedNotes) personalNotes = JSON.parse(savedNotes);
+            } catch (e) {
+                // Ignore storage errors
+            }
+        }
+
+        function saveBookmarksAndNotes() {
+            try {
+                localStorage.setItem('psm1_bookmarks', JSON.stringify(Array.from(bookmarkedIds)));
+                localStorage.setItem('psm1_notes', JSON.stringify(personalNotes));
+            } catch (e) {}
+        }
+
+        /********************************************************************
+         * 2. INITIALIZATION
+         ********************************************************************/
+        function initApp() {
+            loadSavedData();
+            const rawMd = document.getElementById('embeddedReadmeMarkdown').textContent;
+            ALL_QUESTIONS = parseMarkdownToQuestions(rawMd, 1);
+            ACTIVE_QUESTIONS = [...ALL_QUESTIONS];
+
+            renderAll();
+
+            // Global Keyboard Shortcuts
+            window.addEventListener('keydown', (e) => {
+                if (['INPUT', 'TEXTAREA'].includes(document.activeElement.tagName)) return;
+
+                if (e.key === 'ArrowLeft') {
+                    e.preventDefault();
+                    navigateQuestion(-1);
+                } else if (e.key === 'ArrowRight') {
+                    e.preventDefault();
+                    navigateQuestion(1);
+                } else if (e.key.toLowerCase() === 'z') {
+                    e.preventDefault();
+                    toggleZoomFocusMode();
+                } else if (e.key === 'Enter') {
+                    e.preventDefault();
+                    const q = ACTIVE_QUESTIONS[currentIndex];
+                    const resp = getOrCreateResponse(q.id);
+                    if (!resp.checked && resp.selected.size === q.requiredCount && appMode === 'practice') {
+                        checkCurrentAnswer();
+                    }
+                } else if (/^[1-9]$/.test(e.key)) {
+                    const optIdx = parseInt(e.key, 10) - 1;
+                    const q = ACTIVE_QUESTIONS[currentIndex];
+                    if (q && optIdx < q.options.length) {
+                        e.preventDefault();
+                        toggleOptionSelection(optIdx);
+                    }
+                }
+            });
+        }
+
+        function toggleZoomFocusMode() {
+            isZoomFocused = !isZoomFocused;
+            const sidebar = document.getElementById('questionSidebar');
+            const wrapper = document.getElementById('questionStageWrapper');
+            const workspace = document.getElementById('mainWorkspace');
+
+            const iconCard = document.getElementById('iconCardZoom');
+            const textCard = document.getElementById('textCardZoom');
+            const iconHeader = document.getElementById('iconHeaderZoom');
+            const textHeader = document.getElementById('textHeaderZoom');
+
+            if (isZoomFocused) {
+                sidebar.classList.add('lg:hidden');
+                wrapper.classList.remove('max-w-4xl');
+                wrapper.classList.add('max-w-5xl');
+                workspace.classList.add('zoom-active');
+
+                if (iconCard) iconCard.className = 'fa-solid fa-compress text-[#8C5A3C]';
+                if (textCard) textCard.textContent = 'Hiện danh sách';
+                if (iconHeader) iconHeader.className = 'fa-solid fa-compress text-[#8C5A3C]';
+                if (textHeader) textHeader.textContent = 'Hiện DS';
+            } else {
+                sidebar.classList.remove('lg:hidden');
+                wrapper.classList.remove('max-w-5xl');
+                wrapper.classList.add('max-w-4xl');
+                workspace.classList.remove('zoom-active');
+
+                if (iconCard) iconCard.className = 'fa-solid fa-expand text-[#8C5A3C]';
+                if (textCard) textCard.textContent = 'Phóng to';
+                if (iconHeader) iconHeader.className = 'fa-solid fa-expand text-[#8C5A3C]';
+                if (textHeader) textHeader.textContent = 'Phóng to';
+            }
+        }
+
+        function getOrCreateResponse(qId) {
+            if (!userResponses[qId]) {
+                userResponses[qId] = {
+                    selected: new Set(),
+                    checked: false,
+                    isCorrect: false
+                };
+            }
+            return userResponses[qId];
+        }
+
+        function renderAll() {
+            updateTopStats();
+            renderSidebar();
+            renderQuestionCard();
+            renderQuickJumpStrip();
+        }
+
+        /********************************************************************
+         * 3. RENDER TOP STATS & SIDEBAR
+         ********************************************************************/
+        function updateTopStats() {
+            const total = ACTIVE_QUESTIONS.length;
+            let answered = 0;
+            let correct = 0;
+            let wrong = 0;
+
+            ACTIVE_QUESTIONS.forEach(q => {
+                const r = userResponses[q.id];
+                if (!r) return;
+                if (appMode === 'practice' && r.checked) {
+                    answered++;
+                    if (r.isCorrect) correct++;
+                    else wrong++;
+                } else if (appMode === 'exam') {
+                    if (examSubmitted) {
+                        answered++;
+                        if (r.isCorrect) correct++;
+                        else wrong++;
+                    } else if (r.selected.size === q.requiredCount) {
+                        answered++;
+                    }
+                }
+            });
+
+            const pct = answered > 0 && (appMode === 'practice' || examSubmitted)
+                ? Math.round((correct / answered) * 100)
+                : 0;
+
+            document.getElementById('headerTotalBadge').textContent = total;
+            document.getElementById('statAnswered').textContent = `${answered}/${total}`;
+            document.getElementById('statCorrect').textContent = correct;
+            document.getElementById('statWrong').textContent = wrong;
+            document.getElementById('statPercent').textContent = `${pct}%`;
+        }
+
+        function setSidebarFilter(filter) {
+            sidebarFilter = filter;
+            const tabs = ['all', 'unanswered', 'correct', 'wrong', 'bookmarked'];
+            tabs.forEach(t => {
+                const el = document.getElementById(`tab-${t}`);
+                if (!el) return;
+                if (t === filter) {
+                    el.className = "py-1.5 rounded-lg font-semibold bg-[#8C5A3C] text-white transition cursor-pointer";
+                } else {
+                    el.className = "py-1.5 rounded-lg font-semibold bg-[#E5DEC9]/70 text-[#5C5346] hover:text-[#2C2523] transition cursor-pointer";
+                }
+            });
+            renderSidebar();
+        }
+
+        function toggleSidebarViewMode() {
+            sidebarGridMode = !sidebarGridMode;
+            renderSidebar();
+        }
+
+        function clearSearch() {
+            document.getElementById('searchInput').value = '';
+            renderSidebar();
+        }
+
+        function renderSidebar() {
+            const container = document.getElementById('sidebarListContainer');
+            const query = (document.getElementById('searchInput').value || '').toLowerCase().trim();
+            const clearBtn = document.getElementById('btnClearSearch');
+            if (clearBtn) clearBtn.classList.toggle('hidden', !query);
+
+            container.innerHTML = '';
+
+            const filtered = [];
+            ACTIVE_QUESTIONS.forEach((q, idx) => {
+                const r = userResponses[q.id];
+                const isChecked = r && (r.checked || (appMode === 'exam' && examSubmitted));
+                const isAnsweredInExam = appMode === 'exam' && !examSubmitted && r && r.selected.size === q.requiredCount;
+
+                if (sidebarFilter === 'unanswered') {
+                    if (appMode === 'practice' && isChecked) return;
+                    if (appMode === 'exam' && !examSubmitted && isAnsweredInExam) return;
+                } else if (sidebarFilter === 'correct') {
+                    if (!isChecked || !r.isCorrect) return;
+                } else if (sidebarFilter === 'wrong') {
+                    if (!isChecked || r.isCorrect) return;
+                } else if (sidebarFilter === 'bookmarked') {
+                    if (!bookmarkedIds.has(q.id)) return;
+                }
+
+                if (query) {
+                    const inQ = q.question.toLowerCase().includes(query);
+                    const inOpt = q.options.some(o => o.text.toLowerCase().includes(query));
+                    if (!inQ && !inOpt) return;
+                }
+
+                filtered.push({ q, idx });
+            });
+
+            document.getElementById('sidebarFilteredCount').textContent = `${filtered.length} câu`;
+
+            if (filtered.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-10 text-xs text-[#5C5346]">
+                        <i class="fa-regular fa-folder-open text-2xl text-[#D8CEBE] mb-2 block"></i>
+                        Không tìm thấy câu hỏi nào khớp với bộ lọc.
+                    </div>
+                `;
+                return;
+            }
+
+            if (sidebarGridMode) {
+                const grid = document.createElement('div');
+                grid.className = 'grid grid-cols-5 gap-1.5';
+                filtered.forEach(({ q, idx }) => {
+                    const r = userResponses[q.id];
+                    const isCurrent = idx === currentIndex;
+                    const isChecked = r && (r.checked || (appMode === 'exam' && examSubmitted));
+                    const isSelectedExam = appMode === 'exam' && !examSubmitted && r && r.selected.size === q.requiredCount;
+
+                    let style = 'bg-[#FFFDF9] border-[#D8CEBE] text-[#5C5346] hover:border-[#8C5A3C]';
+                    if (isChecked) {
+                        style = r.isCorrect
+                            ? 'bg-[#EBF7F1] border-[#246A4E]/40 text-[#246A4E]'
+                            : 'bg-[#FDF0F0] border-[#B83B3B]/40 text-[#B83B3B]';
+                    } else if (isSelectedExam) {
+                        style = 'bg-[#F3EDE2] border-[#8C5A3C] text-[#8C5A3C]';
+                    }
+                    if (isCurrent) {
+                        style = 'bg-[#8C5A3C] border-[#8C5A3C] text-white ring-2 ring-[#8C5A3C]/30';
+                    }
+
+                    const btn = document.createElement('button');
+                    btn.onclick = () => jumpToQuestion(idx);
+                    btn.className = `h-9 rounded-xl border font-mono text-xs font-bold relative flex items-center justify-center transition cursor-pointer ${style}`;
+                    btn.innerHTML = `
+                        ${idx + 1}
+                        ${bookmarkedIds.has(q.id) ? '<span class="absolute top-0.5 right-1 text-[9px] text-amber-600">★</span>' : ''}
+                    `;
+                    grid.appendChild(btn);
+                });
+                container.appendChild(grid);
+            } else {
+                const list = document.createElement('div');
+                list.className = 'space-y-1.5';
+                filtered.forEach(({ q, idx }) => {
+                    const r = userResponses[q.id];
+                    const isCurrent = idx === currentIndex;
+                    const isChecked = r && (r.checked || (appMode === 'exam' && examSubmitted));
+                    const isSelectedExam = appMode === 'exam' && !examSubmitted && r && r.selected.size === q.requiredCount;
+
+                    let statusDot = `<span class="w-2 h-2 rounded-full bg-[#D8CEBE]"></span>`;
+                    if (isChecked) {
+                        statusDot = r.isCorrect
+                            ? `<span class="px-1.5 py-0.5 rounded text-[10px] font-bold bg-[#EBF7F1] text-[#246A4E] border border-[#246A4E]/30">Đúng</span>`
+                            : `<span class="px-1.5 py-0.5 rounded text-[10px] font-bold bg-[#FDF0F0] text-[#B83B3B] border border-[#B83B3B]/30">Sai</span>`;
+                    } else if (isSelectedExam) {
+                        statusDot = `<span class="px-1.5 py-0.5 rounded text-[10px] font-bold bg-[#FAF5EC] text-[#8C5A3C] border border-[#8C5A3C]/30">Đã chọn</span>`;
+                    }
+
+                    const item = document.createElement('button');
+                    item.onclick = () => jumpToQuestion(idx);
+                    item.className = `w-full text-left p-2.5 rounded-xl border transition flex items-start gap-2.5 cursor-pointer ${
+                        isCurrent
+                            ? 'bg-[#FFFDF9] border-[#8C5A3C] shadow-xs ring-1 ring-[#8C5A3C]/30'
+                            : 'bg-[#FAF7F2]/80 hover:bg-[#FFFDF9] border-[#E5DEC9]'
+                    }`;
+
+                    item.innerHTML = `
+                        <div class="w-7 h-7 rounded-lg ${isCurrent ? 'bg-[#8C5A3C] text-white' : 'bg-[#F3EDE2] text-[#5C5346]'} font-mono font-bold text-xs flex items-center justify-center shrink-0 mt-0.5">
+                            ${idx + 1}
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-center justify-between gap-1 mb-0.5">
+                                <span class="text-[11px] font-semibold text-[#5C5346]">
+                                    Chọn ${q.requiredCount} ${bookmarkedIds.has(q.id) ? '<span class="text-amber-600 ml-1">★</span>' : ''}
+                                </span>
+                                ${statusDot}
+                            </div>
+                            <p class="text-xs text-[#2C2523] font-medium line-clamp-2 leading-snug">${q.question}</p>
+                        </div>
+                    `;
+                    list.appendChild(item);
+                });
+                container.appendChild(list);
+            }
+        }
+
+        /********************************************************************
+         * 4. RENDER MAIN QUESTION CARD & OPTIONS
+         ********************************************************************/
+        function renderQuestionCard() {
+            const q = ACTIVE_QUESTIONS[currentIndex];
+            if (!q) return;
+
+            const resp = getOrCreateResponse(q.id);
+            const isLocked = (appMode === 'practice' && resp.checked) || (appMode === 'exam' && examSubmitted);
+
+            // Top Badges
+            document.getElementById('qIndexBadge').textContent = `Câu #${currentIndex + 1} / ${ACTIVE_QUESTIONS.length}`;
+            document.getElementById('qRequirementBadge').textContent = q.requiredCount > 1
+                ? `Chọn ${q.requiredCount} đáp án`
+                : `Chọn 1 đáp án`;
+
+            // Status Pill
+            const statusPill = document.getElementById('qStatusPill');
+            if (isLocked) {
+                statusPill.classList.remove('hidden');
+                if (resp.isCorrect) {
+                    statusPill.className = "text-xs font-bold px-2.5 py-0.5 rounded-full bg-[#EBF7F1] text-[#246A4E] border border-[#246A4E]/30";
+                    statusPill.innerHTML = `<i class="fa-solid fa-check mr-1"></i>Chính xác`;
+                } else {
+                    statusPill.className = "text-xs font-bold px-2.5 py-0.5 rounded-full bg-[#FDF0F0] text-[#B83B3B] border border-[#B83B3B]/30";
+                    statusPill.innerHTML = `<i class="fa-solid fa-xmark mr-1"></i>Chưa đúng`;
+                }
+            } else {
+                statusPill.classList.add('hidden');
+            }
+
+            // Bookmark button state
+            const isBookmarked = bookmarkedIds.has(q.id);
+            document.getElementById('iconBookmark').className = isBookmarked
+                ? 'fa-solid fa-star text-amber-600'
+                : 'fa-regular fa-star text-[#8C5A3C]';
+            document.getElementById('textBookmark').textContent = isBookmarked ? 'Đã lưu ★' : 'Đánh dấu';
+
+            // Question Title & Counter
+            document.getElementById('questionTitleText').textContent = q.question;
+            document.getElementById('selectedCountLabel').textContent = `Đã chọn: ${resp.selected.size}/${q.requiredCount}`;
+            document.getElementById('selectionHintText').textContent = q.requiredCount > 1
+                ? `Câu hỏi nhiều lựa chọn — Hãy chọn đủ ${q.requiredCount} phương án đúng`
+                : `Câu hỏi 1 lựa chọn — Chọn phương án đúng nhất`;
+
+            // Render Options
+            const optionsContainer = document.getElementById('optionsList');
+            optionsContainer.innerHTML = '';
+            const letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G'];
+
+            q.options.forEach((opt, idx) => {
+                const isSelected = resp.selected.has(idx);
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.onclick = () => toggleOptionSelection(idx);
+
+                let boxClass = 'bg-[#FAF7F2]/60 border-[#E5DEC9] text-[#2C2523]';
+                let indicatorClass = 'bg-[#FFFDF9] border-[#D8CEBE] text-[#5C5346]';
+                let rightIcon = '';
+
+                if (!isLocked && isSelected) {
+                    boxClass = 'bg-[#FAF5EC] border-[#8C5A3C] text-[#2C2523] ring-1 ring-[#8C5A3C] shadow-2xs';
+                    indicatorClass = 'bg-[#8C5A3C] border-[#8C5A3C] text-white';
+                } else if (isLocked) {
+                    if (opt.correct) {
+                        boxClass = 'bg-[#EBF7F1] border-[#246A4E] text-[#1A4F39] font-medium';
+                        indicatorClass = 'bg-[#246A4E] border-[#246A4E] text-white';
+                        rightIcon = `<span class="text-xs font-bold text-[#246A4E] shrink-0"><i class="fa-solid fa-circle-check mr-1"></i>Đáp án đúng</span>`;
+                    } else if (isSelected && !opt.correct) {
+                        boxClass = 'bg-[#FDF0F0] border-[#B83B3B] text-[#7A2222]';
+                        indicatorClass = 'bg-[#B83B3B] border-[#B83B3B] text-white';
+                        rightIcon = `<span class="text-xs font-bold text-[#B83B3B] shrink-0"><i class="fa-solid fa-circle-xmark mr-1"></i>Bạn chọn sai</span>`;
+                    } else {
+                        boxClass = 'bg-[#FAF7F2]/40 border-[#E5DEC9] text-[#8C8273] opacity-75';
+                    }
+                }
+
+                btn.className = `option-item ${isLocked ? 'locked cursor-default' : 'cursor-pointer'} w-full text-left p-3.5 sm:p-4 rounded-2xl border flex items-start justify-between gap-3 ${boxClass}`;
+                btn.innerHTML = `
+                    <div class="flex items-start gap-3.5">
+                        <div class="w-7 h-7 ${q.requiredCount > 1 ? 'rounded-lg' : 'rounded-full'} border font-mono font-bold text-xs flex items-center justify-center shrink-0 mt-0.5 transition ${indicatorClass}">
+                            ${letters[idx] || idx + 1}
+                        </div>
+                        <span class="option-text-content text-xs sm:text-base leading-relaxed transition-all">${opt.text}</span>
+                    </div>
+                    ${rightIcon}
+                `;
+                optionsContainer.appendChild(btn);
+            });
+
+            // Action Buttons Visibility
+            const btnCheck = document.getElementById('btnCheckAnswer');
+            const btnResetSingle = document.getElementById('btnResetSingleQuestion');
+
+            if (appMode === 'exam' && !examSubmitted) {
+                btnCheck.classList.add('hidden');
+                btnResetSingle.classList.add('hidden');
+            } else {
+                if (isLocked) {
+                    btnCheck.classList.add('hidden');
+                    btnResetSingle.classList.toggle('hidden', appMode === 'exam');
+                } else {
+                    btnCheck.classList.remove('hidden');
+                    btnCheck.disabled = resp.selected.size !== q.requiredCount;
+                    btnResetSingle.classList.add('hidden');
+                }
+            }
+
+            // Feedback & Personal Notes Box
+            renderFeedbackBox(q, resp, isLocked);
+
+            // Bottom Prev/Next states
+            document.getElementById('btnPrevQ').disabled = currentIndex === 0;
+            document.getElementById('btnNextQ').disabled = currentIndex === ACTIVE_QUESTIONS.length - 1;
+        }
+
+        function renderFeedbackBox(q, resp, isLocked) {
+            const box = document.getElementById('feedbackContainer');
+            if (!isLocked) {
+                box.classList.add('hidden');
+                return;
+            }
+
+            box.classList.remove('hidden');
+            const correctAnswersList = q.options
+                .filter(o => o.correct)
+                .map(o => `<li class="flex items-start gap-2"><i class="fa-solid fa-check text-[#246A4E] mt-1 shrink-0"></i><span>${o.text}</span></li>`)
+                .join('');
+
+            const savedNote = personalNotes[q.id] || '';
+
+            if (resp.isCorrect) {
+                box.className = "rounded-2xl border border-[#246A4E]/40 bg-[#EBF7F1]/70 p-4 sm:p-5 space-y-3 animate-fade";
+            } else {
+                box.className = "rounded-2xl border border-[#B83B3B]/40 bg-[#FDF0F0]/70 p-4 sm:p-5 space-y-3 animate-fade";
+            }
+
+            box.innerHTML = `
+                <div class="flex items-center justify-between">
+                    <div class="font-serif font-bold text-sm sm:text-base ${resp.isCorrect ? 'text-[#246A4E]' : 'text-[#B83B3B]'} flex items-center gap-2">
+                        <i class="fa-solid ${resp.isCorrect ? 'fa-circle-check' : 'fa-triangle-exclamation'}"></i>
+                        <span>${resp.isCorrect ? 'Chính xác! Đúng chuẩn Scrum Guide.' : 'Chưa chính xác! Hãy ghi nhớ đáp án chuẩn bên dưới:'}</span>
+                    </div>
+                </div>
+
+                <div class="bg-[#FFFDF9] border border-[#E5DEC9] rounded-xl p-3.5 text-xs sm:text-sm text-[#2C2523] space-y-1.5">
+                    <div class="text-[11px] font-bold uppercase tracking-wider text-[#5C5346]">Đáp án chuẩn PSM I:</div>
+                    <ul class="space-y-1 font-medium">${correctAnswersList}</ul>
+                </div>
+
+                <div class="pt-1">
+                    <label class="text-[11px] font-semibold text-[#5C5346] block mb-1">
+                        <i class="fa-regular fa-pen-to-square mr-1 text-[#8C5A3C]"></i>Ghi chú cá nhân cho câu hỏi này (Tự động lưu):
+                    </label>
+                    <input type="text" value="${savedNote.replace(/"/g, '&quot;')}" oninput="saveNoteForQuestion(${q.id}, this.value)" placeholder="Nhập mẹo nhớ hoặc từ khóa Scrum Guide của bạn..." class="w-full bg-[#FFFDF9] border border-[#D8CEBE] focus:border-[#8C5A3C] rounded-xl px-3 py-2 text-xs text-[#2C2523] outline-none">
+                </div>
+            `;
+        }
+
+        function saveNoteForQuestion(qId, text) {
+            personalNotes[qId] = text;
+            saveBookmarksAndNotes();
+        }
+
+        /********************************************************************
+         * 5. INTERACTION HANDLERS
+         ********************************************************************/
+        function toggleOptionSelection(optIdx) {
+            const q = ACTIVE_QUESTIONS[currentIndex];
+            const resp = getOrCreateResponse(q.id);
+
+            if ((appMode === 'practice' && resp.checked) || (appMode === 'exam' && examSubmitted)) {
+                return;
+            }
+
+            if (q.requiredCount === 1) {
+                resp.selected.clear();
+                resp.selected.add(optIdx);
+
+                if (appMode === 'practice' && autoCheckSingle) {
+                    evaluateQuestionResponse(q, resp);
+                }
+            } else {
+                if (resp.selected.has(optIdx)) {
+                    resp.selected.delete(optIdx);
+                } else {
+                    if (resp.selected.size >= q.requiredCount) {
+                        const oldest = resp.selected.values().next().value;
+                        resp.selected.delete(oldest);
+                    }
+                    resp.selected.add(optIdx);
+                }
+            }
+
+            renderAll();
+        }
+
+        function evaluateQuestionResponse(q, resp) {
+            resp.checked = true;
+            let allCorrect = resp.selected.size === q.requiredCount;
+            resp.selected.forEach(idx => {
+                if (!q.options[idx] || !q.options[idx].correct) {
+                    allCorrect = false;
+                }
+            });
+            resp.isCorrect = allCorrect;
+        }
+
+        function checkCurrentAnswer() {
+            const q = ACTIVE_QUESTIONS[currentIndex];
+            const resp = getOrCreateResponse(q.id);
+            if (resp.selected.size !== q.requiredCount) return;
+
+            evaluateQuestionResponse(q, resp);
+            renderAll();
+        }
+
+        function resetCurrentQuestion() {
+            const q = ACTIVE_QUESTIONS[currentIndex];
+            delete userResponses[q.id];
+            renderAll();
+        }
+
+        function toggleBookmarkCurrent() {
+            const q = ACTIVE_QUESTIONS[currentIndex];
+            if (bookmarkedIds.has(q.id)) {
+                bookmarkedIds.delete(q.id);
+            } else {
+                bookmarkedIds.add(q.id);
+            }
+            saveBookmarksAndNotes();
+            renderAll();
+        }
+
+        function toggleAutoCheckSetting() {
+            autoCheckSingle = document.getElementById('chkAutoCheckSingle').checked;
+        }
+
+        function navigateQuestion(delta) {
+            const next = currentIndex + delta;
+            if (next >= 0 && next < ACTIVE_QUESTIONS.length) {
+                currentIndex = next;
+                renderAll();
+            }
+        }
+
+        function jumpToQuestion(idx) {
+            currentIndex = idx;
+            renderAll();
+            const sidebar = document.getElementById('questionSidebar');
+            if (!sidebar.classList.contains('-translate-x-full') && window.innerWidth < 1024) {
+                toggleSidebar();
+            }
+        }
+
+        function renderQuickJumpStrip() {
+            const strip = document.getElementById('quickJumpStrip');
+            strip.innerHTML = '';
+
+            const total = ACTIVE_QUESTIONS.length;
+            const windowSize = 9;
+            let start = Math.max(0, currentIndex - Math.floor(windowSize / 2));
+            let end = Math.min(total - 1, start + windowSize - 1);
+            if (end - start + 1 < windowSize) {
+                start = Math.max(0, end - windowSize + 1);
+            }
+
+            for (let i = start; i <= end; i++) {
+                const q = ACTIVE_QUESTIONS[i];
+                const r = userResponses[q.id];
+                const isCurrent = i === currentIndex;
+                const isChecked = r && (r.checked || (appMode === 'exam' && examSubmitted));
+
+                let cls = 'bg-[#F3EDE2] text-[#5C5346] border-[#D8CEBE] hover:bg-[#E5DEC9]';
+                if (isChecked) {
+                    cls = r.isCorrect
+                        ? 'bg-[#EBF7F1] text-[#246A4E] border-[#246A4E]/40'
+                        : 'bg-[#FDF0F0] text-[#B83B3B] border-[#B83B3B]/40';
+                } else if (appMode === 'exam' && r && r.selected.size === q.requiredCount) {
+                    cls = 'bg-[#FAF5EC] text-[#8C5A3C] border-[#8C5A3C]';
+                }
+                if (isCurrent) {
+                    cls = 'bg-[#8C5A3C] text-white border-[#8C5A3C]';
+                }
+
+                const btn = document.createElement('button');
+                btn.onclick = () => jumpToQuestion(i);
+                btn.className = `w-7 h-7 rounded-lg border font-mono text-xs font-bold shrink-0 transition cursor-pointer ${cls}`;
+                btn.textContent = i + 1;
+                strip.appendChild(btn);
+            }
+        }
+
+        /********************************************************************
+         * 6. PRACTICE MODE vs. 80-QUESTION MOCK EXAM MODE
+         ********************************************************************/
+        function switchMode(mode) {
+            if (mode === appMode) return;
+
+            if (mode === 'exam') {
+                openConfirmModal(
+                    'Bắt đầu bài Thi Thử PSM I (80 câu / 60 phút)?',
+                    'Hệ thống sẽ rút ngẫu nhiên 80 câu hỏi từ ngân hàng đề, bật đồng hồ đếm ngược 60 phút và chấm điểm theo chuẩn 85% Pass của Scrum.org khi bạn nộp bài.',
+                    () => startMockExamSession()
+                );
+            } else {
+                stopExamTimer();
+                appMode = 'practice';
+                examSubmitted = false;
+                ACTIVE_QUESTIONS = [...ALL_QUESTIONS];
+                currentIndex = 0;
+                document.getElementById('examTimerBox').classList.add('hidden');
+                document.getElementById('examTimerBox').classList.remove('flex');
+                document.getElementById('examResultBanner').classList.add('hidden');
+
+                document.getElementById('btnModePractice').className = "px-3 py-1.5 rounded-lg text-xs font-semibold transition cursor-pointer bg-[#8C5A3C] text-white shadow-2xs";
+                document.getElementById('btnModeExam').className = "px-3 py-1.5 rounded-lg text-xs font-semibold transition cursor-pointer text-[#5C5346] hover:text-[#2C2523]";
+
+                renderAll();
+            }
+        }
+
+        function startMockExamSession() {
+            appMode = 'exam';
+            examSubmitted = false;
+            userResponses = {};
+
+            // Pick 80 random questions (or all if total < 80)
+            const shuffled = [...ALL_QUESTIONS].sort(() => Math.random() - 0.5);
+            ACTIVE_QUESTIONS = shuffled.slice(0, Math.min(80, shuffled.length));
+            currentIndex = 0;
+
+            document.getElementById('btnModeExam').className = "px-3 py-1.5 rounded-lg text-xs font-semibold transition cursor-pointer bg-[#8C5A3C] text-white shadow-2xs";
+            document.getElementById('btnModePractice').className = "px-3 py-1.5 rounded-lg text-xs font-semibold transition cursor-pointer text-[#5C5346] hover:text-[#2C2523]";
+
+            const timerBox = document.getElementById('examTimerBox');
+            timerBox.classList.remove('hidden');
+            timerBox.classList.add('flex');
+            document.getElementById('examResultBanner').classList.add('hidden');
+
+            examSecondsRemaining = 60 * 60;
+            updateExamTimerUI();
+            stopExamTimer();
+            examTimerInterval = setInterval(() => {
+                examSecondsRemaining--;
+                updateExamTimerUI();
+                if (examSecondsRemaining <= 0) {
+                    stopExamTimer();
+                    finalizeMockExam();
+                }
+            }, 1000);
+
+            renderAll();
+        }
+
+        function updateExamTimerUI() {
+            const mins = Math.floor(examSecondsRemaining / 60);
+            const secs = examSecondsRemaining % 60;
+            document.getElementById('examTimerDisplay').textContent =
+                `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+        }
+
+        function stopExamTimer() {
+            if (examTimerInterval) {
+                clearInterval(examTimerInterval);
+                examTimerInterval = null;
+            }
+        }
+
+        function submitMockExam() {
+            if (examSubmitted) return;
+            openConfirmModal(
+                'Nộp bài thi thử PSM I?',
+                'Bạn có chắc chắn muốn nộp bài và chấm điểm ngay bây giờ không?',
+                () => finalizeMockExam()
+            );
+        }
+
+        function finalizeMockExam() {
+            stopExamTimer();
+            examSubmitted = true;
+
+            let correctCount = 0;
+            ACTIVE_QUESTIONS.forEach(q => {
+                const resp = getOrCreateResponse(q.id);
+                evaluateQuestionResponse(q, resp);
+                if (resp.isCorrect) correctCount++;
+            });
+
+            const total = ACTIVE_QUESTIONS.length;
+            const pct = Math.round((correctCount / total) * 100);
+            const passed = pct >= 85;
+
+            const banner = document.getElementById('examResultBanner');
+            banner.classList.remove('hidden');
+            banner.className = `rounded-2xl border-2 p-5 shadow-md animate-fade ${
+                passed ? 'bg-[#EBF7F1] border-[#246A4E]' : 'bg-[#FDF0F0] border-[#B83B3B]'
+            }`;
+
+            banner.innerHTML = `
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    <div class="space-y-1">
+                        <div class="text-xs font-bold uppercase tracking-wider ${passed ? 'text-[#246A4E]' : 'text-[#B83B3B]'}">
+                            ${passed ? '🎉 CHÚC MỪNG! BẠN ĐÃ ĐẠT CHUẨN PASS PSM I (≥ 85%)' : '⚠️ CHƯA ĐẠT CHUẨN 85% CỦA SCRUM.ORG — HÃY ÔN LẠI CÁC CÂU SAI'}
+                        </div>
+                        <h3 class="font-serif font-bold text-xl text-[#2C2523]">
+                            Điểm số: ${correctCount} / ${total} câu đúng (${pct}%)
+                        </h3>
+                        <p class="text-xs text-[#5C5346]">
+                            Bạn có thể bấm vào bộ lọc <strong>"Sai"</strong> ở thanh bên trái để xem lại chi tiết những câu chưa chính xác.
+                        </p>
+                    </div>
+                    <div class="flex items-center gap-2 shrink-0">
+                        <button onclick="setSidebarFilter('wrong')" class="px-3.5 py-2 rounded-xl bg-[#FFFDF9] border border-[#D8CEBE] text-[#B83B3B] text-xs font-bold cursor-pointer">
+                            Xem các câu sai
+                        </button>
+                        <button onclick="startMockExamSession()" class="px-4 py-2 rounded-xl bg-[#8C5A3C] text-white text-xs font-bold cursor-pointer">
+                            Thi lại đề mới
+                        </button>
+                    </div>
+                </div>
+            `;
+
+            renderAll();
+        }
+
+        /********************************************************************
+         * 7. SHUFFLE, RESET & IMPORT QUESTIONS (.TXT / .MD)
+         ********************************************************************/
+        function shuffleQuestions() {
+            ACTIVE_QUESTIONS.sort(() => Math.random() - 0.5);
+            currentIndex = 0;
+            renderAll();
+        }
+
+        function confirmResetProgress() {
+            openConfirmModal(
+                'Làm lại từ đầu?',
+                'Toàn bộ lịch sử chọn đáp án hiện tại sẽ được xóa để bạn luyện tập lại từ đầu (các câu đánh dấu ★ và ghi chú cá nhân vẫn được giữ nguyên).',
+                () => {
+                    userResponses = {};
+                    examSubmitted = false;
+                    currentIndex = 0;
+                    document.getElementById('examResultBanner').classList.add('hidden');
+                    renderAll();
+                }
+            );
+        }
+
+        function toggleSidebar() {
+            if (window.innerWidth >= 1024 && isZoomFocused) {
+                toggleZoomFocusMode();
+                return;
+            }
+            const sb = document.getElementById('questionSidebar');
+            const bd = document.getElementById('sidebarBackdrop');
+            const isHidden = sb.classList.contains('-translate-x-full');
+            if (isHidden) {
+                sb.classList.remove('-translate-x-full');
+                bd.classList.remove('hidden');
+            } else {
+                sb.classList.add('-translate-x-full');
+                bd.classList.add('hidden');
+            }
+        }
+
+        function openImportModal() {
+            const modal = document.getElementById('importModal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closeImportModal() {
+            const modal = document.getElementById('importModal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        function handleFileUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                document.getElementById('importTextarea').value = e.target.result;
+            };
+            reader.readAsText(file);
+        }
+
+        function processImportedMarkdown() {
+            const raw = document.getElementById('importTextarea').value.trim();
+            if (!raw) return;
+
+            const mode = document.querySelector('input[name="importMode"]:checked').value;
+            const newlyParsed = parseMarkdownToQuestions(raw, ALL_QUESTIONS.length + 1);
+
+            if (newlyParsed.length === 0) return;
+
+            if (mode === 'replace') {
+                ALL_QUESTIONS = newlyParsed.map((q, i) => ({ ...q, id: i + 1 }));
+                userResponses = {};
+            } else {
+                const existingTitles = new Set(ALL_QUESTIONS.map(q => q.question.toLowerCase()));
+                newlyParsed.forEach(nq => {
+                    if (!existingTitles.has(nq.question.toLowerCase())) {
+                        nq.id = ALL_QUESTIONS.length + 1;
+                        ALL_QUESTIONS.push(nq);
+                        existingTitles.add(nq.question.toLowerCase());
+                    }
+                });
+            }
+
+            ACTIVE_QUESTIONS = [...ALL_QUESTIONS];
+            currentIndex = 0;
+            document.getElementById('importTextarea').value = '';
+            closeImportModal();
+            renderAll();
+        }
+
+        function openConfirmModal(title, body, onConfirm) {
+            document.getElementById('confirmModalTitle').textContent = title;
+            document.getElementById('confirmModalBody').textContent = body;
+            const btn = document.getElementById('confirmModalActionBtn');
+            btn.onclick = () => {
+                closeConfirmModal();
+                onConfirm();
+            };
+            const modal = document.getElementById('confirmModal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closeConfirmModal() {
+            const modal = document.getElementById('confirmModal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        window.onload = initApp;
+    </script>
+</body>
+</html>
